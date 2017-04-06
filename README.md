@@ -17,4 +17,10 @@ The tests show how to use the functionality. It is used as an addon in the
 DifferentialEquations.jl ecosystem. It is recommended that users use this
 functionality through DifferentialEquations.jl.
 
+To get the wrapper on your system, follow the below steps:
+
+1. Clone the package into Julia. This can be done via Pkg.clone("https://github.com/JuliaDiffEq/FEniCS.jl")
+2. Proceed to build the package via Pkg.build("FEniCS")
+3. Should be available to use. Due to errors with PyCall, it does not currently work on a Windows based system.
+
 Note: This is a work in progress!
