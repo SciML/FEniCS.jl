@@ -27,6 +27,6 @@ To get the wrapper on your system, follow the below steps:
 
 1. Clone the package into Julia. This can be done via Pkg.clone("https://github.com/JuliaDiffEq/FEniCS.jl")
 2. Proceed to build the package via Pkg.build("FEniCS")
-3. Should be available to use. Due to errors with PyCall, it does not currently work on a Windows based system.
+3. Should be available to use. Due to the fact that FEniCS.jl uses the conda distribution to install and use FEniCS, this package will not currently work on Windows based systems due to the fact that a Windows Conda distribution is not currently supported by FEniCS ( https://fenicsproject.org/download/ )
 
-Note: This is a work in progress!
+Note: This is a work in progress, and the structure may change throughout the summer. Nevertheless any suggestions/improvements/comments etc are always welcomed.
