@@ -20,3 +20,5 @@ The FEniCS.jl package is licensed under the MIT "Expat" License:
 > OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 > SOFTWARE.
 > 
+This repository was made with help from the following repository by Elmar Zander:
+https://github.com/aleadev/FEniCS.jl
