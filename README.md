@@ -1,14 +1,11 @@
 # FEniCS
 
 [![Join the chat at https://gitter.im/JuliaDiffEq/Lobby](https://badges.gitter.im/JuliaDiffEq/Lobby.svg)](https://gitter.im/JuliaDiffEq/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-[![Build Status](https://travis-ci.org/ChrisRackauckas/FEniCS.jl.svg?branch=master)](https://travis-ci.org/ChrisRackauckas/FEniCS.jl)
-
-[![Coverage Status](https://coveralls.io/repos/ChrisRackauckas/FEniCS.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/ChrisRackauckas/FEniCS.jl?branch=master)
-
+[![Build Status](https://travis-ci.org/JuliaDiffEq/FEniCS.jl.svg?branch=master)](https://travis-ci.org/JuliaDiffEq/FEniCS.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaDiffEq/FEniCS.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaDiffEq/FEniCS.jl?branch=master)
 [![codecov.io](http://codecov.io/github/ChrisRackauckas/FEniCS.jl/coverage.svg?branch=master)](http://codecov.io/github/ChrisRackauckas/FEniCS.jl?branch=master)
 
-# Uncomment these if/when this is registered
+#### Uncomment these if/when this is registered
 #[![FEniCS](http://pkg.julialang.org/badges/FEniCS_0.5.svg)](http://pkg.julialang.org/?pkg=FEniCS)
 #[![FEniCS](http://pkg.julialang.org/badges/FEniCS_0.6.svg)](http://pkg.julialang.org/?pkg=FEniCS)
 
