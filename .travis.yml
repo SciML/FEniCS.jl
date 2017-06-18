@@ -9,8 +9,11 @@ julia:
 matrix:
   allow_failures:
     - julia: nightly
+sudo: required
+dist: trusty
 env:
-   - PYTHON=""
+  # Make PyCall use the right python version (where dolfin is installed)
+  - PYTHON=/usr/bin/python2
 before_install:
   # Install FEniCS (but don't do an 'apt-get upgrade' as this will timeout the process)
   - sudo add-apt-repository ppa:fenics-packages/fenics -y
