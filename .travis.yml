@@ -11,6 +11,13 @@ matrix:
     - julia: nightly
 env:
    - PYTHON=""
+before_install:
+  # Install FEniCS (but don't do an 'apt-get upgrade' as this will timeout the process)
+  - sudo add-apt-repository ppa:fenics-packages/fenics -y
+  - sudo apt-get update -q
+  - sudo apt-get install fenics -y
+  #- docker pull quay.io/fenicsproject/stable:latest
+  #- docker run -ti quay.io/fenicsproject/stable:latest
 notifications:
   email: false
 # uncomment the following lines to override the default test script
