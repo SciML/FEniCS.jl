@@ -11,13 +11,13 @@ fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = object
 
 macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject, base2::Symbol=:Any, base3::Symbol=:Any)
   impl = Symbol(name, "Impl")
-  quote
+  esc(quote
     abstract $name <: $base1, $base2, $base3
     immutable $impl <: $name
       pyobject::PyObject
     end
-    $(esc(name))(pyobject::PyObject) = $impl(pyobject)
-  end
+    $(name)(pyobject::PyObject) = $impl(pyobject)
+  end)
 end
 
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
