@@ -1,11 +1,11 @@
 using FEniCS
 using Base.Test
+using PyCall
+using PyPlot
+using Plots
 
-#ask about where the creation of be
+@pyimport fenics
 
-
-test_cube = UnitCubeMesh(10,10,10)
-x5 = hmin(test_cube)
 
 # for roughly equals Julia uses \approx
 #
@@ -14,9 +14,8 @@ x5 = hmin(test_cube)
 #   @test ...
 #   @test...
 # end
-@test 1 != 2
-@test 2 == 2
-@test x5 ≈ 0.17320508075688767
 
 @test include("test_create.jl")
 @test include("test_pycreate.jl")
+#@test include("test_fem.jl")
+#@test include("test_misc.jl")

@@ -11,7 +11,7 @@ test_pyquadmesh =pyUnitQuadMesh(10,10) # is one of the experimental meshes, but
 test_pyinterval = pyUnitIntervalMesh(10)
 test_pysquare = pyUnitSquareMesh(10,10,"crossed")
 test_pycube = pyUnitCubeMesh(10,10,10)
-test_pybox = pyBoxMesh(fenics.Point(0.0,0.0,0.0),fenics.Point(1.0,1.0,1.0),10,10,10)
-test_pyrectangle = pyRectangleMesh(fenics.Point(0.0, 0.0), fenics.Point(10.0, 4.0), 10, 10)
+test_pybox = pyBoxMesh(Point([0.0,0.0,0.0]),Point([1.0,1.0,1.0]),10,10,10)
+test_pyrectangle = pyRectangleMesh(Point([0.0, 0.0]), Point([10.0, 4.0]), 10, 10)
 
 true
