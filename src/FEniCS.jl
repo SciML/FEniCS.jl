@@ -31,6 +31,6 @@ export str, repr
 
 include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
-include("jmisc.jl") #this file contains various miscallaneous functions to assist with conversion etc
+#include("jmisc.jl") #this file contains various miscallaneous functions to assist with conversion etc
 
 end# module
