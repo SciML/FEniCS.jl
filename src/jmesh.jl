@@ -1,3 +1,7 @@
+
+#These are the commands to define the Mesh class in Julia.
+#Tests for these can be found in the test_create.jl and test_pycreate.jl
+
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
 #possibly look at the type of object returned each time ( I believe numpy_arrays)
 #are converted automatically by PyCall
@@ -24,9 +28,17 @@ num_vertices(mesh::Mesh) = fenicspycall(mesh, :num_vertices)
 bounding_box_tree(mesh::Mesh) = fenicspycall(mesh,:bounding_box_tree) #this object is a pyobject
 
 export cell_orientations,cells,hmin , hmax, init, init_global, coordinates, data,
-domains, geometry, bounding_box_tree
-#the non exported functions are not yet tested
+domains, geometry,num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree
+
 UnitTriangleMesh() = Mesh(fenics.UnitTriangleMesh())
+
+"""
+  Mesh
+Mesh is equivanlent to the Mesh function in fenics
+"""
+
+#name change
+Mesh(path::String) = Mesh(fenics.Mesh(path))
 
 UnitTetrahedronMesh() = Mesh(fenics.UnitTetrahedronMesh())
 
@@ -43,11 +55,12 @@ BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz))
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::String="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
 
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
-UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh
+UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh
 
 function pyUnitTriangleMesh()
   pycall(fenics.UnitTriangleMesh::PyObject,PyObject::Type)
 end
+
 function pyUnitTetrahedronMesh()
   pycall(fenics.UnitTetrahedronMesh::PyObject,PyObject::Type)
 end
@@ -83,5 +96,14 @@ function pyUnitIntervalMesh(nx::Int)
   pycall(fenics.UnitIntervalMesh::PyObject,PyObject::Type,nx)
 end
 
+function pyMesh(path::String)
+  pycall(fenics.Mesh::PyObject,PyObject::Type,path)
+end
+
+function Point(point::Vector) #a different data type was suggested. Will Investigate when I return to UK
+  pycall(fenics.Point::PyObject,PyObject::Type,point)
+end
+
+
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
-pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh
+pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh,pyMesh, Point
