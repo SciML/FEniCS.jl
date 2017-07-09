@@ -15,7 +15,8 @@ using Plots
 #   @test...
 # end
 
+
 @test include("test_create.jl")
 @test include("test_pycreate.jl")
-#@test include("test_fem.jl")
+@test include("test_jfem.jl")
 #@test include("test_misc.jl")
