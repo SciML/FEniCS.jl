@@ -38,11 +38,11 @@ Mesh is equivanlent to the Mesh function in fenics
 """
 
 #name change
-Mesh(path::String) = Mesh(fenics.Mesh(path))
+Mesh(path::Union{String,Symbol}) = Mesh(fenics.Mesh(path))
 
 UnitTetrahedronMesh() = Mesh(fenics.UnitTetrahedronMesh())
 
-UnitSquareMesh(nx::Int, ny::Int, diagonal::String="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
+UnitSquareMesh(nx::Int, ny::Int, diagonal::Union{String,Symbol}="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
 
 UnitQuadMesh(nx::Int,ny::Int) = Mesh(fenics.UnitQuadMesh(nx,ny))
 
@@ -52,7 +52,7 @@ UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx,ny,nz))
 
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz)) #look at how to define fenics.point
 
-RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::String="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
+RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::Union{String,Symbol}="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
 
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
 UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh
@@ -73,7 +73,7 @@ function pyBoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) # look at array types to d
   pycall(fenics.BoxMesh::PyObject,PyObject::Type,p0,p1,nx,ny,nz)
 end
 
-function pyRectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::String="right")
+function pyRectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::Union{String,Symbol}="right")
   pycall(fenics.RectangleMesh::PyObject,PyObject::Type,p0,p1,nx,ny,diagdir)
 end
 
@@ -82,7 +82,7 @@ For the diagdir, the possible options can be found below (these indicate the dir
   (“left”, “right”, “right/left”, “left/right”, or “crossed”).
 """
 
-function pyUnitSquareMesh(nx::Int,ny::Int,diagdir::String="right")
+function pyUnitSquareMesh(nx::Int,ny::Int,diagdir::Union{String,Symbol}="right")
   pycall(fenics.UnitSquareMesh::PyObject,PyObject::Type,nx,ny,diagdir)
 end
 
@@ -96,7 +96,7 @@ function pyUnitIntervalMesh(nx::Int)
   pycall(fenics.UnitIntervalMesh::PyObject,PyObject::Type,nx)
 end
 
-function pyMesh(path::String)
+function pyMesh(path::Union{String,Symbol})
   pycall(fenics.Mesh::PyObject,PyObject::Type,path)
 end
 
