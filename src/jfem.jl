@@ -15,10 +15,11 @@ FunctionSpace(mesh::Mesh, family::Union{String,Symbol}, degree::Int) = FunctionS
 export FunctionSpace
 
 @fenicsclass Argument
-
+Argument(V,number,part::Union{String,Symbol} = nothing) = Argument(fenics.Argument(V.pyobject, number, part=part))
 TrialFunction(V::FunctionSpace) = Argument(fenics.TrialFunction(V.pyobject))
 TestFunction(V::FunctionSpace) = Argument(fenics.TestFunction(V.pyobject))
 
+export Argument
 export TrialFunction
 export TestFunction
 
@@ -28,13 +29,17 @@ Constant(x::Real) = Constant(fenics.Constant(x, name="Constant($x)"))
 export Constant
 
 @fenicsclass Expression
-#Expression(expr::String) = Expression(fenics.Expression(expr))
+Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode=cppcode,
+element=element,cell=cell, domain=domain, degree=degree, name=name, label=label, mpi_comm=mpi_comm))
+export Expression
+
+
 
 #do these all need to be Args or Expression??
 inner(u::Union{Expression,Argument}, v::Union{Expression,Argument}) = Expression(fenics.inner(u.pyobject, v.pyobject))
 grad(u::Union{Expression,Argument}) = Expression(fenics.grad(u.pyobject))
 nabla_grad(u::Argument) = Expression(fenics.nabla_grad(u.pyobject))
-export inner,grad, nabla_grad
+export inner,grad, nabla_gra
 
 
 @fenicsclass Measure
@@ -57,3 +62,11 @@ export dx, ds,dS,dP
 @fenicsclass Matrix
 assemble(assembly_item::Form)=Matrix(fenics.assemble(assembly_item.pyobject)) #this gives as PETScMatrix of appopriate dimensions
 export assemble
+
+@fenicsclass BoundaryCondition
+DirichletBC(V::FunctionSpace,g,sub_domain,method="topological",check_midpoint=true)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#,method=method,check_midpoint=check_midpoint))#look this up with example
+#sub_domain seems to have an error I commented kwargs out
+@fenicsclass sub_domain
+#https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
+CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
+export CompiledSubDomain
