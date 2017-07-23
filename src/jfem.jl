@@ -39,6 +39,7 @@ export Expression
 inner(u::Union{Expression,Argument}, v::Union{Expression,Argument}) = Expression(fenics.inner(u.pyobject, v.pyobject))
 grad(u::Union{Expression,Argument}) = Expression(fenics.grad(u.pyobject))
 nabla_grad(u::Argument) = Expression(fenics.nabla_grad(u.pyobject))
+#TODO :need to add dot , etc
 export inner,grad, nabla_grad
 
 
@@ -66,6 +67,7 @@ export assemble
 @fenicsclass BoundaryCondition
 DirichletBC(V::FunctionSpace,g,sub_domain,method="topological",check_midpoint=true)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#,method=method,check_midpoint=check_midpoint))#look this up with example
 #sub_domain seems to have an error I commented kwargs out
+export DirichletBC
 @fenicsclass sub_domain
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
 CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
