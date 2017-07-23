@@ -39,7 +39,7 @@ export Expression
 inner(u::Union{Expression,Argument}, v::Union{Expression,Argument}) = Expression(fenics.inner(u.pyobject, v.pyobject))
 grad(u::Union{Expression,Argument}) = Expression(fenics.grad(u.pyobject))
 nabla_grad(u::Argument) = Expression(fenics.nabla_grad(u.pyobject))
-export inner,grad, nabla_gra
+export inner,grad, nabla_grad
 
 
 @fenicsclass Measure
