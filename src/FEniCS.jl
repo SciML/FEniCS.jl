@@ -5,7 +5,7 @@ using PyCall
 @pyimport fenics
 #the below code is an adaptation of aleadev.FEniCS.jl
 
-import Base: size, length, show, *, +, -, Function,repr,dot
+import Base: size, length, show, *, +, -, Function,repr,dot,cross
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
