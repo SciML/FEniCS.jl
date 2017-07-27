@@ -108,18 +108,3 @@ end
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
 pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh,pyMesh, Point
 
-
-"""
- For a full list of supported arguments, and their usage
-please refer to http://matplotlib.org/api/pyplot_api.html
-not all kwargs have been imported. Should you require any that are not imported
-open as issue, and I will attempt to add them.
-"""
-Plot(in_plot::Union{Mesh,FunctionSpace};alpha=1,animated=false,antialiased=true,color="grey"
-,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
-,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
-,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
-alpha=alpha,animated=animated,antialiased=antialiased,color=color,dash_capstyle=dash_capstyle,dash_joinstyle=dash_joinstyle
-,dashes=dashes,drawstyle=drawstyle,fillstyle=fillstyle,label=label,linestyle=linestyle,linewidth=linewidth,marker=marker,markeredgecolor=markeredgecolor
-,markeredgewidth=markeredgewidth,markerfacecolor=markerfacecolor,markerfacecoloralt=markerfacecoloralt,markersize=markersize,markevery=markevery
-,visible=visible,title=title)#the first is the keyword argument, the second is the valuea
