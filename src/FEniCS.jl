@@ -5,7 +5,7 @@ using PyCall
 @pyimport fenics
 #the below code is an adaptation of aleadev.FEniCS.jl
 
-import Base: size, length, show, *, +, -, Function,repr
+import Base: size, length, show, *, +, -, Function,repr,dot,cross
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
@@ -29,8 +29,8 @@ repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))
 export str, repr
 
-include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
-#include("jmisc.jl") #this file contains various miscallaneous functions to assist with conversion etc
+include("jmesh.jl") #this file contains the mesh functions
+include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 
 end# module
