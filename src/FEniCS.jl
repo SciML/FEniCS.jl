@@ -29,8 +29,8 @@ repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))
 export str, repr
 
-include("jfem.jl") #this file contains the fem functions
 include("jmesh.jl") #this file contains the mesh functions
+include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 
 end# module
