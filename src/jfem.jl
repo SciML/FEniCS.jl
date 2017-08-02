@@ -70,3 +70,11 @@ DirichletBC(V::FunctionSpace,g::Expression,sub_domain,method="topological",check
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
 CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
 export CompiledSubDomain
+
+
+DirichletBCtest(V::FunctionSpace,g,sub_domain)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#look this up with example also removed type from g(Should be expression)
+
+V = FunctionSpace(mesh, "P", 1)
+
+bc1 = DirichletBCtest(V, 1, "on_boundary")
+
