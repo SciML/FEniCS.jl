@@ -28,6 +28,10 @@ export TestFunction
 Constant(x::Real) = Constant(fenics.Constant(x, name="Constant($x)"))
 export Constant
 
+@fenicsclass Function
+Function(V::FunctionSpace) = Function(fenics.Function(V.pyobject))
+export Function
+
 @fenicsclass Expression
 Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode=cppcode,
 element=element,cell=cell, domain=domain, degree=degree, name=name, label=label, mpi_comm=mpi_comm))
@@ -53,7 +57,7 @@ export dx, ds,dS,dP
 #https://github.com/FEniCS/ufl/blob/master/ufl/measure.py
 @fenicsclass Form
 *(expr::Union{Expression,Argument}, measure::Measure) = Form(measure.pyobject[:__rmul__](expr.pyobject) )
-*(expr::Union{Expression,Argument}, expr2::Union{Expression,Argument}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
+*(expr::Union{Expression,Argument,Constant}, expr2::Union{Expression,Argument,Constant}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
 +(measure1::Measure, measure2::Measure) = Form(measure1.pyobject[:__add__](measure2.pyobject) ) #does this need to be expr?
 #do we need to export + *?
 
@@ -66,12 +70,20 @@ export assemble
 
 #https://fenicsproject.org/olddocs/dolfin/1.6.0/python/programmers-reference/cpp/fem/DirichletBC.html
 @fenicsclass BoundaryCondition
-DirichletBC(V::FunctionSpace,g::Expression,sub_domain,method="topological",check_midpoint=true)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g.pyobject,method=method,check_midpoint=check_midpoint))#look this up with example
+DirichletBC(V::FunctionSpace,g::Expression,sub_domain,method="topological",check_midpoint=true)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g.pyobject,method=method,check_midpoint=check_midpoint))#look this up with example also removed type from g(Should be expression)
+export DirichletBC
+DirichletBCtest(V::FunctionSpace,g,sub_domain)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#look this up with example also removed type from g(Should be expression)
+
 #this class wont be exported until the function boundary has been "fixed"
-@fenicsclass sub_domain
+@fenicsclass SubDomain
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
-CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
+CompiledSubDomain(cppcode::String)  = SubDomain(fenics.CompiledSubDomain(cppcode))
 export CompiledSubDomain
+SubDomain(map_tol::Float64=1e-10)=SubDomain(fenics.SubDomain(map_tol))
+export SubDomain
+#@fenicsclass MeshFunction
+MeshFunction(tp::String;mesh::Mesh=nothing,dim::Int=nothing,filename::String=nothing)=fenics.MeshFunction(tp=tp,mesh=mesh.pyobject,dim=dim,filename=filename)
+
 
 """
  For a full list of supported arguments, and their usage
@@ -87,3 +99,42 @@ alpha=alpha,animated=animated,antialiased=antialiased,color=color,dash_capstyle=
 ,dashes=dashes,drawstyle=drawstyle,fillstyle=fillstyle,label=label,linestyle=linestyle,linewidth=linewidth,marker=marker,markeredgecolor=markeredgecolor
 ,markeredgewidth=markeredgewidth,markerfacecolor=markerfacecolor,markerfacecoloralt=markerfacecoloralt,markersize=markersize,markevery=markevery
 ,visible=visible,title=title)#the first is the keyword argument, the second is the value
+export Plot
+x123=SubDomain()
+
+@fenicsclass solve
+solve(A,x,b)=fenics.solve(A,x,b)
+
+
+A_15 = [[1,2],[3,4]]
+B = [[3,7]]
+x = [[]]
+#solve(A_15,x,B)
+#print(typeof(A_15))
+#print(typeof(B))
+#print(typeof(x))
+
+mesh = UnitSquareMesh(8, 8)
+V = FunctionSpace(mesh, "P", 1)
+
+# Define boundary condition
+#u_D = Expression('1 + x[0]*x[0] + 2*x[1]*x[1]', degree=2)
+
+#def boundary(x, on_boundary):
+#    return on_boundary
+
+#bc = DirichletBC(V, u_D,6)
+
+# Define variational problem
+u = TrialFunction(V)
+v = TestFunction(V)
+f = Constant(-6.0)
+a = dot(grad(u), grad(v))*dx
+L = f*v*dx
+mf = fenics.MeshFunction("size_t",mesh.pyobject)
+# Compute solution
+#u = Function(V)
+#solve(a == L, u, bc)
+#fenics.on_boundary
+#DirichletBCtest(V,1,mf)
+bc1 = DirichletBCtest(V, 1, "on_boundary")
