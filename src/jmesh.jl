@@ -3,7 +3,6 @@
 #Tests for these can be found in the test_create.jl and test_pycreate.jl
 
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
-#possibly look at the type of object returned each time ( I believe numpy_arrays)
 #are converted automatically by PyCall
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
 cells(mesh::Mesh) = fenicspycall(mesh, :cells)
@@ -104,7 +103,5 @@ function Point(point::Vector) #a different data type was suggested. Will Investi
   pycall(fenics.Point::PyObject,PyObject::Type,point)
 end
 
-
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
 pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh,pyMesh, Point
-

@@ -30,3 +30,13 @@ DOLFIN_EPS()=fenics.DOLFIN_EPS
 DOLFIN_SQRT_EPS()=fenics.DOLFIN_SQRT_EPS
 
 export DOLFIN_PI, DOLFIN_EPS, DOLFIN_SQRT_EPS
+
+
+immutable MPI_Comm <: fenicsobject
+  pyobject::PyObject
+end
+
+mpi_comm_world() = MPI_Comm(fenics.mpi_comm_world())
+mpi_comm_self() = MPI_Comm(fenics.mpi_comm_world())
+
+export MPI_Comm, mpi_comm_world, mpi_comm_self
