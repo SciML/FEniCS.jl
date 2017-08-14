@@ -29,7 +29,7 @@ export File
 
 array(matrix) = fenicspycall(matrix, :array)
 vector(solution) = fenicspycall(solution,:vector) #
-Vector(solution) = fenicspycall(solution,:vector) # genericvector fenics
+Vector(solution) = fenics.Vector(solution) # genericvector fenics
 interpolate(ex::Expression, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
 
 export Vector, vector, interpolate,array
