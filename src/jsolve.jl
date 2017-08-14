@@ -24,7 +24,7 @@ solution. The norm kwarg defines the norm measure used (by default it is the L2 
 errornorm(ans,sol;norm="L2") = fenics.errornorm(ans.pyobject,sol.pyobject,norm)
 export errornorm
 
-File(path::string)=fenics.File(path) #used to store the solution in various formats
+File(path::String)=fenics.File(path) #used to store the solution in various formats
 export File
 
 array(matrix) = fenicspycall(matrix, :array)
