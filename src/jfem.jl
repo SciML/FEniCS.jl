@@ -17,10 +17,7 @@ Argument(V,number,part::Union{String,Symbol} = nothing) = Argument(fenics.Argume
 TrialFunction(V::FunctionSpace) = Argument(fenics.TrialFunction(V.pyobject))
 TestFunction(V::FunctionSpace) = Argument(fenics.TestFunction(V.pyobject))
 
-export Argument
-export TrialFunction
-export TestFunction
-
+export Argument,TrialFunction,TestFunction
 
 @fenicsclass Constant
 Constant(x::Real) = Constant(fenics.Constant(x, name="Constant($x)"))
@@ -42,7 +39,6 @@ nabla_grad(u::Argument) = Expression(fenics.nabla_grad(u.pyobject))
 cross(u::Union{Expression,Argument}, v::Union{Expression,Argument}) = Expression(fenics.cross(u.pyobject, v.pyobject))
 export Expression,inner,grad, nabla_grad,outer,dot,cross
 
-
 @fenicsclass Measure
 dx = Measure(fenics.dx)
 ds = Measure(fenics.ds)
@@ -61,9 +57,10 @@ export dx, ds,dS,dP
 
 @fenicsclass Matrix
 #assemble(assembly_item::Form)=Matrix(fenics.assemble(assembly_item.pyobject))
-assemble(assembly_item::Form;tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(
+assemble(assembly_item::Union{Form,Function};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(
 fenics.assemble(assembly_item.pyobject,tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))#this gives as PETScMatrix of appopriate dimensions
 export assemble
+#I have changed this to Function+Form
 
 #https://fenicsproject.org/olddocs/dolfin/1.6.0/python/programmers-reference/cpp/fem/DirichletBC.html
 @fenicsclass sub_domain
@@ -88,7 +85,7 @@ please refer to http://matplotlib.org/api/pyplot_api.html
 not all kwargs have been imported. Should you require any that are not imported
 open as issue, and I will attempt to add them.
 """
-Plot(in_plot::Union{Mesh,FunctionSpace};alpha=1,animated=false,antialiased=true,color="grey"
+Plot(in_plot::Union{Mesh,FunctionSpace,Function};alpha=1,animated=false,antialiased=true,color="grey"
 ,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
 ,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
 ,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
@@ -96,3 +93,4 @@ alpha=alpha,animated=animated,antialiased=antialiased,color=color,dash_capstyle=
 ,dashes=dashes,drawstyle=drawstyle,fillstyle=fillstyle,label=label,linestyle=linestyle,linewidth=linewidth,marker=marker,markeredgecolor=markeredgecolor
 ,markeredgewidth=markeredgewidth,markerfacecolor=markerfacecolor,markerfacecoloralt=markerfacecoloralt,markersize=markersize,markevery=markevery
 ,visible=visible,title=title)#the first is the keyword argument, the second is the value
+export Plot
