@@ -19,7 +19,6 @@ b = dot(grad(u),grad(v))*dx
 A  = assemble(a)
 B  = assemble(b)
 L = m*v*dx
-vector_form=get_array(L)
 matrix1=get_array(A)
 matrix2 =get_array(B)
 U = FEniCS.Function(V)
@@ -30,7 +29,6 @@ matrix3 = get_array(U)
 @testset "get_array" begin
    @test matrix1 == matrix2
    @test size(matrix1) == (25,25)
-   @test size(vector_form) == (25,)
    @test size(matrix3) == (25,)
  end
 
