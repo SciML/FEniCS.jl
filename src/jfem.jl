@@ -50,7 +50,7 @@ export dx, ds,dS,dP
 #https://github.com/FEniCS/ufl/blob/master/ufl/measure.py
 @fenicsclass Form
 *(expr::Union{Expression,Argument}, measure::Measure) = Form(measure.pyobject[:__rmul__](expr.pyobject) )
-*(expr::Union{Expression,Argument,Constant.Form}, expr2::Union{Expression,Argument,Constant,Form}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
+*(expr::Union{Expression,Argument,Constant,Form}, expr2::Union{Expression,Argument,Constant,Form}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
 *(expr::Float64, expr2::Union{Expression,Argument,Constant}) = Expression(expr2.pyobject[:__mul__](expr) )
 *(expr::Union{Expression,Argument,Constant}, expr2::Float64) = Expression(expr.pyobject[:__mul__](expr2) )
 +(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
