@@ -15,7 +15,8 @@ export nlvsolve
 #anlvsolve corresponds to the adapative non-linear solver.
 anlvsolve(F,a,u,bcs,tol,M)=fenics.solve(F.pyobject==a.pyobject,u.pyobject,bcs=bcs.pyobject,tol=tol,M=M)
 #this function hasnt been tested yet, so isnt exported
-#TODO :test it
+
+
 
 """
 errornorm is the function to calculate the error between our exact and calculated
@@ -30,7 +31,27 @@ export File
 array(matrix) = fenicspycall(matrix, :array)
 vector(solution) = fenicspycall(solution,:vector) #
 Vector(solution) = fenics.Vector(solution) # genericvector fenics
-interpolate(ex::Expression, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
+interpolate(ex, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
 
 export Vector, vector, interpolate,array
-#TODO : add function overloads with MPI_Comm
+
+
+"the following function is used to extract the array from a solution/form"
+function get_array(form::Form)
+    assembled_form = assemble(form)
+    return array(assembled_form)
+end
+
+function get_array(solution::Function)
+    generic_vector = vector(solution)
+    instantiated_vector = Vector(generic_vector)
+    return instantiated_vector[:array]()
+end
+"""
+we return the array from an assembled form
+"""
+function get_array(assembled_form::Matrix)
+    return array(assembled_form)
+end
+
+export get_array

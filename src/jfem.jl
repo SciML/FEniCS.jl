@@ -50,15 +50,15 @@ export dx, ds,dS,dP
 #https://github.com/FEniCS/ufl/blob/master/ufl/measure.py
 @fenicsclass Form
 *(expr::Union{Expression,Argument}, measure::Measure) = Form(measure.pyobject[:__rmul__](expr.pyobject) )
-*(expr::Union{Expression,Argument,Constant}, expr2::Union{Expression,Argument,Constant}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
-+(measure1::Measure, measure2::Measure) = Form(measure1.pyobject[:__add__](measure2.pyobject) ) #does this need to be expr?
-#do we need to export + *?
+*(expr::Union{Expression,Argument,Constant.Form}, expr2::Union{Expression,Argument,Constant,Form}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
+*(expr::Float64, expr2::Union{Expression,Argument,Constant}) = Expression(expr2.pyobject[:__mul__](expr) )
+*(expr::Union{Expression,Argument,Constant}, expr2::Float64) = Expression(expr.pyobject[:__mul__](expr2) )
++(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
+-(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
 
-
-@fenicsclass Matrix
-#assemble(assembly_item::Form)=Matrix(fenics.assemble(assembly_item.pyobject))
-assemble(assembly_item::Union{Form,Function};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(
-fenics.assemble(assembly_item.pyobject,tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))#this gives as PETScMatrix of appopriate dimensions
+#this assembles the matrix from a fenics form
+assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = fenics.assemble(assembly_item.pyobject,
+tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend)
 export assemble
 #I have changed this to Function+Form
 
@@ -85,7 +85,7 @@ please refer to http://matplotlib.org/api/pyplot_api.html
 not all kwargs have been imported. Should you require any that are not imported
 open as issue, and I will attempt to add them.
 """
-Plot(in_plot::Union{Mesh,FunctionSpace,Function};alpha=1,animated=false,antialiased=true,color="grey"
+Plot(in_plot::Union{Mesh,FunctionSpace,Function,Geometry};alpha=1,animated=false,antialiased=true,color="grey"
 ,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
 ,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
 ,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
@@ -93,4 +93,4 @@ alpha=alpha,animated=animated,antialiased=antialiased,color=color,dash_capstyle=
 ,dashes=dashes,drawstyle=drawstyle,fillstyle=fillstyle,label=label,linestyle=linestyle,linewidth=linewidth,marker=marker,markeredgecolor=markeredgecolor
 ,markeredgewidth=markeredgewidth,markerfacecolor=markerfacecolor,markerfacecoloralt=markerfacecoloralt,markersize=markersize,markevery=markevery
 ,visible=visible,title=title)#the first is the keyword argument, the second is the value
-
+#export Plot
