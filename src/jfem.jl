@@ -57,8 +57,10 @@ export dx, ds,dS,dP
 -(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
 
 #this assembles the matrix from a fenics form
-assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = fenics.assemble(assembly_item.pyobject,
-tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend)
+@fenicsclass Matrix
+
+assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(fenics.assemble(assembly_item.pyobject,
+tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))
 export assemble
 #I have changed this to Function+Form
 
