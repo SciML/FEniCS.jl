@@ -2,6 +2,9 @@
 #These are the commands to define the Mesh class in Julia.
 #Tests for these can be found in the test_create.jl and test_pycreate.jl
 
+#necessary imports for some specific mesh operations.
+@pyimport mshr
+
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
 #are converted automatically by PyCall
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
@@ -53,8 +56,24 @@ BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz))
 
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::Union{String,Symbol}="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
 
+
+
+
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
 UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh
+
+@fenicsclass Geometry
+
+#functions necessary for creating meshes from geometrical objects.
+
+Circle(centre,radius) = Geometry(mshr.Circle(centre,radius))
+generate_mesh(geom_object::Geometry,size::Int)=Mesh(mshr.generate_mesh(geom_object.pyobject,size))
+
++(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__add__](geom_object2.pyobject))
+-(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__sub__](geom_object2.pyobject))
+*(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__mul__](geom_object2.pyobject))
+
+export Circle,generate_mesh
 
 function pyUnitTriangleMesh()
   pycall(fenics.UnitTriangleMesh::PyObject,PyObject::Type)

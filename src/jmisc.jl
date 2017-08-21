@@ -24,7 +24,7 @@ export list_lu_solver_methods, list_krylov_solver_methods, list_krylov_solver_pr
 """
 Provide values for some of the constants
 """
-#not sure if this was a necessary import, but maybe consistency is required.
+
 DOLFIN_PI()=fenics.DOLFIN_PI
 DOLFIN_EPS()=fenics.DOLFIN_EPS
 DOLFIN_SQRT_EPS()=fenics.DOLFIN_SQRT_EPS
