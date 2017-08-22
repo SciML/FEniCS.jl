@@ -5,10 +5,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/JuliaDiffEq/FEniCS.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaDiffEq/FEniCS.jl?branch=master)
 [![codecov.io](http://codecov.io/github/ChrisRackauckas/FEniCS.jl/coverage.svg?branch=master)](http://codecov.io/github/ChrisRackauckas/FEniCS.jl?branch=master)
 
-#### Uncomment these if/when this is registered
-#[![FEniCS](http://pkg.julialang.org/badges/FEniCS_0.5.svg)](http://pkg.julialang.org/?pkg=FEniCS)
-#[![FEniCS](http://pkg.julialang.org/badges/FEniCS_0.6.svg)](http://pkg.julialang.org/?pkg=FEniCS)
-
 FEniCS.jl is a wrapper for the FEniCS library for finite element discretizations
 of PDEs. This wrapper includes three parts:
 
