@@ -15,7 +15,8 @@ of PDEs. This wrapper includes three parts:
 Various [gists/jupyter](https://gist.github.com/ysimillides/20761c511a8807ae11c2b9e70606985e) notebooks have been created to provide a brief overview of the overall functionality, and of any differences between the pythonic FEniCS and the julian wrapper.
 DifferentialEquations.jl ecosystem. It is recommended that users use this
 functionality through DifferentialEquations.jl.
-[Paraview](https://www.paraview.org/) can also be used to visualize various results just like in FEniCS .
+[Paraview](https://www.paraview.org/) can also be used to visualize various results just like in FEniCS (see below) .
+
 
 To get the wrapper on your system, follow the below steps:
 
@@ -25,3 +26,7 @@ To get the wrapper on your system, follow the below steps:
 
 Note: Any suggestions/improvements/comments etc are always welcomed and can be made either on GitHub or via the gitter channel above.
 This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens.
+
+![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/result.png "Solution")
+ 
+![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/mesh.png "Square Mesh")
