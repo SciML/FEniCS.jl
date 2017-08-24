@@ -27,6 +27,36 @@ To get the wrapper on your system, follow the below steps:
 Note: Any suggestions/improvements/comments etc are always welcomed and can be made either on GitHub or via the gitter channel above.
 This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens.
 
+
+Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://github.com/hplgit/fenics-tutorial/blob/master/pub/python/vol1/ft01_poisson.py)** FEniCS provides 
+```julia
+using FEniCS
+mesh = UnitSquareMesh(8,8) 
+V = FunctionSpace(mesh,"P",1)
+u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]", degree=2)
+u = TrialFunction(V)
+bc1 = DirichletBC(V,u_D, "on_boundary")
+v = TestFunction(V)
+f = Constant(-6.0)
+a = dot(grad(u),grad(v))*dx
+L = f*v*dx
+U = FEniCS.Function(V)
+lvsolve(a,L,U,bc1) #linear variational solver
+errornorm(u_D, U, norm="L2")
+get_array(L) #this returns an array for the stiffness matrix
+get_array(U) #this returns an array for the solution values
+vtkfile = File('poisson/solution.pvd')
+vtkfile << U.pyobject #exports the solution to a vtkfile
+```
+
+We can also plot the solution (this relies on FEniCS backend for plotting) or import it from our file into Paraview:
+
+```julia
+FEniCS.Plot(U)
+FEniCS.Plot(mesh)
+
+```
+
 ![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/result.png "Solution")
  
 ![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/mesh.png "Square Mesh")
