@@ -45,5 +45,20 @@ circle3 = circle1+circle2
 circle4 = circle2-circle1
 mesh3 = generate_mesh(circle3,64)
 mesh4 = generate_mesh(circle4,64)
+
+Box1=Box(Point([0.0, 0.0,0.0]),Point([1.0, 1.0,1.0]))
+Rectangle1 = Rectangle(Point([0.0, 0.0]),Point([1.0, 1.0]))
+Ellipse1=Ellipse(Point([0.0, 0.0]),1.0,2.0,10)
+
+Cone1=Cone(Point([0.0, 0.0,0.0]),Point([1.0, 1.0,1.0]),2.0,10)
+Sphere1=Sphere(Point([0.0, 0.0,0.0]),3)
+
+BoxMesh=generate_mesh(Box1,4)
+RectangleMesh_Geom= generate_mesh(Rectangle1,4)
+ELlipseMesh= generate_mesh(Ellipse1,4)
+ConeMesh= generate_mesh(Cone1,4)
+
+
+
 #TODO : create a test file that checks that the various functions provide the correct results
 true
