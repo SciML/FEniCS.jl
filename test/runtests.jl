@@ -1,4 +1,3 @@
-push!(LOAD_PATH,"/home/ysimillides/Downloads/FEniCS.jl/src/FEniCS.jl")
 using FEniCS
 using Base.Test
 using PyCall
