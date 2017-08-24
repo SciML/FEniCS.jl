@@ -53,12 +53,18 @@ export dx, ds,dS,dP
 *(expr::Union{Expression,Argument,Constant,Form}, expr2::Union{Expression,Argument,Constant,Form}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
 *(expr::Float64, expr2::Union{Expression,Argument,Constant}) = Expression(expr2.pyobject[:__mul__](expr) )
 *(expr::Union{Expression,Argument,Constant}, expr2::Float64) = Expression(expr.pyobject[:__mul__](expr2) )
-+(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
++(expr::Union{Expression,Argument,Constant,Measure,Form,Function}, expr2::Union{Expression,Argument,Constant,Measure,Form,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
 -(expr::Union{Expression,Argument,Constant,Measure,Form}, expr2::Union{Expression,Argument,Constant,Measure,Form}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
+
+#return form for LHS
+lhs(L)=Form(fenics.lhs(L.pyobject))
+#return form for RHS
+rhs(L)=Form(fenics.rhs(L.pyobject))
+
+export lhs,rhs
 
 #this assembles the matrix from a fenics form
 @fenicsclass Matrix
-
 assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(fenics.assemble(assembly_item.pyobject,
 tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))
 export assemble
