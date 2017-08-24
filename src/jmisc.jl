@@ -32,7 +32,7 @@ DOLFIN_SQRT_EPS()=fenics.DOLFIN_SQRT_EPS
 export DOLFIN_PI, DOLFIN_EPS, DOLFIN_SQRT_EPS
 
 
-immutable MPI_Comm <: fenicsobject
+struct MPI_Comm <: fenicsobject
   pyobject::PyObject
 end
 

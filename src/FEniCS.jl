@@ -19,7 +19,7 @@ macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
     abstract type
        $name <: $base1
      end
-    immutable $impl <: $name
+    struct $impl <: $name
       pyobject::PyObject
     end
     $(name)(pyobject::PyObject) = $impl(pyobject)
