@@ -47,10 +47,12 @@ num_steps = 10     # number of time steps
 dt = T / num_steps # time step size
 alpha = 3          # parameter alpha
 beta = 1.2         # parameter beta
+t=0
 
 u_D = Expression(fenics.Expression("1 + x[0]*x[0] + alpha*x[1]*x[1] + beta*t",
                  degree=2, alpha=alpha, beta=beta, t=0))
 
+bc = DirichletBC(V, u_D, "on_boundary")
 
 u_n = interpolate(u_D, V)
 u_1 = TrialFunction(V)
@@ -60,6 +62,20 @@ f_1= Constant(beta - 2 - 2*alpha)
 F = u*v*dx + dt*dot(grad(u), grad(v))*dx - (u_n + dt*f)*v*dx
 
 A_1, L_1 = lhs(F), rhs(F)
+M = FEniCS.Function(V)
+
+#vtkfile = File("FEniCS.jl/file/location.pvd")
+
+for n =1:num_steps
+    t += dt
+    u_D.pyobject[:t] =t
+    lvsolve(A_1 , L_1, M, bc)
+    #vtkfile << (M.pyobject, t) #if you wish to save each time_step
+    u_e = interpolate(u_D, V)
+    assign(u_n,M)
+end
+
+true
 
 
 
