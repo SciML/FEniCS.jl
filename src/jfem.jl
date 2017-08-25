@@ -29,6 +29,7 @@ export Function
 
 #assigns the computed value
 assign(object::Function, solution::Function) = fenicspycall(object, :assign, solution.pyobject)
+export assign
 
 @fenicsclass Expression
 Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode=cppcode,
