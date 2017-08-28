@@ -34,6 +34,7 @@ export Constant
 Function(V::FunctionSpace) = Function(fenics.Function(V.pyobject))
 export Function
 
+#assigns the computed value
 assign(object::Function, solution::Function) = fenicspycall(object, :assign, solution.pyobject)
 export assign
 
