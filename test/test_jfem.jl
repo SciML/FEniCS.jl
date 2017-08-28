@@ -71,13 +71,13 @@ F = u*v*dx + dt*dot(grad(u), grad(v))*dx - (u_n + dt*f)*v*dx
 A_1, L_1 = lhs(F), rhs(F)
 M = FEniCS.Function(V)
 
-vtkfile = File("FEniCS.jl/test/leanthou.pvd")
+#vtkfile = File("FEniCS.jl/test/solution.pvd")
 
 for n =1:num_steps
     t += dt
     u_D.pyobject[:t] =t
     lvsolve(A_1 , L_1, M, bc)
-    vtkfile << (M.pyobject, t) #if you wish to save each time_step
+#    vtkfile << (M.pyobject, t) #if you wish to save each time_step
     u_e = interpolate(u_D, V)
     assign(u_n,M)
 end
