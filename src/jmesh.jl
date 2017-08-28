@@ -8,29 +8,51 @@
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
 #are converted automatically by PyCall
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
+#returns cell connectivity
 cells(mesh::Mesh) = fenicspycall(mesh, :cells)
+#Compute minimum cell diameter.
 hmin(mesh::Mesh) = fenicspycall(mesh, :hmin)
+#Compute maximum cell diameter.
 hmax(mesh::Mesh) = fenicspycall(mesh, :hmax)
 init(mesh::Mesh) = fenicspycall(mesh, :init)
 init(mesh::Mesh, dim::Int) = fenicspycall(mesh, :init, dim) # version with dims
 init_global(mesh::Mesh) = fenicspycall(mesh,:init_global)
-#mpi_comm
+#returns coordinates of all vertices
 coordinates(mesh::Mesh) = fenicspycall(mesh,:coordinates)
 #color
 data(mesh::Mesh) = fenicspycall(mesh,:data)
 domains(mesh::Mesh) = fenicspycall(mesh, :domains)
 geometry(mesh::Mesh) = fenicspycall(mesh,:geometry)
+#returns number of cells
 num_cells(mesh::Mesh) = fenicspycall(mesh, :num_cells)
+#returns number of edges
 num_edges(mesh::Mesh) = fenicspycall(mesh, :num_edges)
+#Get number of entities of given topological dimension.
 num_entities(mesh::Mesh, dim::Int) = fenicspycall(mesh, :num_entities, dim)
+#Get number of faces in mesh.
 num_faces(mesh::Mesh) = fenicspycall(mesh, :num_faces)
+#Get number of facets in mesh.
 num_facets(mesh::Mesh) = fenicspycall(mesh, :num_facets)
+#Get number of vertices in mesh.
 num_vertices(mesh::Mesh) = fenicspycall(mesh, :num_vertices)
 #hash(mesh::Mesh) = fenicspycall(Mesh, :hash)
 bounding_box_tree(mesh::Mesh) = fenicspycall(mesh,:bounding_box_tree) #this object is a pyobject
+#Compute maximum cell inradius.
+rmax(mesh::Mesh)=fenicspycall(mesh, :rmax)
+#Compute minimum cell inradius.
+rmin(mesh::Mesh)=fenicspycall(mesh, :rmin)
+#Get number of local entities of given topological dimension.
+size(mesh::Mesh, dim::Int) = fenicspycall(mesh, :size, dim) # version with dims
+#Returns the ufl cell of the mesh.
+ufl_cell(mesh::Mesh)=fenicspycall(mesh, :ufl_cell)
+#Returns the ufl Domain corresponding to the mesh.
+ufl_domain(mesh::Mesh)=fenicspycall(mesh, :ufl_domain)
+#Returns an id that UFL can use to decide if two objects are the same.
+ufl_id(mesh::Mesh)=fenicspycall(mesh, :ufl_id)
 
 export cell_orientations,cells,hmin , hmax, init, init_global, coordinates, data,
-domains, geometry,num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree
+domains, geometry,num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree,
+rmax, rmin, size, ufl_cell , ufl_domain, ufl_id
 
 UnitTriangleMesh() = Mesh(fenics.UnitTriangleMesh())
 
