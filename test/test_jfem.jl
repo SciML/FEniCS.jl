@@ -8,7 +8,7 @@ V = FunctionSpace(mesh, "P", 1)
 u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]",degree=2 )
 bc = DirichletBC(V,u_D, "on_boundary")
 element = FiniteElement("Lagrange",ufl_cell(mesh),1)
-V_new = FunctionSpace_test(mesh,element)
+#V_new = FunctionSpace(mesh,element)
 bc_new = DirichletBC(V,u_D, DomainBoundary())
 
 u = TrialFunction(V)
