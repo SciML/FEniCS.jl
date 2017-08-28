@@ -8,7 +8,7 @@ using FEniCS
 
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/cpp/fem/FiniteElement.html?highlight=finiteelement
 @fenicsclass FiniteElement
-FiniteElement(family::Union{String,Symbol},cell=nothing,degree=nothing;form_degree=nothing,quad_scheme=nothing,variant=nothing)=FiniteElement(fenics.FiniteElement(family,cell=cell,degree=degree,form_degree=form_degree,
+FiniteElement(family::Union{String,Symbol},cell=nothing,degree=nothing;form_degree=nothing,quad_scheme=nothing,variant=nothing)=FiniteElement(fenics.FiniteElement(family,cell,degree,form_degree=form_degree,
 quad_scheme=quad_scheme,variant=variant))
 export FiniteElement
 
