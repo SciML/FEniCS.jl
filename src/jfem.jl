@@ -6,11 +6,17 @@
 
 using FEniCS
 
+#https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/cpp/fem/FiniteElement.html?highlight=finiteelement
+@fenicsclass FiniteElement
+FiniteElement(family::Union{String,Symbol},cell=nothing,degree=nothing)=FiniteElement(fenics.FiniteElement(family,cell,degree))
+export FiniteElement
+
+
 @fenicsclass FunctionSpace
 
 FunctionSpace(mesh::Mesh, family::Union{String,Symbol}, degree::Int) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
-#add more functionspace functions?
-export FunctionSpace
+FunctionSpace_test(mesh::Mesh,element::FiniteElement) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject,element.pyobject))
+export FunctionSpace, FunctionSpace_test
 
 @fenicsclass Argument
 Argument(V,number,part::Union{String,Symbol} = nothing) = Argument(fenics.Argument(V.pyobject, number, part=part))
@@ -27,7 +33,6 @@ export Constant
 Function(V::FunctionSpace) = Function(fenics.Function(V.pyobject))
 export Function
 
-#assigns the computed value
 assign(object::Function, solution::Function) = fenicspycall(object, :assign, solution.pyobject)
 export assign
 
@@ -77,6 +82,7 @@ export assemble
 #https://fenicsproject.org/olddocs/dolfin/1.6.0/python/programmers-reference/cpp/fem/DirichletBC.html
 @fenicsclass sub_domain
 @fenicsclass BoundaryCondition
+
 """
 DirichletBC works in a slightly altered way to the original FEniCS.
 Instead of defining the function with the required return command,
@@ -90,6 +96,10 @@ export DirichletBC
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
 CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
 export CompiledSubDomain
+#This function provides a SubDomain which picks out the boundary of a mesh, and provides a convenient way to specify boundary conditions on the entire boundary of a mesh.
+#so it can be used in the place of "on_boundary" etc.
+DomainBoundary()=fenics.DomainBoundary()
+export DomainBoundary
 
 """
  For a full list of supported arguments, and their usage
