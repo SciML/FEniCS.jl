@@ -15,8 +15,8 @@ export FiniteElement
 @fenicsclass FunctionSpace
 
 FunctionSpace(mesh::Mesh, family::Union{String,Symbol}, degree::Int) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
-FunctionSpace_test(mesh::Mesh,element::FiniteElement) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject,element.pyobject))
-export FunctionSpace, FunctionSpace_test
+FunctionSpace(mesh::Mesh,element::FiniteElement) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject,element.pyobject))
+export FunctionSpace
 
 @fenicsclass Argument
 Argument(V,number,part::Union{String,Symbol} = nothing) = Argument(fenics.Argument(V.pyobject, number, part=part))
