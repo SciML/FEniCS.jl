@@ -7,13 +7,20 @@ mesh = UnitSquareMesh(8, 8)
 V = FunctionSpace(mesh, "P", 1)
 u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]",degree=2 )
 bc = DirichletBC(V,u_D, "on_boundary")
+element = FiniteElement("Lagrange",ufl_cell(mesh),1)
+V_new = FunctionSpace(mesh,element)
+bc_new = DirichletBC(V,u_D, DomainBoundary())
+
 u = TrialFunction(V)
 v = TestFunction(V)
 f = FEniCS.Constant(-6.0)
 a = dot(grad(u),grad(v))*dx
 L = f*v*dx
 U = FEniCS.Function(V)
+U_new = FEniCS.Function(V)
 lvsolve(a,L,U,bc)
+lvsolve(a,L,U_new,bc_new)
+errornorm(u_D,U_new,norm="L2")
 errornorm(u_D,U,norm="L2")
 file_sol= File("FEniCS.jl/test_jfemsol.pvd")
 file_sol << U.pyobject
@@ -64,19 +71,15 @@ F = u*v*dx + dt*dot(grad(u), grad(v))*dx - (u_n + dt*f)*v*dx
 A_1, L_1 = lhs(F), rhs(F)
 M = FEniCS.Function(V)
 
-#vtkfile = File("FEniCS.jl/file/location.pvd")
+vtkfile = File("FEniCS.jl/test/leanthou.pvd")
 
 for n =1:num_steps
     t += dt
     u_D.pyobject[:t] =t
     lvsolve(A_1 , L_1, M, bc)
-    #vtkfile << (M.pyobject, t) #if you wish to save each time_step
+    vtkfile << (M.pyobject, t) #if you wish to save each time_step
     u_e = interpolate(u_D, V)
     assign(u_n,M)
 end
-
-true
-
-
 
 true
