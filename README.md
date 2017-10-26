@@ -45,7 +45,7 @@ lvsolve(a,L,U,bc1) #linear variational solver
 errornorm(u_D, U, norm="L2")
 get_array(L) #this returns an array for the stiffness matrix
 get_array(U) #this returns an array for the solution values
-vtkfile = File('poisson/solution.pvd')
+vtkfile = File("poisson/solution.pvd")
 vtkfile << U.pyobject #exports the solution to a vtkfile
 ```
 
