@@ -57,6 +57,6 @@ FEniCS.Plot(mesh)
 
 ```
 
-![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/result.png "Solution")
+![alt text](https://user-images.githubusercontent.com/16087601/34915339-b77e8694-f91c-11e7-9ae1-db1e114a177a.png "Solution")
  
-![alt text](https://github.com/ysimillides/FEniCS.jl/blob/master/examples/mesh.png "Square Mesh")
+![alt text](https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png "Square Mesh")
