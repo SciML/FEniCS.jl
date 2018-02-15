@@ -107,7 +107,7 @@ please refer to http://matplotlib.org/api/pyplot_api.html
 not all kwargs have been imported. Should you require any that are not imported
 open as issue, and I will attempt to add them.
 """
-Plot(in_plot::Union{Mesh,FunctionSpace,Function,Geometry};alpha=1,animated=false,antialiased=true,color="grey"
+Plot(in_plot::Union{Mesh,FunctionSpace,Function};alpha=1,animated=false,antialiased=true,color="grey"
 ,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
 ,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
 ,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
