@@ -36,4 +36,10 @@ include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
+try 
+  pyimport("mshr")
+  include("fmshr.jl")
+catch ee 
+ print("mshr has not been included")
+end 
 end #module
