@@ -1,6 +1,10 @@
 #this file contains functions/wrappers related to the solve function in FEniCS
 #https://fenicsproject.org/olddocs/dolfin/1.3.0/python/programmers-reference/fem/solving/solve.html
 using FEniCS
+
+solve(A::Matrix,x, b::Matrix,solvers...) =fenics.solve(A.pyobject,x,b.pyobject,solvers...)
+export solve
+
 #lvsolve is the linear variational solver
 lvsolve(a,L,u)=fenics.solve(a.pyobject==L.pyobject, u.pyobject)
 lvsolve(a,L,u,bcs)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs.pyobject)
@@ -28,10 +32,18 @@ export errornorm
 File(path::String)=fenics.File(path) #used to store the solution in various formats
 export File
 
+XDMFFile(path::String) = fenics.XDMFFile(path)
+export XDMFFile
+
+TimeSeries(path::String) = fenics.TimeSeries(path)
+export TimeSeries
+
 array(matrix) = fenicspycall(matrix, :array)
 vector(solution) = fenicspycall(solution,:vector) #
 Vector(solution) = fenics.Vector(solution) # genericvector fenics
+#various overloading of interpolate
 interpolate(ex, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
+#interpolate(fun::Function, expr::Expression) = Function(fenics.interpolate(fun.pyobject, expr.pyobject))
 
 export Vector, vector, interpolate,array
 
@@ -55,3 +67,16 @@ function get_array(assembled_form::Matrix)
 end
 
 export get_array
+
+"""
+Return projection of given expression *v* onto the finite element space *V*
+
+*Example of usage*
+
+          v = Expression("sin(pi*x[0])")
+          V = FunctionSpace(mesh, "Lagrange", 1)
+          Pv = project(v, V)
+
+"""
+project(v::Union{Function,Expression},V::FunctionSpace)  = Function(fenics.project(v.pyobject,V.pyobject))
+export project
