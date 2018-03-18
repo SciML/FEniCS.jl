@@ -1,8 +1,4 @@
 
-#These are the commands to define the Mesh class in Julia.
-#Tests for these can be found in the test_create.jl and test_pycreate.jl
-
-
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
 #are converted automatically by PyCall
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
@@ -122,9 +118,10 @@ function pyMesh(path::Union{String,Symbol})
   pycall(fenics.Mesh::PyObject,PyObject::Type,path)
 end
 
-function Point(point::Vector) #a different data type was suggested. Will Investigate when I return to UK
+function Point(point::Union{Vector,Tuple})
   pycall(fenics.Point::PyObject,PyObject::Type,point)
 end
+
 
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
 pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh,pyMesh, Point

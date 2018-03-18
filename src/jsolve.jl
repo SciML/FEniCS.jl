@@ -11,8 +11,6 @@ lvsolve(a,L,u,bcs)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs.pyob
 export lvsolve
 
 #nlvsolve is the non-linear variational solver
-
-
 nlvsolve(F,u;bcs=nothing)=fenics.solve(F.pyobject==0,u.pyobject,bcs=bcs.pyobject)
 export nlvsolve
 

@@ -12,8 +12,11 @@ Box(corner1,corner2) = Geometry(mshr.Box(corner1,corner2))
 Cone(top,bottom,bottom_radius,slices::Int)=Geometry(mshr.Cone(top,bottom,bottom_radius,slices))
 Sphere(centre,radius) = Geometry(mshr.Sphere(centre,radius))
 
+#we generate the mesh of some geometrical objects
 generate_mesh(geom_object::Geometry,size::Int)=Mesh(mshr.generate_mesh(geom_object.pyobject,size))
 
+
+#operator overloading for Geometry types so we can create composite shapes
 +(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__add__](geom_object2.pyobject))
 -(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__sub__](geom_object2.pyobject))
 *(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__mul__](geom_object2.pyobject))
