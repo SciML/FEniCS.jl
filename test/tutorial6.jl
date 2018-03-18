@@ -18,7 +18,7 @@ g = gamma
 mesh = BoxMesh(fenics.Point(0, 0, 0), fenics.Point(L, W, W), 10, 3, 3)
 V = VectorFunctionSpace(mesh, "P", 1)
 c = Constant((0,0,0))
-bc = DirichletBC(V, c, "on_boundary and x[1]<1E-14")
+bc = DirichletBC(V, c, "on_boundary && x[1]<1E-14")
 tol = 1E-14
 
 #bc1 = fenics.DirichletBC(V.pyobject, c.pyobject, "on_boundary and x[1]<tol",tol=1E-14)
