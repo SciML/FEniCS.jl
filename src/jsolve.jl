@@ -8,6 +8,9 @@ export solve
 #lvsolve is the linear variational solver
 lvsolve(a,L,u)=fenics.solve(a.pyobject==L.pyobject, u.pyobject)
 lvsolve(a,L,u,bcs)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs.pyobject)
+#allows BoundaryCondition to be provided in an AbstractArray
+lvsolve(a,L,u,bcs::AbstractArray)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs)
+
 export lvsolve
 
 #nlvsolve is the non-linear variational solver
