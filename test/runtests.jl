@@ -7,7 +7,10 @@ using Base.Test
    @test include("tutorial2.jl")
    @test include("tutorial3.jl")
    @test include("tutorial6.jl")
+   @test include("tutorial7.jl")
+   @test include("tutorial8.jl")
    @test include("acoustic.jl")
+   @test include("acoustic_new_assemble.jl")
 end;
 
 @testset "Creation" begin
