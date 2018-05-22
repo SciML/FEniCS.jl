@@ -90,8 +90,15 @@ export dx, ds,dS,dP
 *(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
 *(expr::Real, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr2.pyobject[:__mul__](expr) )
 *(expr::Union{Expression,Argument,Constant,Form}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
+
++(expr::Union{Expression,Argument,Constant,Form}, expr2::Real) = Expression(expr.pyobject[:__add__](expr2) )
++(expr::Real, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr2.pyobject[:__add__](expr) )
 +(expr::Union{Expression,Argument,Constant,Measure,Form,Function}, expr2::Union{Expression,Argument,Constant,Measure,Form,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
+
+-(expr::Union{Expression,Argument,Constant,Form}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
+-(expr::Real, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr2.pyobject[:__sub__](expr) )
 -(expr::Union{Expression,Argument,Constant,Measure,Form,Function}, expr2::Union{Expression,Argument,Constant,Measure,Form,Function}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
+
 /(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
 /(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
 
@@ -224,6 +231,7 @@ Arguments
 |             Hint for the local basis function variant (optional)
 
 """
+#look at PLOT for overloading kws
 FiniteElement(family::Union{Symbol,String},cell=nothing,degree=nothing,form_degree=nothing,quad_scheme=nothing,variant=nothing) =
 FiniteElement(fenics.FiniteElement(family=family, cell=cell, degree=degree, form_degree=form_degree, quad_scheme=quad_scheme,variant=variant))
 export FiniteElement
