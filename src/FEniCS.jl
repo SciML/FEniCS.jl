@@ -1,4 +1,3 @@
-__precompile__(false)
 module FEniCS
 using PyCall
 @pyimport fenics
