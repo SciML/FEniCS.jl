@@ -1,9 +1,10 @@
+__precompile__(false)
 module FEniCS
 using PyCall
 @pyimport fenics
 
 #the below code is an adaptation of aleadev.FEniCS.jl
-import Base: size, length, show, *, +, -,/, repr, dot, cross, div, Function,sqrt
+import Base: size, length, show, *, +, -,/, repr, dot, cross, div,Function, sqrt
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
@@ -34,7 +35,8 @@ include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
-#include("jplot.jl") #this file contains the plotting functionality
+include("jplot.jl") #this file contains the plotting functionality
+include("jinterface.jl")
 try
   pyimport("mshr")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package

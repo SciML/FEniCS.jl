@@ -1,6 +1,6 @@
 #These are the commands to define the Fem class, and assemble the Matrix in Julia
 #full documentation of the API from FEniCS can be found in the link below
-#http://fenics.readthedocs.io/projects/ufl/en/latest/api-doc/ufl.html
+#http://fenics.readthedocs.io/projects/Expression/en/latest/api-doc/Expression.html
 #Tests for these can be found in the test_jfem.jl file.
 
 
@@ -9,27 +9,27 @@ using FEniCS
 @fenicsclass FunctionSpace
 
 #Use Functionspace for scalar fields
-FunctionSpace(mesh::Mesh, family::Union{String,Symbol}, degree::Int) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
+FunctionSpace(mesh::Mesh, family::StringOrSymbol, degree::Int) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
 #Use VectorFunctionSpace for vector fields
-VectorFunctionSpace(mesh::Mesh, family::Union{String,Symbol},degree::Int) = FunctionSpace(fenics.VectorFunctionSpace(mesh.pyobject, family, degree))
+VectorFunctionSpace(mesh::Mesh, family::StringOrSymbol,degree::Int) = FunctionSpace(fenics.VectorFunctionSpace(mesh.pyobject, family, degree))
 
 export FunctionSpace, VectorFunctionSpace
 
-@fenicsclass Argument
-Argument(V,number,part::Union{String,Symbol} = nothing) = Argument(fenics.Argument(V.pyobject, number, part=part))
-TrialFunction(V::FunctionSpace) = Argument(fenics.TrialFunction(V.pyobject))
-TestFunction(V::FunctionSpace) = Argument(fenics.TestFunction(V.pyobject))
+@fenicsclass Expression
+Argument(V,number,part::StringOrSymbol = nothing) = Expression(fenics.Argument(V.pyobject, number, part=part))
+TrialFunction(V::FunctionSpace) = Expression(fenics.TrialFunction(V.pyobject))
+TestFunction(V::FunctionSpace) = Expression(fenics.TestFunction(V.pyobject))
 
 
 #Below are attributes for the argument *class*
-geometric_dimension(expr::Union{Function,Argument}) = fenicspycall(expr, :geometric_dimension)
+geometric_dimension(expr::Union{Function,Expression}) = fenicspycall(expr, :geometric_dimension)
 export geometric_dimension
 
 
 export Argument,TrialFunction,TestFunction
 
 @fenicsclass Constant
-Constant(x::Union{Real,Tuple}) = Constant(fenics.Constant(x, name="Constant($x)"))
+Constant(x::Union{Real,Tuple}) = Expression(fenics.Constant(x, name="Constant($x)"))
 export Constant
 
 @fenicsclass Function
@@ -50,18 +50,18 @@ export Function,assign
 Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode=cppcode,
 element=element,cell=cell, domain=domain, degree=degree, name=name, label=label, mpi_comm=mpi_comm))
 Identity(dim::Int) = Expression(fenics.Identity(dim))
-inner(u::Union{Expression,Argument,Function}, v::Union{Expression,Argument,Function}) = Expression(fenics.inner(u.pyobject, v.pyobject))
-outer(u::Union{Expression,Argument,Function}, v::Union{Expression,Argument,Function}) = Expression(fenics.outer(u.pyobject, v.pyobject))
-dot(u::Union{Expression,Argument,Constant,Function}, v::Union{Expression,Argument,Constant,Function}) = Expression(fenics.dot(u.pyobject, v.pyobject))
-grad(u::Union{Expression,Argument,Function}) = Expression(fenics.grad(u.pyobject))
-nabla_grad(u::Union{Expression,Argument,Function}) = Expression(fenics.nabla_grad(u.pyobject))
-nabla_div(u::Union{Expression,Argument,Function}) = Expression(fenics.nabla_div(u.pyobject))
-div(u::Union{Expression,Argument,Function}) = Expression(fenics.div(u.pyobject))
-cross(u::Union{Expression,Argument,Function}, v::Union{Expression,Argument,Function}) = Expression(fenics.cross(u.pyobject, v.pyobject))
-tr(u::Union{Expression,Argument,Function}) = Expression(fenics.tr(u.pyobject))
-sqrt(u::Union{Expression,Argument,Function}) = Expression(fenics.sqrt(u.pyobject))
-sym(u::Union{Expression,Argument,Function}) = Expression(fenics.sym(u.pyobject))
-len(U::Union{Expression,Argument,Function}) = length(U.pyobject)
+inner(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.inner(u.pyobject, v.pyobject))
+outer(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.outer(u.pyobject, v.pyobject))
+dot(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.dot(u.pyobject, v.pyobject))
+grad(u::Union{Expression,Function}) = Expression(fenics.grad(u.pyobject))
+nabla_grad(u::Union{Expression,Function}) = Expression(fenics.nabla_grad(u.pyobject))
+nabla_div(u::Union{Expression,Function}) = Expression(fenics.nabla_div(u.pyobject))
+div(u::Union{Expression,Function}) = Expression(fenics.div(u.pyobject))
+cross(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.cross(u.pyobject, v.pyobject))
+tr(u::Union{Expression,Function}) = Expression(fenics.tr(u.pyobject))
+sqrt(u::Union{Expression,Function}) = Expression(fenics.sqrt(u.pyobject))
+sym(u::Union{Expression,Function}) = Expression(fenics.sym(u.pyobject))
+len(U::Union{Expression,Function}) = length(U.pyobject)
 
 interpolate(solution1::Function,solution2::Expression) = Function(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
@@ -83,26 +83,34 @@ dP = Measure(fenics.dP)
 export dx, ds,dS,dP
 
 
-#https://github.com/FEniCS/ufl/blob/master/ufl/measure.py
+#https://github.com/FEniCS/Expression/blob/master/Expression/measure.py
 @fenicsclass Form
 
-*(expr::Union{Expression,Argument}, measure::Measure) = Form(measure.pyobject[:__rmul__](expr.pyobject) )
-*(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
-*(expr::Real, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr2.pyobject[:__mul__](expr) )
-*(expr::Union{Expression,Argument,Constant,Form}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
-+(expr::Union{Expression,Argument,Constant,Measure,Form,Function}, expr2::Union{Expression,Argument,Constant,Measure,Form,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
--(expr::Union{Expression,Argument,Constant,Measure,Form,Function}, expr2::Union{Expression,Argument,Constant,Measure,Form,Function}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
-/(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
-/(expr::Union{Expression,Argument,Constant,Form,Function}, expr2::Union{Expression,Argument,Constant,Form,Function}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
+*(expr::Union{Expression,Function}, measure::Measure) = Expression(measure.pyobject[:__rmul__](expr.pyobject) )
 
-function /(expr::Real,expr2::Union{Expression,Argument,Constant,Form,Function})
+*(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
+*(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__mul__](expr) )
+*(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
+
++(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__add__](expr2) )
++(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__add__](expr) )
++(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
+
+-(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
+-(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__sub__](expr) )
+-(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
+
+/(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
+/(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
+
+function /(expr::Real,expr2::Union{Expression,Function})
     x = expr2*expr2
     y = x/expr
     z = expr2/y
     return Expression(z)
 end
 
-function Transpose(object::Union{Expression,Constant})
+function Transpose(object::Expression)
     x = object.pyobject[:T]
     y = Expression(x)
     return y
@@ -114,19 +122,15 @@ rhs(equation::Expression)
 Given a combined bilinear and linear form,
     extract the right hand side (negated linear form part).
     Example::
-
            a = u*v*dx + f*v*dx
            L = rhs(a) -> -f*v*dx
-
 """
 rhs(equation::Expression)=Expression(fenics.rhs(equation.pyobject))
 """
 lhs(equation::Expression)
     Given a combined bilinear and linear form,
     extract the left hand side (bilinear form part).
-
     Example::
-
         a = u*v*dx + f*v*dx
         a = lhs(a) -> u*v*dx
 """
@@ -222,15 +226,14 @@ Arguments
 |             The quadrature scheme (optional)
 |          variant
 |             Hint for the local basis function variant (optional)
-
 """
-FiniteElement(family::Union{Symbol,String},cell=nothing,degree=nothing,form_degree=nothing,quad_scheme=nothing,variant=nothing) =
+#look at PLOT for overloading kws
+FiniteElement(family::StringOrSymbol,cell=nothing,degree=nothing,form_degree=nothing,quad_scheme=nothing,variant=nothing) =
 FiniteElement(fenics.FiniteElement(family=family, cell=cell, degree=degree, form_degree=form_degree, quad_scheme=quad_scheme,variant=variant))
 export FiniteElement
 
 """
 Methods for the FiniteElement class
-
 mapping(self)
  |
  |  reconstruct(self, family=None, cell=None, degree=None)
