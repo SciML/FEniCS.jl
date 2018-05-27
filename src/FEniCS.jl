@@ -34,7 +34,7 @@ include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
-include("jplot.jl") #this file contains the plotting functionality
+#include("jplot.jl") #this file contains the plotting functionality
 include("jinterface.jl")
 try
   pyimport("mshr")
