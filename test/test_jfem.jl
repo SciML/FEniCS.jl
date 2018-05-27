@@ -2,6 +2,15 @@
 using FEniCS
 
 mesh = UnitSquareMesh(8, 8)
+element = FiniteElement("Lagrange", ufl_cell(mesh))
+
+family_element = family(element)
+cell_element = cell(element)
+degree_element = degree(element)
+variant_element = variant(element)
+reconstructed_element = reconstruct(element)
+sobolev_space_element = sobolev_space(element)
+facet_element = FacetNormal(mesh)
 
 
 V = FunctionSpace(mesh, "P", 1)
@@ -23,7 +32,6 @@ measure_s = ds
 measure_S = dS
 measure_P = dP
 
-meas_add1 = dx+ds
-meas_add2 = dS+dP
+
 
 true
