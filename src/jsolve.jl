@@ -40,13 +40,10 @@ TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
 export TimeSeries
 
 array(matrix) = fenicspycall(matrix, :array)
-vector(solution) = fenicspycall(solution,:vector) #
-Vector(solution) = fenics.Vector(solution) # genericvector fenics
-#various overloading of interpolate
+vector(solution::FEniCS.Function) = fenicspycall(solution,:vector) #
 interpolate(ex, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
-#interpolate(fun::Function, expr::Expression) = Function(fenics.interpolate(fun.pyobject, expr.pyobject))
 
-export Vector, vector, interpolate,array
+export vector, interpolate,array
 
 
 "the following function is used to extract the array from a solution/form"
@@ -57,7 +54,7 @@ end
 
 function get_array(solution::Function)
     generic_vector = vector(solution)
-    instantiated_vector = Vector(generic_vector)
+    instantiated_vector = fenics.Vector(generic_vector)
     return instantiated_vector[:array]()
 end
 """

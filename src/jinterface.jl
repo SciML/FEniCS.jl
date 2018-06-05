@@ -5,17 +5,17 @@ the necessary values, and then creating an ordering of the internal/boundary nod
 and applying the DirichletBC (via a function) to the respective nodes.
 """
 type feMesh
-    n_nodes::Int64
-    n_elements::Int64
+    n_nodes::Int
+    n_elements::Int
     nodes::Array{Float64, 2}
-    internal_nodes::Array{Int64}
-    boundary_nodes::Array{Int64}
-    elements::Array{Int64, 2}
-    n_internal_nodes::Int64
-    n_boundary_nodes::Int64
-    node_vals::Array{Float64}
+    internal_nodes::Vector
+    boundary_nodes::Vector
+    elements::Array{Int, 2}
+    n_internal_nodes::Int
+    n_boundary_nodes::Int
+    node_vals::Vector
 
-    function feMesh(mesh::Mesh,boundaryCondition::Core.Function)
+    function feMesh(mesh::Mesh,boundaryCondition::Base.Function)
         n_nodes = num_vertices(mesh)
         n_elements = num_cells(mesh)
         nodes = coordinates(mesh)
@@ -28,7 +28,7 @@ type feMesh
         boundary_nodes, internal_nodes = find_node_number(n_nodes, n_bc_nodes, external_nodes, nodes,boundaryCondition,node_vals)
         elements_temp = cells(mesh)
         #the following commands convert the element numbering to Int64 and handle the 0/1 difference between FEniCS(Python) and Julia
-        elements_temp2 = convert.(Int64,elements_temp)
+        elements_temp2 = convert.(Int,elements_temp)
         elements = elements_temp2 .+1
         new(n_nodes, n_elements, nodes, internal_nodes, boundary_nodes, elements, n_internal_nodes, n_bc_nodes, node_vals)
     end
