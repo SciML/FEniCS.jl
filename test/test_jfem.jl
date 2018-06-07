@@ -1,4 +1,3 @@
-
 using FEniCS
 
 mesh = UnitSquareMesh(8, 8)
@@ -23,7 +22,6 @@ measure_s = ds
 measure_S = dS
 measure_P = dP
 
-meas_add1 = dx+ds
-meas_add2 = dS+dP
+
 
 true

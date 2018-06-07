@@ -30,34 +30,31 @@ solution. The norm kwarg defines the norm measure used (by default it is the L2 
 errornorm(ans,sol;norm="L2") = fenics.errornorm(ans.pyobject,sol.pyobject,norm)
 export errornorm
 
-File(path::String)=fenics.File(path) #used to store the solution in various formats
+File(path::StringOrSymbol)=fenics.File(path) #used to store the solution in various formats
 export File
 
-XDMFFile(path::String) = fenics.XDMFFile(path)
+XDMFFile(path::StringOrSymbol) = fenics.XDMFFile(path)
 export XDMFFile
 
-TimeSeries(path::String) = fenics.TimeSeries(path)
+TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
 export TimeSeries
 
 array(matrix) = fenicspycall(matrix, :array)
-vector(solution) = fenicspycall(solution,:vector) #
-Vector(solution) = fenics.Vector(solution) # genericvector fenics
-#various overloading of interpolate
+vector(solution::FEniCS.Function) = fenicspycall(solution,:vector) #
 interpolate(ex, V::FunctionSpace) = Function(fenics.interpolate(ex.pyobject, V.pyobject))
-#interpolate(fun::Function, expr::Expression) = Function(fenics.interpolate(fun.pyobject, expr.pyobject))
 
-export Vector, vector, interpolate,array
+export vector, interpolate,array
 
 
 "the following function is used to extract the array from a solution/form"
-function get_array(form::Form)
+function get_array(form::Expression)
     assembled_form = assemble(form)
     return array(assembled_form)
 end
 
 function get_array(solution::Function)
     generic_vector = vector(solution)
-    instantiated_vector = Vector(generic_vector)
+    instantiated_vector = fenics.Vector(generic_vector)
     return instantiated_vector[:array]()
 end
 """
@@ -71,13 +68,10 @@ export get_array
 
 """
 Return projection of given expression *v* onto the finite element space *V*
-
 *Example of usage*
-
           v = Expression("sin(pi*x[0])")
           V = FunctionSpace(mesh, "Lagrange", 1)
           Pv = project(v, V)
-
 """
 project(v::Union{Function,Expression},V::FunctionSpace)  = Function(fenics.project(v.pyobject,V.pyobject))
 export project

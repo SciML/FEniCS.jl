@@ -1,4 +1,5 @@
-
+#type alias for string or symbol
+StringOrSymbol = Union{String,Symbol}
 @fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
 #are converted automatically by PyCall
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
@@ -16,6 +17,8 @@ coordinates(mesh::Mesh) = fenicspycall(mesh,:coordinates)
 #color
 data(mesh::Mesh) = fenicspycall(mesh,:data)
 domains(mesh::Mesh) = fenicspycall(mesh, :domains)
+topology(mesh::Mesh) = fenicspycall(mesh,:topology)
+
 geometry(mesh::Mesh) = fenicspycall(mesh,:geometry)
 #returns number of cells
 num_cells(mesh::Mesh) = fenicspycall(mesh, :num_cells)
@@ -45,7 +48,7 @@ ufl_domain(mesh::Mesh)=fenicspycall(mesh, :ufl_domain)
 ufl_id(mesh::Mesh)=fenicspycall(mesh, :ufl_id)
 
 export cell_orientations,cells,hmin , hmax, init, init_global, coordinates, data,
-domains, geometry,num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree,
+domains, geometry,topology, num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree,
 rmax, rmin, size, ufl_cell , ufl_domain, ufl_id
 
 UnitTriangleMesh() = Mesh(fenics.UnitTriangleMesh())
@@ -56,11 +59,11 @@ Mesh is equivanlent to the Mesh function in fenics
 """
 
 #name change
-Mesh(path::Union{String,Symbol}) = Mesh(fenics.Mesh(path))
+Mesh(path::StringOrSymbol) = Mesh(fenics.Mesh(path))
 
 UnitTetrahedronMesh() = Mesh(fenics.UnitTetrahedronMesh())
 
-UnitSquareMesh(nx::Int, ny::Int, diagonal::Union{String,Symbol}="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
+UnitSquareMesh(nx::Int, ny::Int, diagonal::StringOrSymbol="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
 
 UnitQuadMesh(nx::Int,ny::Int) = Mesh(fenics.UnitQuadMesh(nx,ny))
 
@@ -70,10 +73,13 @@ UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx,ny,nz))
 
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz)) #look at how to define fenics.point
 
-RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::Union{String,Symbol}="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
+RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny))
+
+#creates mesh of the boundary
+BoundaryMesh(mesh::Mesh,type_boundary::StringOrSymbol="exterior",order=true) = Mesh(fenics.BoundaryMesh(mesh.pyobject, type_boundary, order))
 
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
-UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh
+UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh, BoundaryMesh
 
 function pyUnitTriangleMesh()
   pycall(fenics.UnitTriangleMesh::PyObject,PyObject::Type)
@@ -91,7 +97,7 @@ function pyBoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) # look at array types to d
   pycall(fenics.BoxMesh::PyObject,PyObject::Type,p0,p1,nx,ny,nz)
 end
 
-function pyRectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::Union{String,Symbol}="right")
+function pyRectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right")
   pycall(fenics.RectangleMesh::PyObject,PyObject::Type,p0,p1,nx,ny,diagdir)
 end
 
@@ -100,7 +106,7 @@ For the diagdir, the possible options can be found below (these indicate the dir
   (“left”, “right”, “right/left”, “left/right”, or “crossed”).
 """
 
-function pyUnitSquareMesh(nx::Int,ny::Int,diagdir::Union{String,Symbol}="right")
+function pyUnitSquareMesh(nx::Int,ny::Int,diagdir::StringOrSymbol="right")
   pycall(fenics.UnitSquareMesh::PyObject,PyObject::Type,nx,ny,diagdir)
 end
 
@@ -114,7 +120,7 @@ function pyUnitIntervalMesh(nx::Int)
   pycall(fenics.UnitIntervalMesh::PyObject,PyObject::Type,nx)
 end
 
-function pyMesh(path::Union{String,Symbol})
+function pyMesh(path::StringOrSymbol)
   pycall(fenics.Mesh::PyObject,PyObject::Type,path)
 end
 
