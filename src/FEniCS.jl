@@ -1,3 +1,4 @@
+__precompile__(false)
 module FEniCS
 using PyCall
 @pyimport fenics
@@ -34,7 +35,6 @@ include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
-#include("jplot.jl") #this file contains the plotting functionality
 include("jinterface.jl")
 try
   pyimport("mshr")
@@ -42,4 +42,12 @@ try
 catch ee
  print("mshr has not been included")
 end
+try
+  Pkg.installed("PyPlot")
+  include("jplot.jl")
+  print("plotting loaded")
+catch ee
+  print("PyPlot is not installed. plotting is not available")
+end
+
 end #module
