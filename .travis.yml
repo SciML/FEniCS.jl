@@ -16,7 +16,7 @@ services:
 before_install:
   - echo "**** pulling Docker image"
   - docker pull ysimillides/fenics-julia-docker
-#  - chmod +x travis_docker_test_script.sh
+  - chmod +x travis_docker_test_script.sh
 notifications:
   email: false
 script:
