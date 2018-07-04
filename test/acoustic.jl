@@ -41,7 +41,7 @@ BCR = DirichletBC(V,Constant(0.0),right)
 bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject]
 
 #bc = DirichletBC(V, 0, "on_boundary")
-A, b = assemble_system(a, L, bcs)
+A, b = assemble_system_julia(a, L, bcs)
 
 u=FEniCS.Function(V)
 
