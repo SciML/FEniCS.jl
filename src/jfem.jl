@@ -1,6 +1,6 @@
 #These are the commands to define the Fem class, and assemble the Matrix in Julia
 #full documentation of the API from FEniCS can be found in the link below
-#http://fenics.readthedocs.io/projects/Expression/en/latest/api-doc/Expression.html
+#http://fenics.readthedocs.io/projects/UFL/en/latest/api-doc/Expression.html
 #Tests for these can be found in the test_jfem.jl file.
 
 
@@ -97,7 +97,7 @@ export dx, ds,dS,dP
 +(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
 
 -(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
--(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__sub__](expr) )
+-(expr::Real, expr2::Union{Expression,Function}) = -1*(Expression(expr2.pyobject[:__sub__](expr) ))
 -(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
 
 /(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
@@ -169,6 +169,35 @@ apply(bcs, matrix::Matrix) = fenicspycall(BoundaryCondition(bcs), :apply, matrix
 
 export apply
 
+function assemble_system_julia(a::Expression,L::Expression)
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject)
+    A  = A_fenics[:array]()
+    b = b_fenics[:array]()
+    return A,b
+end
+
+function assemble_system_julia(a::Expression,L::Expression,bc)
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc)
+    A  = A_fenics[:array]()
+    b = b_fenics[:array]()
+    return A,b
+end
+
+function assemble_system_julia(a::Expression,L::Expression,bc::BoundaryCondition)
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc)
+    A  = A_fenics[:array]()
+    b = b_fenics[:array]()
+    return A,b
+end
+
+##add assemble_system to FEniCS objects for solving
+
+function assemble_system(a::Expression,L::Expression)
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject)
+    A  = Matrix(A_fenics)
+    b = Matrix(b_fenics)
+    return A,b
+end
 
 function assemble_system(a::Expression,L::Expression,bc)
     A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc)
@@ -184,7 +213,8 @@ function assemble_system(a::Expression,L::Expression,bc::BoundaryCondition)
     return A,b
 end
 
-export assemble_system
+
+export assemble_system, assemble_system_julia
 
 
 """
