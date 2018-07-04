@@ -36,18 +36,14 @@ include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
+include("jplot.jl")
+
 try
   pyimport("mshr")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 catch ee
  print("mshr has not been included")
 end
-try
-  Pkg.installed("PyPlot")
-  include("jplot.jl")
-  print("plotting loaded")
-catch ee
-  print("PyPlot is not installed. plotting is not available")
-end
+
 
 end #module
