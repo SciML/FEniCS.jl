@@ -32,4 +32,9 @@ end;
    @test (u.n_boundary_nodes==8)
    @test (u.node_vals == [1,1,1,1,0,1,1,1,1])
 end;
+
+@testset "list_options" begin
+
+end;
+
 print("tests completed")

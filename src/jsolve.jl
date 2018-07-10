@@ -6,15 +6,20 @@ solve(A::Matrix,x, b::Matrix,solvers...) =fenics.solve(A.pyobject,x,b.pyobject,s
 export solve
 
 #lvsolve is the linear variational solver
-lvsolve(a,L,u)=fenics.solve(a.pyobject==L.pyobject, u.pyobject)
-lvsolve(a,L,u,bcs)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs.pyobject)
-#allows BoundaryCondition to be provided in an AbstractArray
-lvsolve(a,L,u,bcs::AbstractArray)=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs)
+lvsolve(a,L,u;solver_parameters::Dict=Dict("linear_solver"=>"default"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(a.pyobject==L.pyobject, u.pyobject,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
+lvsolve(a,L,u,bcs=nothing;solver_parameters::Dict=Dict("linear_solver"=>"default"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs.pyobject,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
+#allows BoundaryCondition to be provided in an AbstractArray (of type BoundaryCondition)
+lvsolve(a,L,u,bcs::AbstractArray;solver_parameters::Dict=Dict("linear_solver"=>"default"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(a.pyobject==L.pyobject, u.pyobject, bcs=bcs,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
 
 export lvsolve
-
+#Dict("linear_solver"=>"default")
+#Dict("optimize"=>true)
 #nlvsolve is the non-linear variational solver
-nlvsolve(F,u;bcs=nothing)=fenics.solve(F.pyobject==0,u.pyobject,bcs=bcs.pyobject)
+nlvsolve(F,u;J=nothing,solver_parameters::Dict=Dict("nonlinear_solver"=>"newton"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(F.pyobject==0,u.pyobject,J=J,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
+nlvsolve(F,u,bcs=nothing;J=nothing,solver_parameters::Dict=Dict("nonlinear_solver"=>"newton"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(F.pyobject==0,u.pyobject,bcs=bcs.pyobject,J=J,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
+#allows BoundaryCondition to be provided in an AbstractArray (of type BoundaryCondition)
+nlvsolve(F,u,bcs::AbstractArray;J=nothing,solver_parameters::Dict=Dict("nonlinear_solver"=>"newton"),form_compiler_parameters::Dict=Dict("optimize"=>true))=fenics.solve(F.pyobject==0,u.pyobject,bcs=bcs,J=J,solver_parameters=solver_parameters,form_compiler_parameters=form_compiler_parameters)
+
 export nlvsolve
 
 #anlvsolve corresponds to the adapative non-linear solver.
@@ -31,7 +36,15 @@ errornorm(ans,sol;norm="L2") = fenics.errornorm(ans.pyobject,sol.pyobject,norm)
 export errornorm
 
 File(path::StringOrSymbol)=fenics.File(path) #used to store the solution in various formats
+
+function File(path::StringOrSymbol,object::FEniCS.Function)
+    vtkfile = File(path)
+    vtkfile << object.pyobject
+end
+
 export File
+
+
 
 XDMFFile(path::StringOrSymbol) = fenics.XDMFFile(path)
 export XDMFFile

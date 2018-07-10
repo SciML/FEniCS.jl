@@ -3,7 +3,7 @@
 [![Join the chat at https://gitter.im/JuliaDiffEq/Lobby](https://badges.gitter.im/JuliaDiffEq/Lobby.svg)](https://gitter.im/JuliaDiffEq/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/JuliaDiffEq/FEniCS.jl.svg?branch=master)](https://travis-ci.org/JuliaDiffEq/FEniCS.jl)
 [![Coverage Status](https://coveralls.io/repos/github/JuliaDiffEq/FEniCS.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaDiffEq/FEniCS.jl?branch=master)
-[![codecov.io](http://codecov.io/github/ChrisRackauckas/FEniCS.jl/coverage.svg?branch=master)](http://codecov.io/github/ChrisRackauckas/FEniCS.jl?branch=master)
+[![codecov.io](http://codecov.io/github/JuliaDiffEq/FEniCS.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaDiffEq/FEniCS.jl?branch=master)
 
 FEniCS.jl is a wrapper for the FEniCS library for finite element discretizations
 of PDEs. This wrapper includes three parts:
@@ -17,11 +17,20 @@ DifferentialEquations.jl ecosystem. [Paraview](https://www.paraview.org/) can al
 
 ## Installation Instructions
 
-To get the wrapper on your system, follow the below steps:
+To get the wrapper on your system,providing a FEniCS installation exists, follow the below steps:
 
-1. Clone the package into Julia. This can be done via Pkg.add("FEniCS").
-2. Proceed to build the package via Pkg.build("FEniCS").
-3. Should be available to use. Due to the fact that FEniCS.jl uses the conda distribution to install and use FEniCS, the installation provided will not currently work on Windows based systems due to the fact that a Windows Conda distribution is not currently supported by [FEniCS](https://fenicsproject.org/download/).
+1. Add PyCall with the correct python environment corresponding to FEniCS. Then simply add FEniCS.jl using Pkg.add("FEniCS")
+
+2. Alternatively, one can install [Docker](https://www.docker.com/) and then run the following command  
+
+```sh
+docker run -ti ysimillides/fenics-julia-docker 
+```
+and once inside, 'julia' can be accessed by calling
+```sh
+julia
+```
+Once inside the julia environment, simply add FEniCS with Pkg.add("FEniCS"). All other dependencies are handled by the docker image.
 
 Note: Any suggestions/improvements/comments etc are always welcomed and can be made either on GitHub or via the gitter channel above.
 This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens.

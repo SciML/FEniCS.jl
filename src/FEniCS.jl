@@ -1,9 +1,10 @@
 module FEniCS
 using PyCall
+using Requires
 @pyimport fenics
 
 #the below code is an adaptation of aleadev.FEniCS.jl
-import Base: size, length, show, *, +, -,/, repr, dot, cross, div,Function, sqrt
+import Base: size, length, show, *, +, -,/, repr, dot, cross, div,Function, sqrt,split,write
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
@@ -28,18 +29,24 @@ export fenicsclass
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))
+Docs.getdoc(obj::fenicsobject) = obj.pyobject[:__doc__]
 export str, repr
 
 include("jmesh.jl") #this file contains the mesh functions
 include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
-#include("jplot.jl") #this file contains the plotting functionality
 include("jinterface.jl")
+@require PyPlot include("jplot.jl")
+@require ProgressMeter begin
+  using ProgressMeter
+end
 try
   pyimport("mshr")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 catch ee
  print("mshr has not been included")
 end
+
+
 end #module
