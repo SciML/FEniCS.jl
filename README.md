@@ -17,11 +17,20 @@ DifferentialEquations.jl ecosystem. [Paraview](https://www.paraview.org/) can al
 
 ## Installation Instructions
 
-To get the wrapper on your system, follow the below steps:
+To get the wrapper on your system,providing a FEniCS installation exists, follow the below steps:
 
-1. Clone the package into Julia. This can be done via Pkg.add("FEniCS").
-2. Proceed to build the package via Pkg.build("FEniCS").
-3. Should be available to use. Due to the fact that FEniCS.jl uses the conda distribution to install and use FEniCS, the installation provided will not currently work on Windows based systems due to the fact that a Windows Conda distribution is not currently supported by [FEniCS](https://fenicsproject.org/download/).
+1. Add PyCall with the correct python environment corresponding to FEniCS. Then simply add FEniCS.jl using Pkg.add("FEniCS")
+
+2. Alternatively, one can install [Docker](https://www.docker.com/) and then run the following command  
+
+```sh
+docker run -ti ysimillides/fenics-julia-docker 
+```
+and once inside, 'julia' can be accessed by calling
+```sh
+julia
+```
+Once inside the julia environment, simply add FEniCS with Pkg.add("FEniCS"). All other dependencies are handled by the docker image.
 
 Note: Any suggestions/improvements/comments etc are always welcomed and can be made either on GitHub or via the gitter channel above.
 This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens.
