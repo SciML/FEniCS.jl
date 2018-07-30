@@ -4,7 +4,7 @@ using PyCall
 		pyimport("fenics")
 	catch ee
 		typeof(ee) <: PyCall.PyError || rethrow(ee)
-		warn("""
+		@warn("""
 						Python Dependancies not installed
 						Please either:
 						 - Rebuild PyCall using the path to FEniCS using
