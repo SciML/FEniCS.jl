@@ -12,7 +12,7 @@ calc(var) = 1+var^2
 
 u_D = Expression(u_code, degree=2)
 bc = DirichletBC(V, u_D, "on_boundary")
-u = FEniCS.Function(V)
+u=FeFunction(V)
 v = TestFunction(V)
 f = Expression(f_code, degree=2)
 F = calc(u)*dot(grad(u), grad(v))*dx - f*v*dx

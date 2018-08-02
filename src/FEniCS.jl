@@ -3,8 +3,14 @@ using PyCall
 using Requires
 @pyimport fenics
 
+function __init__()
+	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
+	@require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin
+	  using ProgressMeter
+	end
+end
 #the below code is an adaptation of aleadev.FEniCS.jl
-import Base: size, length, show, *, +, -,/, repr, dot, cross, div,Function, sqrt,split,write
+import Base: size, length, show, *, +, -,/, repr, div, sqrt,split,write
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
@@ -37,10 +43,7 @@ include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
-@require PyPlot include("jplot.jl")
-@require ProgressMeter begin
-  using ProgressMeter
-end
+
 try
   pyimport("mshr")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package

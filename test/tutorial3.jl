@@ -1,9 +1,7 @@
 using FEniCS
 using PyCall
-using PyPlot
 
 @pyimport fenics
-@pyimport numpy as np
 T = 2.0            # final time
 num_steps = 10     # number of time steps
 dt = T / num_steps # time step size
@@ -24,18 +22,16 @@ F = u*v*dx + dt*dot(grad(u), grad(v))*dx - (u_n + dt*f)*v*dx
 
 a, L = lhs(F),rhs(F)
 
-u = FEniCS.Function(V)
+u=FeFunction(V)
 t = 0
 
 for n = 0:(num_steps-1)
     t=t+dt
     u_D.pyobject[:t]=t
     lvsolve(a,L,u,bc)
-    #figure(1)
-    #FEniCS.plot(u)
     u_e= interpolate(u_D,V)
-    vv = FEniCS.get_array(u_e)
-    ww = FEniCS.get_array(u)
+    vv = get_array(u_e)
+    ww = get_array(u)
     error = maximum(abs.(vv-ww))
     #@printf "t = %f: error = %10g" t error
     assign(u_n,u)

@@ -1,6 +1,5 @@
 using FEniCS
 using PyCall
-using PyPlot
 
 @pyimport fenics
 
@@ -32,10 +31,10 @@ v = TestFunction(V)
 p = TrialFunction(Q)
 q = TestFunction(Q)
 
-u_n = FEniCS.Function(V)
-u_  = FEniCS.Function(V)
-p_n = FEniCS.Function(Q)
-p_ = FEniCS.Function(Q)
+u_n = FeFunction(V)
+u_  = FeFunction(V)
+p_n = FeFunction(Q)
+p_ = FeFunction(Q)
 
 U   = 0.5*(u_n + u)
 n   = FacetNormal(mesh)
@@ -105,4 +104,5 @@ for n = 0:(num_steps-1)
     #println(n)
 # Hold plot
 end
+print("Tutorial 7 finished")
 true

@@ -1,5 +1,5 @@
 using FEniCS
-using Base.Test
+using Test
 
 
 @testset "Tutorials" begin
@@ -11,6 +11,7 @@ using Base.Test
    @test include("tutorial6.jl")
    @test include("tutorial7.jl")
    @test include("tutorial8.jl")
+   @test include("tutorial9.jl")
    @test include("acoustic.jl")
    @test include("acoustic_new_assemble.jl")
 end;
@@ -23,9 +24,9 @@ end;
 
 #tests relating to interface.jl file
 @testset "Interface" begin
-   mesh = UnitSquareMesh(2,2)
+   global mesh = UnitSquareMesh(2,2)
    dbc(x,y) = 1
-   u = feMesh(mesh,dbc)
+   global u = feMesh(mesh,dbc)
    @test (u.n_nodes==9)
    @test (u.n_elements==8)
    @test (u.n_internal_nodes==1)
@@ -33,8 +34,5 @@ end;
    @test (u.node_vals == [1,1,1,1,0,1,1,1,1])
 end;
 
-@testset "list_options" begin
-
-end;
 
 print("tests completed")

@@ -1,5 +1,4 @@
 using FEniCS
-#using PyPlot
 
 mesh = UnitSquareMesh(8,8)
 V = FunctionSpace(mesh,"P",1)
@@ -10,7 +9,7 @@ v = TestFunction(V)
 f = Constant(-6.0)
 a = dot(grad(u),grad(v))*dx
 L = f*v*dx
-U = FEniCS.Function(V)
+U=FeFunction(V)
 lvsolve(a,L,U,bc1) #linear variational solver
 #lvsolve(a,L,U,bc1,solver_parameters=Dict("linear_solver"=>"lu"),form_compiler_parameters=Dict("optimize"=>true))
 error_L2= errornorm(u_D, U, norm="L2")
@@ -23,11 +22,5 @@ File("poisson/solutionnew.pvd",U)
 vertex_values_u_D = compute_vertex_values(u_D,mesh)
 vertex_values_u = compute_vertex_values(U,mesh)
 error_max = maximum(abs.(vertex_values_u_D-vertex_values_u))
-#println("error_L2  = ", error_L2)
-#println("error_max = ", error_max)
-#plot(mesh,linewidth="0.2",color="black")
-#plot(U)
-#colorbar()
-#title("UnitSquare Mesh, 8x8")
 print("Tutorial 1 finished")
 true

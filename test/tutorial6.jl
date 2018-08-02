@@ -1,9 +1,8 @@
 using FEniCS
 using PyCall
-using PyPlot
 
 @pyimport fenics
-@pyimport numpy as np
+
 
 L = 1; W = 0.2
 mu = 1
@@ -37,11 +36,11 @@ f = Constant((0, 0, -rho*g))
 T = Constant((0, 0, 0))
 a = inner(sigma(u), epsilon(v))*dx
 L = dot(f, v)*dx + dot(T, v)*ds
-u = FEniCS.Function(V)
+u=FeFunction(V)
 lvsolve(a,L,u,bc)
-s = sigma(u) - (1./3)*tr(sigma(u))*Identity(d)
+s = sigma(u) - (1.0/3)*tr(sigma(u))*Identity(d)
 #fenics.plot(U.pyobject,mode="displacement")
-von_Mises = sqrt(3./2*inner(s, s))
+von_Mises = sqrt(3.0/2*inner(s, s))
 V = FunctionSpace(mesh, "P", 1)
 
 von_Mises = project(von_Mises, V)

@@ -26,7 +26,6 @@ info_NonLinearVariationalSolver() = fenics.info(fenics.NonlinearVariationalSolve
 """
 Lists information for LinearVariationalSolver
 """
-
 info_LinearVariatonalSolver() = fenics.info(fenics.LinearVariationalSolver[:default_parameters](), true)
 
 export list_lu_solver_methods, list_krylov_solver_methods, list_krylov_solver_preconditioners, list_linear_solver_methods, info_NonLinearVariationalSolver, info_LinearVariatonalSolver
@@ -34,7 +33,6 @@ export list_lu_solver_methods, list_krylov_solver_methods, list_krylov_solver_pr
 """
 Provide values for some of the constants
 """
-
 DOLFIN_PI()=fenics.DOLFIN_PI
 DOLFIN_EPS()=fenics.DOLFIN_EPS
 DOLFIN_SQRT_EPS()=fenics.DOLFIN_SQRT_EPS

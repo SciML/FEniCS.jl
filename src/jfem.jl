@@ -18,30 +18,54 @@ export FunctionSpace, VectorFunctionSpace
 @fenicsclass Expression
 Argument(V,number,part::StringOrSymbol = nothing) = Expression(fenics.Argument(V.pyobject, number, part=part))
 TrialFunction(V::FunctionSpace) = Expression(fenics.TrialFunction(V.pyobject))
+
 TestFunction(V::FunctionSpace) = Expression(fenics.TestFunction(V.pyobject))
+
+function TrialFunctions(V::FunctionSpace)
+     vec=fenics.TrialFunctions(V.pyobject)
+     expr_vec = [Expression(elem) for elem in vec]
+     return expr_vec
+end
+
+function TestFunctions(V::FunctionSpace)
+     vec=fenics.TestFunctions(V.pyobject)
+     expr_vec = [Expression(elem) for elem in vec]
+     return expr_vec
+end
+
 
 
 #Below are attributes for the argument *class*
-geometric_dimension(expr::Union{Function,Expression}) = fenicspycall(expr, :geometric_dimension)
-export geometric_dimension
 
 
-export Argument,TrialFunction,TestFunction
+
+export Argument,TrialFunction,TrialFunctions,TestFunction,TestFunctions
 
 @fenicsclass Constant
 Constant(x::Union{Real,Tuple}) = Expression(fenics.Constant(x, name="Constant($x)"))
 export Constant
 
-@fenicsclass Function
-Function(V::FunctionSpace) = Function(fenics.Function(V.pyobject))
-assign(solution1::Function,solution2 )=fenicspycall(solution1,:assign,solution2.pyobject)
+@fenicsclass FeFunction
+FeFunction(V::FunctionSpace) = FeFunction(fenics.Function(V.pyobject))
+assign(solution1::FeFunction,solution2 )=fenicspycall(solution1,:assign,solution2.pyobject)
 
-#Access function values through callable
-#function (func::fenicsobject)(point)
-#    return func.pyobject(point)
-#end
-export Function,assign
-#added assign
+geometric_dimension(expr::Union{FeFunction,Expression}) = fenicspycall(expr, :geometric_dimension)
+export geometric_dimension
+
+function split(fun::FeFunction)
+     vec = fenics.split(fun.pyobject)
+     expr_vec = [FeFunction(spl) for spl in vec]
+     return expr_vec
+end
+
+function py_split(fun::FeFunction)
+     vec = fun.pyobject[:split]()
+     expr_vec = [FeFunction(spl) for spl in vec]
+     return expr_vec
+end
+
+export FeFunction,assign,split,py_split
+
 
 
 
@@ -50,60 +74,65 @@ export Function,assign
 Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode=cppcode,
 element=element,cell=cell, domain=domain, degree=degree, name=name, label=label, mpi_comm=mpi_comm))
 Identity(dim::Int) = Expression(fenics.Identity(dim))
-inner(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.inner(u.pyobject, v.pyobject))
-outer(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.outer(u.pyobject, v.pyobject))
-dot(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.dot(u.pyobject, v.pyobject))
-grad(u::Union{Expression,Function}) = Expression(fenics.grad(u.pyobject))
-nabla_grad(u::Union{Expression,Function}) = Expression(fenics.nabla_grad(u.pyobject))
-nabla_div(u::Union{Expression,Function}) = Expression(fenics.nabla_div(u.pyobject))
-div(u::Union{Expression,Function}) = Expression(fenics.div(u.pyobject))
-cross(u::Union{Expression,Function}, v::Union{Expression,Function}) = Expression(fenics.cross(u.pyobject, v.pyobject))
-tr(u::Union{Expression,Function}) = Expression(fenics.tr(u.pyobject))
-sqrt(u::Union{Expression,Function}) = Expression(fenics.sqrt(u.pyobject))
-sym(u::Union{Expression,Function}) = Expression(fenics.sym(u.pyobject))
-len(U::Union{Expression,Function}) = length(U.pyobject)
+inner(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.inner(u.pyobject, v.pyobject))
+outer(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.outer(u.pyobject, v.pyobject))
+dot(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.dot(u.pyobject, v.pyobject))
+grad(u::Union{Expression,FeFunction}) = Expression(fenics.grad(u.pyobject))
+∇(u::Union{Expression,FeFunction}) = Expression(fenics.grad(u.pyobject))
+nabla_grad(u::Union{Expression,FeFunction}) = Expression(fenics.nabla_grad(u.pyobject))
+nabla_div(u::Union{Expression,FeFunction}) = Expression(fenics.nabla_div(u.pyobject))
+div(u::Union{Expression,FeFunction}) = Expression(fenics.div(u.pyobject))
+cross(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.cross(u.pyobject, v.pyobject))
+tr(u::Union{Expression,FeFunction}) = Expression(fenics.tr(u.pyobject))
+sqrt(u::Union{Expression,FeFunction}) = Expression(fenics.sqrt(u.pyobject))
+sym(u::Union{Expression,FeFunction}) = Expression(fenics.sym(u.pyobject))
+len(U::Union{Expression,FeFunction}) = length(U.pyobject)
 
-interpolate(solution1::Function,solution2::Expression) = Function(fenicspycall(solution1,:interpolate,solution2.pyobject))
+interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
 
 export Expression,Identity,inner,grad, nabla_grad, nabla_div,div, outer,dot,cross, tr, sqrt, sym, len, interpolate
+export ∇
 
-#Below are attributes for the Expression and Function types
-#Computes values at vertex of a mesh for a given Expression / Function, and returns an array
+#Below are attributes for the Expression and FeFunction types
+#Computes values at vertex of a mesh for a given Expression / FeFunction, and returns an array
 compute_vertex_values(expr::Expression, mesh::Mesh) = fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
-compute_vertex_values(expr::Function, mesh::Mesh) = fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
+compute_vertex_values(expr::FeFunction, mesh::Mesh) = fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
 
 export compute_vertex_values
 
 @fenicsclass Measure
+directional_derivative(solution1::FeFunction,direction)=FeFunction(fenicspycall(solution1,:dx,direction))
+
 dx = Measure(fenics.dx)
 ds = Measure(fenics.ds)
 dS = Measure(fenics.dS)
 dP = Measure(fenics.dP)
-export dx, ds,dS,dP
+
+export dx,ds,dS,dP,directional_derivative
 
 
 #https://github.com/FEniCS/Expression/blob/master/Expression/measure.py
 @fenicsclass Form
 
-*(expr::Union{Expression,Function}, measure::Measure) = Expression(measure.pyobject[:__rmul__](expr.pyobject) )
+*(expr::Union{Expression,FeFunction}, measure::Measure) = Expression(measure.pyobject[:__rmul__](expr.pyobject) )
 
-*(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
-*(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__mul__](expr) )
-*(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
+*(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
+*(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject[:__mul__](expr) )
+*(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
 
-+(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__add__](expr2) )
-+(expr::Real, expr2::Union{Expression,Function}) = Expression(expr2.pyobject[:__add__](expr) )
-+(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
++(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__add__](expr2) )
++(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject[:__add__](expr) )
++(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
 
--(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
--(expr::Real, expr2::Union{Expression,Function}) = -1*(Expression(expr2.pyobject[:__sub__](expr) ))
--(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
+-(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
+-(expr::Real, expr2::Union{Expression,FeFunction}) = -1*(Expression(expr2.pyobject[:__sub__](expr) ))
+-(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
 
-/(expr::Union{Expression,Function}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
-/(expr::Union{Expression,Function}, expr2::Union{Expression,Function}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
+/(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
+/(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
 
-function /(expr::Real,expr2::Union{Expression,Function})
+function /(expr::Real,expr2::Union{Expression,FeFunction})
     x = expr2*expr2
     y = x/expr
     z = expr2/y
@@ -159,6 +188,9 @@ ie instead of function(x)
 we simple write "x"
 """
 DirichletBC(V::FunctionSpace,g,sub_domain)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g.pyobject,sub_domain))#look this up with example also removed type from g(Should be expression)
+DirichletBC(V::FunctionSpace,g::Number,sub_domain)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#look this up with example also removed type from g(Should be expression)
+DirichletBC(V::FunctionSpace,g::Tuple,sub_domain)=BoundaryCondition(fenics.DirichletBC(V.pyobject,g,sub_domain))#look this up with example also removed type from g(Should be expression)
+
 export DirichletBC
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
 CompiledSubDomain(cppcode::String)  = sub_domain(fenics.CompiledSubDomain(cppcode))
@@ -177,14 +209,15 @@ function assemble_system_julia(a::Expression,L::Expression)
 end
 
 function assemble_system_julia(a::Expression,L::Expression,bc)
-    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc)
+    bcs_py = [bcs.pyobject for bcs in bc]
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bcs_py)
     A  = A_fenics[:array]()
     b = b_fenics[:array]()
     return A,b
 end
 
 function assemble_system_julia(a::Expression,L::Expression,bc::BoundaryCondition)
-    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc)
+    A_fenics,b_fenics = fenics.assemble_system(a.pyobject,L.pyobject,bc.pyobject)
     A  = A_fenics[:array]()
     b = b_fenics[:array]()
     return A,b
@@ -224,8 +257,7 @@ not all kwargs have been imported. Should you require any that are not imported
 open as issue, and I will attempt to add them.
 Deprecate this in a future version
 """
-#Geometry has been removed due to errors with mshr.
-Plot(in_plot::Union{Mesh,FunctionSpace,Function};alpha=1,animated=false,antialiased=true,color="grey"
+Plot(in_plot::Union{Mesh,FunctionSpace,FeFunction};alpha=1,animated=false,antialiased=true,color="grey"
 ,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
 ,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
 ,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
@@ -257,7 +289,6 @@ Arguments
 |          variant
 |             Hint for the local basis function variant (optional)
 """
-#look at PLOT for overloading kws
 FiniteElement(family::StringOrSymbol,cell=nothing,degree=nothing,form_degree=nothing,quad_scheme=nothing,variant=nothing) =
 FiniteElement(fenics.FiniteElement(family=family, cell=cell, degree=degree, form_degree=form_degree, quad_scheme=quad_scheme,variant=variant))
 export FiniteElement
@@ -279,12 +310,9 @@ mapping(self)
  |  variant(self)
  |
 """
-
-
 tetrahedron = fenics.tetrahedron
 hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
 triangle = fenics.triangle
-
 export hexahedron, tetrahedron, triangle
 
 family(finiteelement::FiniteElement) = fenicspycall(finiteelement, :family)
@@ -308,3 +336,16 @@ export family, cell, degree, variant, reconstruct, sobolev_space
 FacetNormal(mesh::Mesh)  = Expression(fenics.FacetNormal(mesh.pyobject))
 
 export FacetNormal
+
+@fenicsclass MixedElement
+
+function MixedElement(vec::Array{FEniCS.FiniteElementImpl,1})
+    pyvec = [elem.pyobject for elem in vec]
+    me = MixedElement(fenics.MixedElement(pyvec))
+end
+
+export MixedElement
+
+FunctionSpace(mesh::Mesh, element::Union{FiniteElement,MixedElement}) = FunctionSpace(fenics.FunctionSpace(mesh.pyobject, element.pyobject))
+
+export FunctionSpace
