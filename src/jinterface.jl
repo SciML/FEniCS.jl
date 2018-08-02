@@ -4,7 +4,7 @@ to solve finite element problems. It works by taking in a FEniCS mesh, working o
 the necessary values, and then creating an ordering of the internal/boundary nodes
 and applying the DirichletBC (via a function) to the respective nodes.
 """
-type feMesh
+mutable struct feMesh
     n_nodes::Int
     n_elements::Int
     nodes::Array{Float64, 2}
@@ -55,7 +55,7 @@ function find_node_number(n_nodes, n_bc_nodes, external_nodes, nodes, boundaryCo
         push!(node_overall,nodes[i,:])
     end
 
-    node_number = findin(node_overall,node_ext)
+    node_number = findall((in)(node_ext),node_overall)
     for i = 1:n_nodes
         if i in node_number
             @inbounds node_vals[i] = boundaryCondition(nodes[i,1],nodes[i,2])

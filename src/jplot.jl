@@ -45,7 +45,7 @@ end
 
 
 #Only very basic function plotting currently exists, need to dispatch based on kwargs for full plotting.
-function plot(object::Union{Expression,FEniCS.Function};kws...)
+function plot(object::Union{Expression,FeFunction};kws...)
   f_space = object.pyobject[:function_space]()
   mesh = f_space[:mesh]()
   geometry = mesh[:geometry]()
@@ -67,9 +67,27 @@ function plot(object::Union{Expression,FEniCS.Function};kws...)
   end
 end
 
+function surf_plot(object::Union{Expression,FeFunction};kws...)
+  f_space = object.pyobject[:function_space]()
+  mesh = f_space[:mesh]()
+  geometry = mesh[:geometry]()
+  topology = mesh[:topology]()
+  gdim = geometry[:dim]()
+  tdim = topology[:dim]()
+  fvec = vector(object)
+  if object.pyobject[:value_rank]()==0
+    C = object.pyobject[:compute_vertex_values](mesh)
+    xy = coordinates(Mesh(mesh))
+    PyPlot.surf(xy[:,1],xy[:,2],C)
+  else
+    error("surf_plot is not available for these dimensions")
+  end
+end
+
+
 #plotting for solution computed via jinterface.jl, directly with the Mesh
 function plot(mesh::Mesh, solution::AbstractArray, levels::Int=40;kws...)
-  tricontourf(mesh2triangle(Mesh(mesh)),solution,levels;kws...)
+  tricontourf(mesh2triangle(mesh),solution,levels;kws...)
 end
 
 #plotting for solution computed via jinterface.jl
@@ -77,4 +95,4 @@ function plot(space::feMesh,solution::AbstractArray, levels::Int=40;kws...)
   tricontourf(mesh2triangle(space),solution,levels;kws...)
 end
 
-export plot
+export plot,surf_plot

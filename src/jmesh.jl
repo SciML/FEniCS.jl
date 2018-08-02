@@ -59,7 +59,6 @@ rmax, rmin, size, ufl_cell , ufl_domain, ufl_id
 Mesh(path::StringOrSymbol) \n
 Creates a Mesh based on a specified filename(path)
 """
-
 Mesh(path::StringOrSymbol) = Mesh(fenics.Mesh(path))
 
 """
@@ -88,10 +87,9 @@ UnitSquareMesh(nx::Int, ny::Int, diagonal::StringOrSymbol="right" ) \n
 
 Triangular/quadrilateral mesh of the 2D unit square [0,1] x [0,1]. \n
 Given the number of cells (nx, ny) in each direction, the total number of triangles \n
-will be 2*nx*ny and the total number of vertices will be (nx + 1)\*(ny + 1) \n
-diagonal ("left", "right", "right/left", "left/right", or "crossed") indicates the direction of the diagonals.
+will be 2*nx*ny and the total number of vertices will be (nx + 1)*(ny + 1) \n
+diagonal ("left", "right", "right//left", "left//right", or "crossed") indicates the direction of the diagonals.
 """
-
 UnitSquareMesh(nx::Int, ny::Int, diagonal::StringOrSymbol="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
 
 
@@ -113,17 +111,16 @@ UnitCubeMesh(nx::Int, ny::Int, nz::Int) \n
 
 Tetrahedral/hexahedral mesh of the 3D unit cube [0,1] x [0,1] x [0,1]. \n
 Given the number of cells (nx, ny, nz) in each direction, the total number of \n
-tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)\*(ny + 1)\*(nz + 1).
+tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*(ny + 1)*(nz + 1).
 
 """
 UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx,ny,nz))
-
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) \n
 
 Tetrahedral mesh of the 3D rectangular prism spanned by two points p0 and p1. \n
 Given the number of cells (nx, ny, nz) in each direction, the total number of \n
-tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)\*(ny + 1)\*(nz + 1).
+tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*(ny + 1)*(nz + 1).
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz))
 
@@ -131,10 +128,9 @@ BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz))
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") \n
 Triangular mesh of the 2D rectangle spanned by two points p0 and p1. \n
 Given the number of cells (nx, ny) in each direction, the total number \n
-of triangles will be 2*nx*ny and the total number of vertices will be (nx + 1)\*(ny + 1) \n
+of triangles will be 2*nx*ny and the total number of vertices will be (nx + 1)*(ny + 1) \n
 diagdir ("left", "right", "right/left", "left/right", or "crossed") indicates the direction of the diagonals.
 """
-
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny,diagdir))
 
 """
@@ -150,7 +146,6 @@ order:(bool) Optional argument which can be used to control whether or not the \
 boundary mesh should be ordered according to the UFC ordering convention. \n
 If set to false, the boundary mesh will be ordered with right-oriented facets \n
 (outward-pointing unit normals). The default value is true.
-
 """
 BoundaryMesh(mesh::Mesh,type_boundary::StringOrSymbol="exterior",order=true) = Mesh(fenics.BoundaryMesh(mesh.pyobject, type_boundary, order))
 
@@ -181,7 +176,6 @@ end
 For the diagdir, the possible options can be found below (these indicate the direction of the diagonals)
   (“left”, “right”, “right/left”, “left/right”, or “crossed”).
 """
-
 function pyUnitSquareMesh(nx::Int,ny::Int,diagdir::StringOrSymbol="right")
   pycall(fenics.UnitSquareMesh::PyObject,PyObject::Type,nx,ny,diagdir)
 end
