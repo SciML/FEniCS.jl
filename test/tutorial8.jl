@@ -1,5 +1,6 @@
 using FEniCS
 using PyCall
+#using ProgressMeter # for native julia progress
 
 @pyimport fenics
 
@@ -43,10 +44,10 @@ p = TrialFunction(Q)
 q = TestFunction(Q)
 
 # Define functions for solutions at previous and current time steps
-u_n = FEniCS.Function(V)
-u_  = FEniCS.Function(V)
-p_n = FEniCS.Function(Q)
-p_ = FEniCS.Function(Q)
+u_n = FeFunction(V)
+u_  = FeFunction(V)
+p_n = FeFunction(Q)
+p_ = FeFunction(Q)
 
 
 U  = 0.5*(u_n + u)
@@ -90,21 +91,21 @@ A3 = assemble(a3)
 [apply(bc,A2) for bc in bcp]
 
 # Create XDMF files for visualization output
-#xdmffile_u = XDMFFile("navier_stokes_cylinder/velocity.xdmf")
-#xdmffile_p = XDMFFile("navier_stokes_cylinder/pressure.xdmf")
+xdmffile_u = XDMFFile("navier_stokes_cylinder/velocity.xdmf")
+xdmffile_p = XDMFFile("navier_stokes_cylinder/pressure.xdmf")
 
 # Create time series (for use in reaction_system.py)
-#timeseries_u = TimeSeries("navier_stokes_cylinder/velocity_series")
-#timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
+timeseries_u = TimeSeries("navier_stokes_cylinder/velocity_series")
+timeseries_p = TimeSeries("navier_stokes_cylinder/pressure_series")
 
 # Save mesh to file (for use in reaction_system.py)
-#File("navier_stokes_cylinder/cylinder.xml.gz") << mesh.pyobject
+File("navier_stokes_cylinder/cylinder.xml.gz",mesh)
 
 
 
 
 t = 0
-
+#@showprogress 1 "Solving..." for n=0:num_steps #for native julia progress
 for n =0:(num_steps-1)
 
     # Update current time
@@ -122,12 +123,16 @@ for n =0:(num_steps-1)
     b3 = assemble(L3)
     solve(A3, vector(u_), b3, "cg", "sor")
 
-    #plot solution
-    #fenics.plot(u_.pyobject)
-    #fenics.plot(p_.pyobject)
+    write(xdmffile_u,u_, t)
+    write(xdmffile_p,p_, t)
 
+    # Save nodal values to file
+    store(timeseries_u,vector(u_), t)
+    store(timeseries_p,vector(p_), t)
     #update values
     assign(u_n,u_)
     assign(p_n,p_)
 end
+print("Tutorial 8 finished")
+
 true

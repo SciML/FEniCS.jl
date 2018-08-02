@@ -41,9 +41,8 @@ BCR = DirichletBC(V,Constant(0.0),right)
 bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject]
 
 #bc = DirichletBC(V, 0, "on_boundary")
-A, b = assemble_system_julia(a, L, bcs)
 
-u=FEniCS.Function(V)
+u=FeFunction(V)
 
 while t <= T
     A, b = assemble_system(a, L, bcs)
@@ -56,5 +55,5 @@ while t <= T
     #fenics.plot(u.pyobject,title="Acoustic wave Equation")#,mode="auto")
 
 end
-
+println("Acoustic problem finished")
 true

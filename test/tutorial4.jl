@@ -1,6 +1,5 @@
 using FEniCS
 using PyCall
-
 @pyimport fenics
 
 
@@ -34,8 +33,9 @@ a, L = lhs(F), rhs(F)
 #vtkfile = File("heat_gaussian/solution.pvd")
 
 # Time-stepping
-u = FEniCS.Function(V)
+u=FeFunction(V)
 t = 0
+#fig = PyPlot.figure()
 for n = 0:(num_steps-1)
     # Update current time
     t += dt
@@ -46,7 +46,6 @@ for n = 0:(num_steps-1)
 
     # Save to file and plot solution
     # vtkfile << (u.pyobject, t)
-    #plot(u)
 
     # Update previous solution
     assign(u_n,u)

@@ -9,7 +9,7 @@ dt = 0.000004;
 t = 0;
 T = 0.004;
 
-mesh = RectangleMesh(Point([-2., -2.]),Point([2., 2.]),80,80)
+mesh = RectangleMesh(Point([-2., -2.]),Point([2., 2.]),40,40)
 V = FunctionSpace(mesh,"Lagrange",1)
 
 # Previous and current solution
@@ -38,23 +38,18 @@ BCL = DirichletBC(V,delta,left)
 right = "on_boundary && near(x[0],2)"
 BCR = DirichletBC(V,Constant(0.0),right)
 
-#bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject,BCR.pyobject]
-bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject]
-#bcs = [BCL,BCD,BCT]
+bcs_dir = [BCL,BCD,BCT,BCR]
+bcs_neu = [BCL,BCD,BCT]
 
-#bc = DirichletBC(V, 0, "on_boundary")
-#A, b = assemble_system(a, L, bcs)
 
-u=FEniCS.Function(V)
+u=FeFunction(V)
 
 while t <= T
     delta.pyobject[:t] = t
-    #[apply(bcc,b) for bcc in bcs]
-    lvsolve(a,L,u,bcs) #linear variational solver
+    lvsolve(a,L,u,bcs_dir) #linear variational solver
     assign(u0,u1)
     assign(u1,u)
     t +=dt
-    #fenics.plot(u.pyobject,title="Acoustic wave Equation")#,mode="auto")
-
 end
+println("Acoustic problem finished")
 true

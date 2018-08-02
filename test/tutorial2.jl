@@ -15,7 +15,7 @@ w = TrialFunction(V)
 v = TestFunction(V)
 a = dot(grad(w), grad(v))*dx
 L = p*v*dx
-w = FEniCS.Function(V)
+w=FeFunction(V)
 lvsolve(a,L,w,bc)
 p = interpolate(p,V)
 
