@@ -33,7 +33,7 @@ julia
 Once inside the julia environment, simply add FEniCS with Pkg.add("FEniCS"). All other dependencies are handled by the docker image.
 
 Note: Any suggestions/improvements/comments etc are always welcomed and can be made either on GitHub or via the gitter channel above.
-This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens.
+This wrapper was originally started via the [Google Summer of Code program](https://summerofcode.withgoogle.com/projects/#5988523772477440) along with the help of Chris Rackauckas and Bart Janssens. This was continued via [GSoC '18](https://summerofcode.withgoogle.com/projects/#6466456292687872) along with the help of Chris Rackauckas and Timo Betcke.
 
 ## Tutorial
 
