@@ -1,3 +1,4 @@
+__precompile__(false)
 module FEniCS
 using PyCall
 using Requires
@@ -30,7 +31,6 @@ macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
     $(name)(pyobject::PyObject) = $impl(pyobject)
   end)
 end
-export fenicsclass
 
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)

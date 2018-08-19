@@ -90,7 +90,7 @@ len(U::Union{Expression,FeFunction}) = length(U.pyobject)
 
 interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
-
+Expression(x::FEniCS.Expression) = convert(Expression,x)
 export Expression,Identity,inner,grad, nabla_grad, nabla_div,div, outer,dot,cross, tr, sqrt, sym, len, interpolate
 export ∇
 
