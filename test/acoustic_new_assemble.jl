@@ -6,7 +6,7 @@ using PyCall
 c = 5000
 #problem variables
 dt = 0.000004;
-t = 0;
+global t = 0;
 T = 0.004;
 
 mesh = RectangleMesh(Point([-2., -2.]),Point([2., 2.]),40,40)
@@ -49,7 +49,7 @@ while t <= T
     lvsolve(a,L,u,bcs_dir) #linear variational solver
     assign(u0,u1)
     assign(u1,u)
-    t +=dt
+    global t +=dt
 end
 println("Acoustic problem finished")
 true

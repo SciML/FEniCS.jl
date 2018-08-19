@@ -23,10 +23,10 @@ F = u*v*dx + dt*dot(grad(u), grad(v))*dx - (u_n + dt*f)*v*dx
 a, L = lhs(F),rhs(F)
 
 u=FeFunction(V)
-t = 0
+global t = 0
 
 for n = 0:(num_steps-1)
-    t=t+dt
+    global t=t+dt
     u_D.pyobject[:t]=t
     lvsolve(a,L,u,bc)
     u_e= interpolate(u_D,V)

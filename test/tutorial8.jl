@@ -104,12 +104,12 @@ File("navier_stokes_cylinder/cylinder.xml.gz",mesh)
 
 
 
-t = 0
+global t = 0
 #@showprogress 1 "Solving..." for n=0:num_steps #for native julia progress
 for n =0:(num_steps-1)
 
     # Update current time
-    t += dt
+    global t += dt
 
     # Step 1: Tentative velocity step
     b1 = assemble(L1)

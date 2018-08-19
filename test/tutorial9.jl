@@ -74,11 +74,11 @@ vtkfile_u_2 = File("reaction_system/u_2.pvd")
 vtkfile_u_3 = File("reaction_system/u_3.pvd")
 
 # Time-stepping
-t = 0
+global t = 0
 for n=0:num_steps
 
     # Update current time
-    t += dt
+    global t += dt
 
     # Read velocity from file
     retrieve(timeseries_w,vector(w),t)
