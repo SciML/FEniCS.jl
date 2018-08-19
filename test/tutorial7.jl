@@ -70,11 +70,11 @@ A3 = assemble(a3)
 [apply(bc,A2) for bc in bcp]
 
 # Time-stepping
-t = 0
+global t = 0
 for n = 0:(num_steps-1)
 
     # Update current time
-    t =t + dt
+    global t += dt
 
     # Step 1: Tentative velocity step
     b1 = assemble(L1)

@@ -34,11 +34,11 @@ a, L = lhs(F), rhs(F)
 
 # Time-stepping
 u=FeFunction(V)
-t = 0
+global t = 0
 #fig = PyPlot.figure()
 for n = 0:(num_steps-1)
     # Update current time
-    t += dt
+    global t += dt
 
     # Compute solution
     lvsolve(a,L,u,bc)

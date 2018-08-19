@@ -5,7 +5,7 @@ using PyCall
 c = 5000
 #problem variables, have been scaled down for faster test solution
 dt = 0.00004;
-t = 0;
+global t = 0;
 T = 0.0004;
 
 mesh = RectangleMesh(Point([-2., -2.]),Point([2., 2.]),40,40)
@@ -51,7 +51,7 @@ while t <= T
     solve(A, vector(u), b)
     assign(u0,u1)
     assign(u1,u)
-    t +=dt
+    global t +=dt
     #fenics.plot(u.pyobject,title="Acoustic wave Equation")#,mode="auto")
 
 end

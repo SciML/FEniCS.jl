@@ -1,3 +1,4 @@
+__precompile__(false)
 module FEniCS
 using PyCall
 using Requires
