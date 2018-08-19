@@ -3,8 +3,7 @@ language: julia
 os:
   - linux
 julia:
-  - 0.7
-  - nightly
+  - 1.0
 
 dist: trusty
 
@@ -15,13 +14,13 @@ services:
 
 before_install:
   - echo "**** pulling Docker image"
-  - docker pull ysimillides/fenics-julia-docker:v0.7
+  - docker pull ysimillides/fenics-julia-docker:v1.0
   - chmod +x travis_docker_test_script.sh
 notifications:
   email: false
 script:
   - echo "**** running Docker"
-  - docker run --env-file travis_docker_env.list -t -a STDOUT -a STDIN -a STDERR -v $PWD:/mnt ysimillides/fenics-julia-docker:v0.7 /mnt/travis_docker_test_script.sh $TRAVIS_JULIA_VERSION
+  - docker run --env-file travis_docker_env.list -t -a STDOUT -a STDIN -a STDERR -v $PWD:/mnt ysimillides/fenics-julia-docker:v1.0 /mnt/travis_docker_test_script.sh $TRAVIS_JULIA_VERSION
 after_success:
   # push coverage results to Coveralls, .cov files were copied back by script above
   - echo "**** submitting coverage information"
