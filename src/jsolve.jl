@@ -91,7 +91,7 @@ store(path,solution::PyObject,time::Number) = path[:store](solution, time)
 
 export write,store
 
-array(matrix) = fenicspycall(matrix, :array)
+array(matrix) = fenicspycall(matrix, :gather_on_zero)
 vector(solution::FeFunction) = fenicspycall(solution,:vector) #
 interpolate(ex, V::FunctionSpace) = FeFunction(fenics.interpolate(ex.pyobject, V.pyobject))
 
@@ -107,7 +107,7 @@ end
 function get_array(solution::FeFunction)
     generic_vector = vector(solution)
     instantiated_vector = fenics.Vector(generic_vector)
-    return instantiated_vector[:array]()
+    return instantiated_vector[:gather_on_zero]()
 end
 """
 we return the array from an assembled form
