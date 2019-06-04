@@ -1,7 +1,7 @@
 using PyCall
 
 	try
-		pyimport("fenics")
+		pyimport_conda("fenics", "fenics", "conda-forge")
 	catch ee
 		typeof(ee) <: PyCall.PyError || rethrow(ee)
 		@warn("""
@@ -13,4 +13,3 @@ using PyCall
 				 """
 		)
 	end
-
