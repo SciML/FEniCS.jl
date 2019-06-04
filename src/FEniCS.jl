@@ -2,7 +2,8 @@ __precompile__(false)
 module FEniCS
 using PyCall
 using Requires
-@pyimport fenics
+
+fenics = pyimport_conda("fenics", "fenics", "conda-forge")
 
 function __init__()
 	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
@@ -46,7 +47,7 @@ include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 
 try
-  pyimport("mshr")
+  pyimport_conda("mshr", "mshr", "conda-forge")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 catch ee
  print("mshr has not been included")
