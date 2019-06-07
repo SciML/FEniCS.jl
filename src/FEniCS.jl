@@ -3,8 +3,8 @@ module FEniCS
 using PyCall
 using Requires
 
-fenics = pyimport_conda("fenics", "fenics", "conda-forge")
-ufl = pyimport_conda("ufl", "ufl", "conda-forge")
+fenics = pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge")
+ufl = pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge")
 
 function __init__()
 	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
@@ -48,7 +48,7 @@ include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 
 try
-  pyimport_conda("mshr", "mshr", "conda-forge")
+  pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 catch ee
  print("mshr has not been included")

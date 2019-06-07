@@ -1,8 +1,8 @@
 using PyCall
 
 	try
-		pyimport_conda("fenics", "fenics", "conda-forge")
-		pyimport_conda("mshr", "mshr", "conda-forge")
+		pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge")
+		pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
 	catch ee
 		typeof(ee) <: PyCall.PyError || rethrow(ee)
 		@warn("""
