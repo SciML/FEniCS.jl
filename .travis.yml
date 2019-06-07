@@ -2,12 +2,17 @@
 language: julia
 os:
   - linux
+  - osx
 dist: xenial
 julia:
   - 1.1
 #  - nightly
+addons:
+  apt:
+    packages:
+      pkg-config
 before_install:
-  - sudo apt-get install -y pkg-config
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install pkg-config; fi
 notifications:
   email: false
 matrix:
