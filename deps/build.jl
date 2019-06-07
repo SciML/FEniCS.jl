@@ -1,5 +1,11 @@
 using PyCall
 
+if Sys.iswindows()
+	@warn("""
+					FEniCS is not known to run on Windows!
+					Please try installing from Windows Subsystem for Linux.
+		""")
+end
 	try
 		pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge")
 		pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
