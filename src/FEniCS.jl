@@ -4,6 +4,7 @@ using PyCall
 using Requires
 
 fenics = pyimport_conda("fenics", "fenics", "conda-forge")
+ufl = pyimport_conda("ufl", "ufl", "conda-forge")
 
 function __init__()
 	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
