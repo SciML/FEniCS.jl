@@ -18,9 +18,9 @@ export Circle,Rectangle,Ellipse,Box,Cone,Sphere,generate_mesh
 
 
 #operator overloading for Geometry types so we can create composite shapes
-+(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__add__](geom_object2.pyobject))
--(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__sub__](geom_object2.pyobject))
-*(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject[:__mul__](geom_object2.pyobject))
++(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject.__add__(geom_object2.pyobject))
+-(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject.__sub__(geom_object2.pyobject))
+*(geom_object1::Geometry, geom_object2::Geometry) = Geometry(geom_object1.pyobject.__mul__(geom_object2.pyobject))
 
 set_subdomain(object::Geometry,degree,domain2) = fenicspycall(object, :set_subdomain,degree,domain2.pyobject)
 """

@@ -17,7 +17,7 @@ abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
 
-fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = object.pyobject[func](args...)
+fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = getproperty(object.pyobject,func)(args...)
 export fenicspycall
 
 macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
@@ -37,7 +37,7 @@ export fenicsclass
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))
-Docs.getdoc(obj::fenicsobject) = obj.pyobject[:__doc__]
+Docs.getdoc(obj::fenicsobject) = obj.pyobject.__doc__
 export str, repr
 
 include("jmesh.jl") #this file contains the mesh functions
