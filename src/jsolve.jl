@@ -107,7 +107,7 @@ end
 function get_array(solution::FeFunction)
     generic_vector = vector(solution)
     instantiated_vector = fenics.Vector(generic_vector)
-    return instantiated_vector[:gather_on_zero]()
+    return instantiated_vector.gather_on_zero()
 end
 """
 we return the array from an assembled form
