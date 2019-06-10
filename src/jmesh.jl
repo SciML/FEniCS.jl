@@ -72,14 +72,14 @@ UnitTriangleMesh() \n
 A mesh consisting of a single triangle with vertices at \n
 (0, 0) (1, 0) (0, 1)
 """
-UnitTriangleMesh() = Mesh(fenics.UnitTriangleMesh())
+UnitTriangleMesh() = Mesh(fenics.cpp.generation.UnitTriangleMesh.create())
 
 """
 UnitTetrahedronMesh() \n
 A mesh consisting of a single tetrahedron with vertices at \n
 (0, 0, 0) (1, 0, 0) (0, 1, 0) (0, 0, 1)
 """
-UnitTetrahedronMesh() = Mesh(fenics.UnitTetrahedronMesh())
+UnitTetrahedronMesh() = Mesh(fenics.cpp.generation.UnitTetrahedronMesh.create())
 
 
 """
@@ -153,11 +153,11 @@ export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
 UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh, BoundaryMesh
 
 function pyUnitTriangleMesh()
-  pycall(fenics.UnitTriangleMesh::PyObject,PyObject::Type)
+  fenics.cpp.generation.UnitTriangleMesh.create()
 end
 
 function pyUnitTetrahedronMesh()
-  pycall(fenics.UnitTetrahedronMesh::PyObject,PyObject::Type)
+  fenics.cpp.generation.UnitTetrahedronMesh.create()
 end
 
 function pyUnitCubeMesh(nx::Int, ny::Int, nz::Int)

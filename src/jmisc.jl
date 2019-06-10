@@ -22,11 +22,11 @@ list_linear_solver_methods()=fenics.list_linear_solver_methods()
 """
 Lists information for NonlinearVariationalSolver
 """
-info_NonLinearVariationalSolver() = fenics.info(fenics.NonlinearVariationalSolver[:default_parameters](), true)
+info_NonLinearVariationalSolver() = fenics.info(fenics.NonlinearVariationalSolver.default_parameters(), true)
 """
 Lists information for LinearVariationalSolver
 """
-info_LinearVariatonalSolver() = fenics.info(fenics.LinearVariationalSolver[:default_parameters](), true)
+info_LinearVariatonalSolver() = fenics.info(fenics.LinearVariationalSolver.default_parameters(), true)
 
 export list_lu_solver_methods, list_krylov_solver_methods, list_krylov_solver_preconditioners, list_linear_solver_methods, info_NonLinearVariationalSolver, info_LinearVariatonalSolver
 

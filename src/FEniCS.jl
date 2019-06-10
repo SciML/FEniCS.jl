@@ -2,7 +2,9 @@ __precompile__(false)
 module FEniCS
 using PyCall
 using Requires
-@pyimport fenics
+
+fenics = pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge")
+ufl = pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge")
 
 function __init__()
 	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
@@ -16,7 +18,7 @@ abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
 
-fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = object.pyobject[func](args...)
+fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = getproperty(object.pyobject,func)(args...)
 export fenicspycall
 
 macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
@@ -36,7 +38,7 @@ export fenicsclass
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))
-Docs.getdoc(obj::fenicsobject) = obj.pyobject[:__doc__]
+Docs.getdoc(obj::fenicsobject) = obj.pyobject.__doc__
 export str, repr
 
 include("jmesh.jl") #this file contains the mesh functions
@@ -46,7 +48,7 @@ include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 
 try
-  pyimport("mshr")
+  pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
   include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 catch ee
  print("mshr has not been included")

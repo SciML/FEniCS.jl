@@ -2,25 +2,26 @@
 language: julia
 os:
   - linux
+  - osx
+dist: xenial
 julia:
-  - 1.0
-
-dist: trusty
-
-sudo: required
-
-services:
-  - docker
-
+  - 1.1
+#  - nightly
+addons:
+  apt:
+    packages:
+      pkg-config
 before_install:
-  - echo "**** pulling Docker image"
-  - docker pull ysimillides/fenics-julia-docker:v1.0
-  - chmod +x travis_docker_test_script.sh
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install pkg-config; fi
 notifications:
   email: false
+matrix:
+  allow_failures:
+    - julia: nightly
 script:
-  - echo "**** running Docker"
-  - docker run --env-file travis_docker_env.list -t -a STDOUT -a STDIN -a STDERR -v $PWD:/mnt ysimillides/fenics-julia-docker:v1.0 /mnt/travis_docker_test_script.sh $TRAVIS_JULIA_VERSION
+    - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+    - julia -e 'using Pkg; ENV["PYTHON"]="";Pkg.add("Conda");Pkg.build("FEniCS");'
+    - julia -e 'using Pkg, Conda; ENV["PATH"] = "$(Conda.BINDIR);$(ENV["PATH"])";ENV["PKG_CONFIG_PATH"] = "$(Conda.LIBDIR*"/pkgconfig")"; print(ENV["PKG_CONFIG_PATH"]); Pkg.test("FEniCS", coverage=true)'
 after_success:
   # push coverage results to Coveralls, .cov files were copied back by script above
   - echo "**** submitting coverage information"

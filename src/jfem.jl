@@ -59,7 +59,7 @@ function split(fun::FeFunction)
 end
 
 function py_split(fun::FeFunction)
-     vec = fun.pyobject[:split]()
+     vec = fun.pyobject.split()
      expr_vec = [FeFunction(spl) for spl in vec]
      return expr_vec
 end
@@ -71,16 +71,16 @@ export FeFunction,assign,split,py_split
 
 @fenicsclass Expression
 
-Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing, mpi_comm=nothing) = Expression(fenics.Expression(cppcode,
-element=element,cell=cell, domain=domain, degree=degree, name=name, label=label, mpi_comm=mpi_comm))
+Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing) = Expression(fenics.Expression(cppcode,
+element=element,cell=cell, domain=domain, degree=degree, name=name, label=label))
 Identity(dim::Int) = Expression(fenics.Identity(dim))
 inner(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.inner(u.pyobject, v.pyobject))
 outer(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.outer(u.pyobject, v.pyobject))
 dot(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.dot(u.pyobject, v.pyobject))
 grad(u::Union{Expression,FeFunction}) = Expression(fenics.grad(u.pyobject))
 ∇(u::Union{Expression,FeFunction}) = Expression(fenics.grad(u.pyobject))
-nabla_grad(u::Union{Expression,FeFunction}) = Expression(fenics.nabla_grad(u.pyobject))
-nabla_div(u::Union{Expression,FeFunction}) = Expression(fenics.nabla_div(u.pyobject))
+nabla_grad(u::Union{Expression,FeFunction}) = Expression(ufl.nabla_grad(u.pyobject))
+nabla_div(u::Union{Expression,FeFunction}) = Expression(ufl.nabla_div(u.pyobject))
 div(u::Union{Expression,FeFunction}) = Expression(fenics.div(u.pyobject))
 cross(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.cross(u.pyobject, v.pyobject))
 tr(u::Union{Expression,FeFunction}) = Expression(fenics.tr(u.pyobject))
@@ -115,22 +115,22 @@ export dx,ds,dS,dP,directional_derivative
 #https://github.com/FEniCS/Expression/blob/master/Expression/measure.py
 @fenicsclass Form
 
-*(expr::Union{Expression,FeFunction}, measure::Measure) = Expression(measure.pyobject[:__rmul__](expr.pyobject) )
+*(expr::Union{Expression,FeFunction}, measure::Measure) = Expression(measure.pyobject.__rmul__(expr.pyobject) )
 
-*(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__mul__](expr2.pyobject) )
-*(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject[:__mul__](expr) )
-*(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__mul__](expr2) )
+*(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject.__mul__(expr2.pyobject) )
+*(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject.__mul__(expr) )
+*(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject.__mul__(expr2) )
 
-+(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__add__](expr2) )
-+(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject[:__add__](expr) )
-+(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__add__](expr2.pyobject) )
++(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject.__add__(expr2) )
++(expr::Real, expr2::Union{Expression,FeFunction}) = Expression(expr2.pyobject.__add__(expr) )
++(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject.__add__(expr2.pyobject) )
 
--(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__sub__](expr2) )
--(expr::Real, expr2::Union{Expression,FeFunction}) = -1*(Expression(expr2.pyobject[:__sub__](expr) ))
--(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__sub__](expr2.pyobject) )
+-(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject.__sub__(expr2) )
+-(expr::Real, expr2::Union{Expression,FeFunction}) = -1*(Expression(expr2.pyobject.__sub__(expr) ))
+-(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject.__sub__(expr2.pyobject) )
 
-/(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject[:__div__](expr2) )
-/(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject[:__div__](expr2.pyobject) )
+/(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject.__div__(expr2) )
+/(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject.__div__(expr2.pyobject) )
 
 function /(expr::Real,expr2::Union{Expression,FeFunction})
     x = expr2*expr2
@@ -140,7 +140,7 @@ function /(expr::Real,expr2::Union{Expression,FeFunction})
 end
 
 function Transpose(object::Expression)
-    x = object.pyobject[:T]
+    x = object.pyobject.T
     y = Expression(x)
     return y
 end

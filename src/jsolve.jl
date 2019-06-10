@@ -79,15 +79,15 @@ XDMFFile(path::StringOrSymbol) = fenics.XDMFFile(path)
 export XDMFFile
 
 TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
-retrieve(timeseries,placeholder,time) = timeseries[:retrieve](placeholder,time)
+retrieve(timeseries,placeholder,time) = timeseries.retrieve(placeholder,time)
 export TimeSeries, retrieve
 
 
-write(path,solution,time::Number) = path[:write](solution.pyobject, time)
-write(path,solution::PyObject,time::Number) = path[:write](solution, time)
+write(path,solution,time::Number) = path.write(solution.pyobject, time)
+write(path,solution::PyObject,time::Number) = path.write(solution, time)
 
-store(path,solution,time::Number) = path[:store](solution.pyobject, time)
-store(path,solution::PyObject,time::Number) = path[:store](solution, time)
+store(path,solution,time::Number) = path.store(solution.pyobject, time)
+store(path,solution::PyObject,time::Number) = path.store(solution, time)
 
 export write,store
 
@@ -107,7 +107,7 @@ end
 function get_array(solution::FeFunction)
     generic_vector = vector(solution)
     instantiated_vector = fenics.Vector(generic_vector)
-    return instantiated_vector[:gather_on_zero]()
+    return instantiated_vector.gather_on_zero()
 end
 """
 we return the array from an assembled form
