@@ -260,7 +260,7 @@ Deprecate this in a future version
 Plot(in_plot::Union{Mesh,FunctionSpace,FeFunction};alpha=1,animated=false,antialiased=true,color="grey"
 ,dash_capstyle="butt",dash_joinstyle="miter",dashes="",drawstyle="default",fillstyle="full",label="s",linestyle="solid",linewidth=1
 ,marker="",markeredgecolor="grey",markeredgewidth="",markerfacecolor="grey"
-,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common[:plotting][:plot](in_plot.pyobject,
+,markerfacecoloralt="grey",markersize=1,markevery="none",visible=true,title="") =fenics.common.plotting.plot(in_plot.pyobject,
 alpha=alpha,animated=animated,antialiased=antialiased,color=color,dash_capstyle=dash_capstyle,dash_joinstyle=dash_joinstyle
 ,dashes=dashes,drawstyle=drawstyle,fillstyle=fillstyle,label=label,linestyle=linestyle,linewidth=linewidth,marker=marker,markeredgecolor=markeredgecolor
 ,markeredgewidth=markeredgewidth,markerfacecolor=markerfacecolor,markerfacecoloralt=markerfacecoloralt,markersize=markersize,markevery=markevery
