@@ -1,16 +1,41 @@
-__precompile__(false)
 module FEniCS
+
 using PyCall
 using Requires
 
-fenics = pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge")
-ufl = pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge")
+# determine if we can include mshr
+include_mshr = false
+try
+    pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
+    global include_mshr = true
+catch ee
+    print("mshr has not been included")
+end
+
+# global PyObject constants that get initialized at runtime.  We
+# initialize them here (rather than via "global foo = ..." in __init__)
+# so that their type is known at compile-time.
+const fenics = PyCall.PyNULL()
+const ufl = PyCall.PyNULL()
+const mshr = PyCall.PyNULL()
 
 function __init__()
 	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
 	@require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin
 	  using ProgressMeter
-	end
+    end
+    copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
+    copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
+    include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
+
+    # initialize constants at loadtime
+    global dx = Measure(fenics.dx)
+    global ds = Measure(fenics.ds)
+    global dS = Measure(fenics.dS)
+    global dP = Measure(fenics.dP)
+    global tetrahedron = fenics.tetrahedron
+    global hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
+    global triangle = fenics.triangle
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
 import Base: size, length, show, *, +, -,/, repr, div, sqrt,split,write
@@ -46,13 +71,7 @@ include("jfem.jl") #this file contains the fem functions
 include("jmisc.jl") #this file contains various miscallaneous functions to assist with solving etc
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
-
-try
-  pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge")
-  include("fmshr.jl") #this file contains various geometrical objects using the mshr package
-catch ee
- print("mshr has not been included")
-end
+include_mshr && include("fmshr.jl") #this file contains various geometrical objects using the mshr package
 
 
 end #module
