@@ -1,4 +1,3 @@
-mshr = pyimport_conda("mshr", "mshr", "conda-forge")
 @fenicsclass Geometry
 
 #functions necessary for creating meshes from geometrical objects.

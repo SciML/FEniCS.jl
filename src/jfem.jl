@@ -69,7 +69,6 @@ export FeFunction,assign,split,py_split
 
 
 
-@fenicsclass Expression
 
 Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing) = Expression(fenics.Expression(cppcode,
 element=element,cell=cell, domain=domain, degree=degree, name=name, label=label))
@@ -104,13 +103,8 @@ export compute_vertex_values
 @fenicsclass Measure
 directional_derivative(solution1::FeFunction,direction)=FeFunction(fenicspycall(solution1,:dx,direction))
 
-dx = Measure(fenics.dx)
-ds = Measure(fenics.ds)
-dS = Measure(fenics.dS)
-dP = Measure(fenics.dP)
-
+# some of these constant are initialized in __init__
 export dx,ds,dS,dP,directional_derivative
-
 
 #https://github.com/FEniCS/Expression/blob/master/Expression/measure.py
 @fenicsclass Form
@@ -310,9 +304,8 @@ mapping(self)
  |  variant(self)
  |
 """
-tetrahedron = fenics.tetrahedron
-hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
-triangle = fenics.triangle
+
+# some of these constant are initialized in __init__
 export hexahedron, tetrahedron, triangle
 
 family(finiteelement::FiniteElement) = fenicspycall(finiteelement, :family)
