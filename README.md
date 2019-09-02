@@ -49,7 +49,7 @@ v = TestFunction(V)
 f = Constant(-6.0)
 a = dot(grad(u),grad(v))*dx
 L = f*v*dx
-U = FEniCS.Function(V)
+U = FeFunction(V)
 lvsolve(a,L,U,bc1) #linear variational solver
 errornorm(u_D, U, norm="L2")
 get_array(L) #this returns an array for the stiffness matrix
