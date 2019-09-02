@@ -61,6 +61,7 @@ vtkfile << U.pyobject #exports the solution to a vtkfile
 We can also plot the solution (this relies on FEniCS backend for plotting) or import it from our file into Paraview:
 
 ```julia
+import PyPlot # plotting won't work if PyPlot is not imported
 FEniCS.Plot(U)
 FEniCS.Plot(mesh)
 
