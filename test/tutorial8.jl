@@ -2,7 +2,7 @@ using FEniCS
 using PyCall
 #using ProgressMeter # for native julia progress
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 
 T = 0.05            # final time (increase to 5 for full problem)

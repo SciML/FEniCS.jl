@@ -4,7 +4,7 @@
 
 using FEniCS
 using PyCall
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 
 test_triangle = UnitTriangleMesh()

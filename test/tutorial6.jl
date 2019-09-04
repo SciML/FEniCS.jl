@@ -1,7 +1,7 @@
 using FEniCS
 using PyCall
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 
 L = 1; W = 0.2
