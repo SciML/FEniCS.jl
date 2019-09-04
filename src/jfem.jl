@@ -49,6 +49,10 @@ export Constant
 FeFunction(V::FunctionSpace) = FeFunction(fenics.Function(V.pyobject))
 assign(solution1::FeFunction,solution2 )=fenicspycall(solution1,:assign,solution2.pyobject)
 
+function assign(solution::FeFunction, data::AbstractArray)
+    solution.pyobject.vector().set_local(data)
+end
+
 geometric_dimension(expr::Union{FeFunction,Expression}) = fenicspycall(expr, :geometric_dimension)
 export geometric_dimension
 
