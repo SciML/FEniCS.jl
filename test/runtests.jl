@@ -22,6 +22,18 @@ end;
    @test include("test_jfem.jl")
 end;
 
+@testset "assign" begin
+    mesh = UnitIntervalMesh(10)
+    V = FunctionSpace(mesh, "P", 1)
+    u = interpolate(Expression("x[0]", degree=1), V)
+    arr1 = get_array(u)
+    arr2 = randn(size(arr1))
+    assign(u, arr2)
+    @test get_array(u) == arr2
+    assign(u, arr1)
+    @test get_array(u) == arr1
+end
+
 #tests relating to interface.jl file
 @testset "Interface" begin
    global mesh = UnitSquareMesh(2,2)
