@@ -1,3 +1,4 @@
+module Tutorial1
 using FEniCS
 
 mesh = UnitSquareMesh(8,8)
@@ -22,5 +23,4 @@ File("poisson/solutionnew.pvd",U)
 vertex_values_u_D = compute_vertex_values(u_D,mesh)
 vertex_values_u = compute_vertex_values(U,mesh)
 error_max = maximum(abs.(vertex_values_u_D-vertex_values_u))
-print("Tutorial 1 finished")
-true
+end#module

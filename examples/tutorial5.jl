@@ -1,3 +1,4 @@
+module Tutorial5
 using FEniCS
 
 mesh = UnitSquareMesh(8, 8)
@@ -17,4 +18,4 @@ v = TestFunction(V)
 f = Expression(f_code, degree=2)
 F = calc(u)*dot(grad(u), grad(v))*dx - f*v*dx
 nlvsolve(F,u,bc)
-true
+end#module

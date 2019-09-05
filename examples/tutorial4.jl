@@ -1,6 +1,5 @@
+module Tutorial4
 using FEniCS
-using PyCall
-const fenics=pyimport("fenics")
 
 
 T = 2.0            # final time
@@ -16,8 +15,8 @@ V = FunctionSpace(mesh, "P", 1)
 bc = DirichletBC(V, Constant(0), "on_boundary")
 
 # Define initial value
-u_0 = Expression(fenics.Expression("exp(-a*pow(x[0], 2) - a*pow(x[1], 2))",
-                 degree=2, a=5))
+u_0 = Expression("exp(-a*pow(x[0], 2) - a*pow(x[1], 2))",
+                 degree=2, a=5)
 
 u_n = interpolate(u_0, V)
 
@@ -50,4 +49,4 @@ for n = 0:(num_steps-1)
     # Update previous solution
     assign(u_n,u)
 end
-true
+end#module

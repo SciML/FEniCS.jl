@@ -1,9 +1,5 @@
+module Tutorial8
 using FEniCS
-using PyCall
-#using ProgressMeter # for native julia progress
-
-const fenics=pyimport("fenics")
-
 
 T = 0.05            # final time (increase to 5 for full problem)
 num_steps = 50   # number of time steps (#increase to 5000 for full stability)
@@ -31,7 +27,7 @@ cylinder = "on_boundary && x[0]>0.1 && x[0]<0.3 && x[1]>0.1 && x[1]<0.3"
 inflow_profile = ("4.0*1.5*x[1]*(0.41 - x[1]) / pow(0.41, 2)", "0")
 
 # Define boundary conditions
-bcu_inflow = DirichletBC(V, Expression(fenics.Expression(inflow_profile, degree=2)), inflow)
+bcu_inflow = DirichletBC(V, Expression(inflow_profile, degree=2), inflow)
 bcu_walls = DirichletBC(V, Constant((0, 0)), walls)
 bcu_cylinder = DirichletBC(V, Constant((0, 0)), cylinder)
 bcp_outflow = DirichletBC(Q, Constant(0), outflow)
@@ -133,6 +129,4 @@ for n =0:(num_steps-1)
     assign(u_n,u_)
     assign(p_n,p_)
 end
-print("Tutorial 8 finished")
-
-true
+end#module

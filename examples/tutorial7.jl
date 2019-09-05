@@ -1,8 +1,5 @@
+module Tutorial7
 using FEniCS
-using PyCall
-
-const fenics=pyimport("fenics")
-
 
 T = 1.0           # final time (increase to 10 for full problem)
 num_steps = 50    # number of time steps (increase for stability)
@@ -92,10 +89,10 @@ for n = 0:(num_steps-1)
     solve(A3, vector(u_), b3)
 
     # Plot solution
-    #fenics.plot(u_.pyobject)
+    # FEniCS.Plot(u_)
 
     # Compute error
-    u_e = Expression(fenics.Expression(("4*x[1]*(1.0 - x[1])", "0"), degree=2))
+    u_e = Expression(("4*x[1]*(1.0 - x[1])", "0"), degree=2)
     u_e = interpolate(u_e, V)
 
     # Update previous solution
@@ -104,5 +101,5 @@ for n = 0:(num_steps-1)
     #println(n)
 # Hold plot
 end
-print("Tutorial 7 finished")
-true
+
+end#module

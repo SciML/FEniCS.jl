@@ -1,8 +1,5 @@
+module Tutorial6
 using FEniCS
-using PyCall
-
-const fenics=pyimport("fenics")
-
 
 L = 1; W = 0.2
 mu = 1
@@ -14,7 +11,7 @@ lambda_ = beta
 g = gamma
 
 # Create mesh and define function space
-mesh = BoxMesh(fenics.Point(0, 0, 0), fenics.Point(L, W, W), 10, 3, 3)
+mesh = BoxMesh(Point([0, 0, 0]), Point([L, W, W]), 10, 3, 3)
 V = VectorFunctionSpace(mesh, "P", 1)
 c = Constant((0,0,0))
 bc = DirichletBC(V, c, "on_boundary && x[1]<1E-14")
@@ -46,5 +43,4 @@ V = FunctionSpace(mesh, "P", 1)
 von_Mises = project(von_Mises, V)
 u_magnitude = sqrt(dot(u, u))
 u_magnitude = project(u_magnitude, V)
-print("Tutorial 6 finished")
-true
+end#module

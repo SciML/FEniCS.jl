@@ -1,13 +1,11 @@
+module Acoustic
 using FEniCS
-using PyCall
-
-const fenics=pyimport("fenics")
 
 c = 5000
-#problem variables
-dt = 0.000004;
+#problem variables, have been scaled down for faster test solution
+dt = 0.00004;
 global t = 0;
-T = 0.004;
+T = 0.0004;
 
 mesh = RectangleMesh(Point([-2., -2.]),Point([2., 2.]),40,40)
 V = FunctionSpace(mesh,"Lagrange",1)
@@ -23,7 +21,7 @@ v = TestFunction(V)
 a = u*v*dx + dt*dt*c*c*inner(grad(u), grad(v))*dx
 L = 2*u1*v*dx-u0*v*dx
 
-delta = Expression(fenics.Expression("sin(c*10*t)",degree=2,c=c,t=t))
+delta = Expression("sin(c*10*t)",degree=2,c=c,t=t)
 
 #Define boundary conditions
 top ="on_boundary && near(x[1], 2)"
@@ -38,18 +36,22 @@ BCL = DirichletBC(V,delta,left)
 right = "on_boundary && near(x[0],2)"
 BCR = DirichletBC(V,Constant(0.0),right)
 
-bcs_dir = [BCL,BCD,BCT,BCR]
-bcs_neu = [BCL,BCD,BCT]
+#bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject,BCR.pyobject]
+bcs = [BCL.pyobject,BCD.pyobject,BCT.pyobject]
 
+#bc = DirichletBC(V, 0, "on_boundary")
 
 u=FeFunction(V)
 
 while t <= T
+    A, b = assemble_system(a, L, bcs)
     delta.pyobject.t = t
-    lvsolve(a,L,u,bcs_dir) #linear variational solver
+    [apply(bcc,b) for bcc in bcs]
+    solve(A, vector(u), b)
     assign(u0,u1)
     assign(u1,u)
     global t +=dt
+    #fenics.plot(u.pyobject,title="Acoustic wave Equation")#,mode="auto")
+
 end
-println("Acoustic problem finished")
-true
+end#module

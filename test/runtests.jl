@@ -1,22 +1,22 @@
 using FEniCS
 using Test
-import PyCall
 
 FEniCS.set_log_level(FEniCS.WARNING)
 
-@testset "Tutorials" begin
-   @test include("tutorial1.jl")
-   @test include("tutorial2.jl")
-   @test include("tutorial3.jl")
-   @test include("tutorial4.jl")
-   @test include("tutorial5.jl")
-   @test include("tutorial6.jl")
-   @test include("tutorial7.jl")
-   @test include("tutorial8.jl")
-   @test include("tutorial9.jl")
-   @test include("acoustic.jl")
-   @test include("acoustic_new_assemble.jl")
-end;
+examples_dir = joinpath(@__DIR__, "..", "examples")
+@assert ispath(examples_dir)
+example_filenames = readdir(examples_dir)
+@assert "tutorial1.jl" in example_filenames
+
+@testset "Example $(filename)" for filename in example_filenames
+    path = joinpath(examples_dir, filename)
+    @test (include(path) ;true)
+    # Test that PyCall is not used in the example.
+    # Use of PyCall indicates, that we did not wrap enough
+    # funcionality
+    s = read(path, String)
+    @test !occursin("PyCall", s)
+end
 
 @testset "Creation" begin
    @test include("test_create.jl")
@@ -47,6 +47,3 @@ end
    @test (u.n_boundary_nodes==8)
    @test (u.node_vals == [1,1,1,1,0,1,1,1,1])
 end;
-
-
-print("tests completed")
