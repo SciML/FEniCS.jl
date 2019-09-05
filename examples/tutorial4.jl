@@ -1,6 +1,5 @@
 module Tutorial4
 using FEniCS
-using PyCall
 
 
 T = 2.0            # final time

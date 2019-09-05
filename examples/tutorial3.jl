@@ -1,6 +1,5 @@
 module Tutorial3
 using FEniCS
-using PyCall
 
 T = 2.0            # final time
 num_steps = 10     # number of time steps

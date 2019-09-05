@@ -10,7 +10,6 @@ is given by the flow field w from the demo navier_stokes_cylinder.py.
 module Tutorial9
 
 using FEniCS
-using PyCall
 
 T = 0.05            # final time
 num_steps = 10    # number of time steps

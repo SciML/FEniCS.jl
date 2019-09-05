@@ -1,6 +1,5 @@
 module Tutorial8
 using FEniCS
-using PyCall
 
 T = 0.05            # final time (increase to 5 for full problem)
 num_steps = 50   # number of time steps (#increase to 5000 for full stability)

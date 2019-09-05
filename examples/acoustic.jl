@@ -1,6 +1,5 @@
 module Acoustic
 using FEniCS
-using PyCall
 
 c = 5000
 #problem variables, have been scaled down for faster test solution

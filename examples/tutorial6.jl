@@ -1,6 +1,5 @@
 module Tutorial6
 using FEniCS
-using PyCall
 
 L = 1; W = 0.2
 mu = 1

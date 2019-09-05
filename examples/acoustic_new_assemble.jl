@@ -1,6 +1,5 @@
 module AcousticNewAssemble
 using FEniCS
-using PyCall
 
 c = 5000
 #problem variables

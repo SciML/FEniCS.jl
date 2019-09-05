@@ -1,6 +1,5 @@
 module Tutorial2
 using FEniCS
-using PyCall
 domain = Circle(Point([0.0,0.0]),1)
 mesh = generate_mesh(domain,16)
 V = FunctionSpace(mesh,"P",2)
