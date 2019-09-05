@@ -70,12 +70,9 @@ end
 
 export FeFunction,assign,split,py_split
 
-
-
-
-
-Expression(cppcode::String;element=nothing, cell=nothing, domain=nothing, degree=nothing, name=nothing, label=nothing) = Expression(fenics.Expression(cppcode,
-element=element,cell=cell, domain=domain, degree=degree, name=name, label=label))
+function Expression(cppcode; kw...)
+    Expression(fenics.Expression(cppcode; kw...))
+end
 Identity(dim::Int) = Expression(fenics.Identity(dim))
 inner(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.inner(u.pyobject, v.pyobject))
 outer(u::Union{Expression,FeFunction}, v::Union{Expression,FeFunction}) = Expression(fenics.outer(u.pyobject, v.pyobject))
