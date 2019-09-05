@@ -13,7 +13,7 @@ using FEniCS
 using PyCall
 
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 
 T = 0.05            # final time
@@ -88,7 +88,7 @@ for n=0:num_steps
 
     # Save solution to file (VTK)
     _u_1, _u_2, _u_3 = py_split(u)
-    #_u_1, _u_2, _u_3 = u.pyobject[:split]()
+    #_u_1, _u_2, _u_3 = u.pyobject.split()
 
 
     File("reaction_system/u_1.pvd",_u_1,t)

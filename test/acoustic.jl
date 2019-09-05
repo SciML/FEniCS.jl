@@ -1,7 +1,7 @@
 using FEniCS
 using PyCall
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 c = 5000
 #problem variables, have been scaled down for faster test solution
 dt = 0.00004;
@@ -46,7 +46,7 @@ u=FeFunction(V)
 
 while t <= T
     A, b = assemble_system(a, L, bcs)
-    delta.pyobject[:t] = t
+    delta.pyobject.t = t
     [apply(bcc,b) for bcc in bcs]
     solve(A, vector(u), b)
     assign(u0,u1)

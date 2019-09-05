@@ -1,6 +1,8 @@
 using FEniCS
 using Test
+import PyCall
 
+FEniCS.set_log_level(FEniCS.WARNING)
 
 @testset "Tutorials" begin
    @test include("tutorial1.jl")

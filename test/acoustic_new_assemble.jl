@@ -1,7 +1,7 @@
 using FEniCS
 using PyCall
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 c = 5000
 #problem variables
@@ -45,7 +45,7 @@ bcs_neu = [BCL,BCD,BCT]
 u=FeFunction(V)
 
 while t <= T
-    delta.pyobject[:t] = t
+    delta.pyobject.t = t
     lvsolve(a,L,u,bcs_dir) #linear variational solver
     assign(u0,u1)
     assign(u1,u)

@@ -1,7 +1,7 @@
 using FEniCS
 using PyCall
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 
 
 T = 1.0           # final time (increase to 10 for full problem)

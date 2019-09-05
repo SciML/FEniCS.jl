@@ -60,6 +60,18 @@ macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
 end
 export fenicsclass
 
+@enum LOGLEVEL begin
+    CRITICAL  = 50
+    ERROR     = 40
+    WARNING   = 30
+    INFO      = 20
+    PROGRESS  = 16
+    TRACE     = 13
+    DBG       = 10
+end
+set_log_level(lvl::LOGLEVEL) = set_log_level(Int(lvl))
+set_log_level(lvl::Int) = fenics.set_log_level(lvl)
+
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, str(obj))

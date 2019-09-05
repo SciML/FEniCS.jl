@@ -1,7 +1,7 @@
 using FEniCS
 using PyCall
 
-@pyimport fenics
+const fenics=pyimport("fenics")
 T = 2.0            # final time
 num_steps = 10     # number of time steps
 dt = T / num_steps # time step size
@@ -27,7 +27,7 @@ global t = 0
 
 for n = 0:(num_steps-1)
     global t=t+dt
-    u_D.pyobject[:t]=t
+    u_D.pyobject.t=t
     lvsolve(a,L,u,bc)
     u_e= interpolate(u_D,V)
     vv = get_array(u_e)
