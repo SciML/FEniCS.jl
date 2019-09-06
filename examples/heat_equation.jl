@@ -12,11 +12,12 @@ using Test
 using OrdinaryDiffEq
 using FEniCS
 
-mesh = UnitIntervalMesh(20)
+mesh = UnitIntervalMesh(50)
 V = FunctionSpace(mesh,"P",1)
 u_str = "sin(2*pi*x[0]) * exp(-t*pow(2*pi, 2))"
 
-u = interpolate(Expression(u_str, degree=2, pi=Float64(pi), t=0), V)
+tspan = (0.0, 0.1)
+u = interpolate(Expression(u_str, degree=2, pi=Float64(pi), t=tspan[1]), V)
 
 bc = DirichletBC(V, 0.0, "on_boundary")
 dudt = TrialFunction(V)
@@ -35,15 +36,19 @@ end
 
 u0_vec = get_array(u)
 t_final = 0.1
-tspan = (0.0, t_final)
 prob = ODEProblem(f!, u0_vec, tspan, p)
-u_true = interpolate(Expression(u_str, degree=2, pi=Float64(pi), t=t_final), V)
+u_true = interpolate(Expression(u_str, degree=2, pi=Float64(pi), t=tspan[2]), V)
 
-alg = ImplicitEuler(autodiff=false)
-sol = OrdinaryDiffEq.solve(prob, alg)
+# some algorithms to try:
+# alg = ImplicitEuler(autodiff=false)
+# alg = Rosenbrock23(autodiff=false)
+# alg = Rodas5(autodiff=false)
+
+alg = KenCarp4(autodiff=false)
+sol = OrdinaryDiffEq.solve(prob, alg, reltol=1e-6, abstol=1e-6)
 
 vec_sol = get_array(p.u)
 vec_true = get_array(u_true)
-@test vec_sol ≈ vec_true rtol=1e-3
+@test vec_sol ≈ vec_true rtol=1e-2
 
 end#module
