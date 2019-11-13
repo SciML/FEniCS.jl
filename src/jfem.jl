@@ -307,7 +307,7 @@ mapping(self)
 """
 
 # some of these constant are initialized in __init__
-export hexahedron, tetrahedron, triangle
+export hexahedron, tetrahedron, quadrilateral, triangle
 
 family(finiteelement::FiniteElement) = fenicspycall(finiteelement, :family)
 
