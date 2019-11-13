@@ -36,6 +36,8 @@ function __init__()
     global tetrahedron = fenics.tetrahedron
     global hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
     global triangle = fenics.triangle
+    global quadrilateral = fenics.quadrilateral
+    global CellType = fenics.CellType
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
 import Base: size, length, show, *, +, -,/, repr, div, sqrt,split,write

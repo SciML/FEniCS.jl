@@ -55,6 +55,9 @@ export cell_orientations,cells,hmin , hmax, init, init_global, coordinates, data
 domains, geometry,topology, num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree,
 rmax, rmin, size, ufl_cell , ufl_domain, ufl_id
 
+# This constant is initialized in __init__
+export CellType
+
 """
 Mesh(path::StringOrSymbol) \n
 Creates a Mesh based on a specified filename(path)
@@ -91,6 +94,7 @@ will be 2*nx*ny and the total number of vertices will be (nx + 1)*(ny + 1) \n
 diagonal ("left", "right", "right//left", "left//right", or "crossed") indicates the direction of the diagonals.
 """
 UnitSquareMesh(nx::Int, ny::Int, diagonal::StringOrSymbol="right") = Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
+UnitSquareMesh(nx::Int, ny::Int, cellType::PyObject) = Mesh(fenics.UnitSquareMesh.create(nx, ny, cellType))
 
 
 function UnitQuadMesh(nx::Int,ny::Int)
@@ -115,6 +119,7 @@ tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*
 
 """
 UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx,ny,nz))
+UnitCubeMesh(nx::Int, ny::Int, nz::Int, cellType::PyObject) = Mesh(fenics.UnitCubeMesh.create(nx, ny, nz, cellType))
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) \n
 
@@ -123,6 +128,7 @@ Given the number of cells (nx, ny, nz) in each direction, the total number of \n
 tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*(ny + 1)*(nz + 1).
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)= Mesh(fenics.BoxMesh(p0,p1,nx,ny,nz))
+BoxMesh(p::NTuple{2, PyObject}, n::NTuple{3, Int}, cellType::PyObject) = Mesh(fenics.BoxMesh.create(p, n, cellType))
 
 """
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") \n
@@ -132,6 +138,7 @@ of triangles will be 2*nx*ny and the total number of vertices will be (nx + 1)*(
 diagdir ("left", "right", "right/left", "left/right", or "crossed") indicates the direction of the diagonals.
 """
 RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") = Mesh(fenics.RectangleMesh(p0,p1,nx,ny,diagdir))
+RectangleMesh(p::NTuple{2, PyObject}, n::NTuple{2, Int}, cellType::PyObject) = Mesh(fenics.RectangleMesh.create(p, n, cellType))
 
 """
 BoundaryMesh(mesh::Mesh,type_boundary::StringOrSymbol="exterior",order=true) \n
