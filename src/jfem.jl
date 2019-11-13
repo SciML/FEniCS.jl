@@ -46,7 +46,13 @@ Constant(x::Union{Real,Tuple}) = Expression(fenics.Constant(x, name="Constant($x
 export Constant
 
 @fenicsclass FeFunction
-FeFunction(V::FunctionSpace) = FeFunction(fenics.Function(V.pyobject))
+function FeFunction(V::FunctionSpace; name::String="")
+    if name == ""
+        return FeFunction(fenics.Function(V.pyobject))
+    else
+        return FeFunction(fenics.Function(V.pyobject, name=name))
+    end
+end
 assign(solution1::FeFunction,solution2 )=fenicspycall(solution1,:assign,solution2.pyobject)
 
 function assign(solution::FeFunction, data::AbstractArray)
