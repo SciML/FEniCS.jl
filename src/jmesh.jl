@@ -51,9 +51,16 @@ ufl_domain(mesh::Mesh)=fenicspycall(mesh, :ufl_domain)
 #Returns an id that UFL can use to decide if two objects are the same.
 ufl_id(mesh::Mesh)=fenicspycall(mesh, :ufl_id)
 
+# Return symbolic cell diameter
+CellDiameter(mesh::Mesh) = Expression(fenics.CellDiameter(mesh.pyobject))
+# Return symbolic cell normal
+CellNormal(mesh::Mesh) = Expression(fenics.CellNormal(mesh.pyobject))
+# Return symbolic cell volume
+CellVolume(mesh::Mesh) = Expression(fenics.CellVolume(mesh.pyobject))
+
 export cell_orientations,cells,hmin , hmax, init, init_global, coordinates, data,
 domains, geometry,topology, num_cells,num_edges,num_entities,num_faces,num_facets,num_vertices, bounding_box_tree,
-rmax, rmin, size, ufl_cell , ufl_domain, ufl_id
+rmax, rmin, size, ufl_cell , ufl_domain, ufl_id, CellDiameter, CellNormal, CellVolume
 
 # This constant is initialized in __init__
 export CellType
