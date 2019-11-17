@@ -76,7 +76,7 @@ set_log_level(lvl::Int) = fenics.set_log_level(lvl)
 
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
-show(io::IO, obj::fenicsobject) = show(io, str(obj))
+show(io::IO, obj::fenicsobject) = show(io, repr(obj))
 Docs.getdoc(obj::fenicsobject) = obj.pyobject.__doc__
 export str, repr
 
