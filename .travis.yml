@@ -4,6 +4,7 @@ os:
   - linux
   - osx
 dist: xenial
+osx_image: xcode11.2
 julia:
   - 1.1
 #  - nightly
