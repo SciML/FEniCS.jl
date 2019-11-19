@@ -170,6 +170,9 @@ export lhs, rhs
 #this assembles the matrix from a fenics form
 @fenicsclass Matrix
 
+# This handles the cases where a fenics form reduces to a number
+Matrix(a::T) where {T<:Real} = a
+
 assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_parameters=nothing, add_values=false, finalize_tensor=true, keep_diagonal=false, backend=nothing) = Matrix(fenics.assemble(assembly_item.pyobject,
 tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))
 export assemble
