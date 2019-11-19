@@ -215,3 +215,17 @@ end
 
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
 pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh,pyMesh, Point
+
+@fenicsclass Cell #https://fenicsproject.org/docs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Cell.html
+Cell(mesh::MeshImpl, i::Int) = Cell(fenics.Cell(mesh.pyobject, i))
+
+# Get coordinates of cell vertices
+get_vertex_coordinates(cell::Cell) = fenicspycall(cell, :get_vertex_coordinates)
+# Compute greatest distance between between two vertices of a cell
+h(cell::Cell) = fenicspycall(cell, :h)
+# Compute midpoint of a cell
+midpoint(cell::Cell) = fenicspycall(cell, :midpoint)
+# Compute volume of cell
+volume(cell::Cell) = fenicspycall(cell, :volume)
+
+export Cell, get_vertex_coordinates, h, midpoint, volume
