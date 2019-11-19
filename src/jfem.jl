@@ -177,6 +177,8 @@ assemble(assembly_item::Union{Form,Expression};tensor=nothing, form_compiler_par
 tensor=tensor,form_compiler_parameters=form_compiler_parameters,add_values=add_values,finalize_tensor=finalize_tensor,keep_diagonal=keep_diagonal,backend=backend))
 export assemble
 
+assemble_local(assembly_item::Union{Form,Expression}, cell::Cell) = fenics.assemble_local(assembly_item.pyobject, cell.pyobject)
+export assemble_local
 
 #I have changed this to Function+Form
 
