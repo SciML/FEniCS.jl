@@ -94,6 +94,13 @@ sqrt(u::Union{Expression,FeFunction}) = Expression(fenics.sqrt(u.pyobject))
 sym(u::Union{Expression,FeFunction}) = Expression(fenics.sym(u.pyobject))
 len(U::Union{Expression,FeFunction}) = length(U.pyobject)
 
+sin(u::Union{Expression,FeFunction}) = Expression(fenics.sin(u.pyobject))
+cos(u::Union{Expression,FeFunction}) = Expression(fenics.cos(u.pyobject))
+tan(u::Union{Expression,FeFunction}) = Expression(fenics.tan(u.pyobject))
+asin(u::Union{Expression,FeFunction}) = Expression(fenics.asin(u.pyobject))
+acos(u::Union{Expression,FeFunction}) = Expression(fenics.acos(u.pyobject))
+atan(u::Union{Expression,FeFunction}) = Expression(fenics.atan(u.pyobject))
+
 interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
 Expression(x::FEniCS.Expression) = convert(Expression,x)
@@ -139,6 +146,9 @@ function /(expr::Real,expr2::Union{Expression,FeFunction})
     z = expr2/y
     return Expression(z)
 end
+
+^(expr::Union{Expression,FeFunction}, expr2::Real) = Expression(expr.pyobject.__pow__(expr2) )
+^(expr::Union{Expression,FeFunction}, expr2::Union{Expression,FeFunction}) = Expression(expr.pyobject.__pow__(expr2.pyobject) )
 
 function Transpose(object::Expression)
     x = object.pyobject.T
