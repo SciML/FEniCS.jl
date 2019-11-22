@@ -103,6 +103,11 @@ atan(u::Union{Expression,FeFunction}) = Expression(fenics.atan(u.pyobject))
 exp(u::Union{Expression,FeFunction}) = Expression(fenics.exp(u.pyobject))
 log(u::Union{Expression,FeFunction}) = Expression(fenics.ln(u.pyobject))
 
+besseli(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_I(nu, u.pyobject))
+besselj(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_J(nu, u.pyobject))
+besselk(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_K(nu, u.pyobject))
+bessely(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_Y(nu, u.pyobject))
+
 interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
 Expression(x::FEniCS.Expression) = convert(Expression,x)
