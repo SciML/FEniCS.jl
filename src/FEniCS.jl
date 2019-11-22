@@ -40,7 +40,7 @@ function __init__()
     global CellType = fenics.CellType
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
-import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, repr, div, sqrt, split, write
+import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log, repr, div, sqrt, split, write
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
