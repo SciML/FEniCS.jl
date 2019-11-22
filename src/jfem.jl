@@ -100,6 +100,8 @@ tan(u::Union{Expression,FeFunction}) = Expression(fenics.tan(u.pyobject))
 asin(u::Union{Expression,FeFunction}) = Expression(fenics.asin(u.pyobject))
 acos(u::Union{Expression,FeFunction}) = Expression(fenics.acos(u.pyobject))
 atan(u::Union{Expression,FeFunction}) = Expression(fenics.atan(u.pyobject))
+exp(u::Union{Expression,FeFunction}) = Expression(fenics.exp(u.pyobject))
+log(u::Union{Expression,FeFunction}) = Expression(fenics.ln(u.pyobject))
 
 interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
