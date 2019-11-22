@@ -103,10 +103,15 @@ atan(u::Union{Expression,FeFunction}) = Expression(fenics.atan(u.pyobject))
 exp(u::Union{Expression,FeFunction}) = Expression(fenics.exp(u.pyobject))
 log(u::Union{Expression,FeFunction}) = Expression(fenics.ln(u.pyobject))
 
+bessel_I(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_I(nu, u.pyobject))
+bessel_J(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_J(nu, u.pyobject))
+bessel_K(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_K(nu, u.pyobject))
+bessel_Y(nu::Int, u::Union{Expression,FeFunction}) = Expression(fenics.bessel_Y(nu, u.pyobject))
+
 interpolate(solution1::FeFunction,solution2::Expression) = FeFunction(fenicspycall(solution1,:interpolate,solution2.pyobject))
 
 Expression(x::FEniCS.Expression) = convert(Expression,x)
-export Expression,Identity,inner,grad, nabla_grad, nabla_div,div, outer,dot,cross, tr, sqrt, sym, len, interpolate
+export Expression,Identity,inner,grad, nabla_grad, nabla_div,div, outer,dot,cross, tr, sqrt, sym, len, bessel_I, bessel_J, bessel_K, bessel_Y, interpolate
 export ∇
 
 #Below are attributes for the Expression and FeFunction types
