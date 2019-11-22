@@ -10,7 +10,7 @@ of PDEs. This wrapper includes three parts:
 
 1. Installation and direct access to FEniCS via a Conda installation. Alternatively one may use their current [FEniCS installation](https://fenicsproject.org/download/).
 2. A low-level development API and provides some functionality to make directly dealing with the library a little bit easier, but still requires knowledge of FEniCS itself. Interfaces have been provided for the main functions and their attributes, and instructions to add further ones can be [found here](https://gist.github.com/ysimillides/160bbf50a7e99d6656398aee48c88ef7).
-3. A high-level API for usage with [DifferentialEquations](https://github.com/JuliaDiffEq/DifferentialEquations.jl) which has not been implemented yet.
+3. A high-level API for usage with [DifferentialEquations](https://github.com/JuliaDiffEq/DifferentialEquations.jl). An example can be seen [solving the heat equation with high order adaptive timestepping](https://github.com/JuliaDiffEq/FEniCS.jl/blob/master/examples/heat_equation.jl).
 
 Various [gists/jupyter](https://gist.github.com/ysimillides/20761c511a8807ae11c2b9e70606985e) notebooks have been created to provide a brief overview of the overall functionality, and of any differences between the pythonic FEniCS and the julian wrapper.
 DifferentialEquations.jl ecosystem. [Paraview](https://www.paraview.org/) can also be used to visualize various results just like in FEniCS (see below).
