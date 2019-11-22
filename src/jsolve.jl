@@ -37,7 +37,13 @@ export nlvsolve
 anlvsolve(F,a,u,bcs,tol,M)=fenics.solve(F.pyobject==a.pyobject,u.pyobject,bcs=bcs.pyobject,tol=tol,M=M)
 #this function hasnt been tested yet, so isnt exported
 
-
+function norm(u::FeFunction; normType="L2", mesh::Union{Nothing, Mesh}=nothing)
+    if isa(mesh, Nothing)
+        return fenics.norm(u.pyobject, normType)
+    else
+        return fenics.norm(u.pyobject, normType, mesh.pyobject)
+    end
+end
 
 """
 errornorm is the function to calculate the error between our exact and calculated

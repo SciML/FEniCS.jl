@@ -45,6 +45,9 @@ import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan,
 import SpecialFunctions: besseli, besselj, besselk, bessely
 export besseli, besselj, besselk, bessely
 
+import LinearAlgebra: norm
+export norm
+
 abstract type
   fenicsobject
 end #creates placeholder for the fenicsobject type
