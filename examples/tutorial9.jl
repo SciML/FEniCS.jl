@@ -42,9 +42,9 @@ u_n1, u_n2, u_n3 = split(u_n)
 
 # Define source terms
 f_1 = Expression("pow(x[0]-0.1,2)+pow(x[1]-0.1,2)<0.05*0.05 ? 0.1 : 0",
-                 degree=1)
+                 degree = 1)
 f_2 = Expression("pow(x[0]-0.1,2)+pow(x[1]-0.3,2)<0.05*0.05 ? 0.1 : 0",
-                 degree=1)
+                 degree = 1)
 f_3 = Constant(0)
 
 # Define expressions used in variational forms
@@ -53,13 +53,13 @@ K = Constant(K)
 eps = Constant(eps)
 
 # Define variational problem
-F = ((u_1 - u_n1) / k)*v_1*dx + dot(w, grad(u_1))*v_1*dx +
-   eps*dot(grad(u_1), grad(v_1))*dx + K*u_1*u_2*v_1*dx +
-   ((u_2 - u_n2) / k)*v_2*dx + dot(w, grad(u_2))*v_2*dx +
-   eps*dot(grad(u_2), grad(v_2))*dx + K*u_1*u_2*v_2*dx +
-   ((u_3 - u_n3) / k)*v_3*dx + dot(w, grad(u_3))*v_3*dx +
-   eps*dot(grad(u_3), grad(v_3))*dx - K*u_1*u_2*v_3*dx + K*u_3*v_3*dx -
-   f_1*v_1*dx - f_2*v_2*dx - f_3*v_3*dx
+F = ((u_1 - u_n1) / k) * v_1 * dx + dot(w, grad(u_1)) * v_1 * dx +
+    eps * dot(grad(u_1), grad(v_1)) * dx + K * u_1 * u_2 * v_1 * dx +
+    ((u_2 - u_n2) / k) * v_2 * dx + dot(w, grad(u_2)) * v_2 * dx +
+    eps * dot(grad(u_2), grad(v_2)) * dx + K * u_1 * u_2 * v_2 * dx +
+    ((u_3 - u_n3) / k) * v_3 * dx + dot(w, grad(u_3)) * v_3 * dx +
+    eps * dot(grad(u_3), grad(v_3)) * dx - K * u_1 * u_2 * v_3 * dx + K * u_3 * v_3 * dx -
+    f_1 * v_1 * dx - f_2 * v_2 * dx - f_3 * v_3 * dx
 
 # Create time series for reading velocity data
 timeseries_w = TimeSeries("navier_stokes_cylinder/velocity_series")
@@ -70,13 +70,13 @@ vtkfile_u_3 = File("reaction_system/u_3.pvd")
 
 # Time-stepping
 global t = 0
-for n=0:num_steps
+for n in 0:num_steps
 
     # Update current time
     global t += dt
 
     # Read velocity from file
-    retrieve(timeseries_w,vector(w),t)
+    retrieve(timeseries_w, vector(w), t)
 
     # Solve variational problem for time step
     nlvsolve(F, u)
@@ -85,11 +85,9 @@ for n=0:num_steps
     _u_1, _u_2, _u_3 = py_split(u)
     #_u_1, _u_2, _u_3 = u.pyobject.split()
 
-
-    File("reaction_system/u_1.pvd",_u_1,t)
-
+    File("reaction_system/u_1.pvd", _u_1, t)
 
     # Update previous solution
-    assign(u_n,u)
+    assign(u_n, u)
 end
 end#module

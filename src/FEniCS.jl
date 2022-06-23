@@ -20,10 +20,8 @@ const ufl = PyCall.PyNULL()
 const mshr = PyCall.PyNULL()
 
 function __init__()
-	@require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
-	@require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin
-	  using ProgressMeter
-    end
+    @require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
+    @require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin using ProgressMeter end
     copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
     copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
     include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
@@ -40,7 +38,8 @@ function __init__()
     global CellType = fenics.CellType
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
-import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log, repr, div, sqrt, split, write
+import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log,
+             repr, div, sqrt, split, write
 
 import SpecialFunctions: besseli, besselj, besselk, bessely
 export besseli, besselj, besselk, bessely
@@ -48,35 +47,33 @@ export besseli, besselj, besselk, bessely
 import LinearAlgebra: norm
 export norm
 
-abstract type
-  fenicsobject
-end #creates placeholder for the fenicsobject type
+abstract type fenicsobject end #creates placeholder for the fenicsobject type
 
-fenicspycall(object::fenicsobject, func::Union{Symbol,String}, args...) = getproperty(object.pyobject,func)(args...)
+function fenicspycall(object::fenicsobject, func::Union{Symbol, String}, args...)
+    getproperty(object.pyobject, func)(args...)
+end
 export fenicspycall
 
-macro fenicsclass(name::Symbol, base1::Symbol=:fenicsobject)
-  impl = Symbol(name, "Impl")
-  esc(quote
-    abstract type
-       $name <: $base1
-     end
-    struct $impl <: $name
-      pyobject::PyObject
-    end
-    $(name)(pyobject::PyObject) = $impl(pyobject)
-  end)
+macro fenicsclass(name::Symbol, base1::Symbol = :fenicsobject)
+    impl = Symbol(name, "Impl")
+    esc(quote
+            abstract type $name <: $base1 end
+            struct $impl <: $name
+                pyobject::PyObject
+            end
+            $(name)(pyobject::PyObject) = $impl(pyobject)
+        end)
 end
 export fenicsclass
 
 @enum LOGLEVEL begin
-    CRITICAL  = 50
-    ERROR     = 40
-    WARNING   = 30
-    INFO      = 20
-    PROGRESS  = 16
-    TRACE     = 13
-    DBG       = 10
+    CRITICAL = 50
+    ERROR = 40
+    WARNING = 30
+    INFO = 20
+    PROGRESS = 16
+    TRACE = 13
+    DBG = 10
 end
 set_log_level(lvl::LOGLEVEL) = set_log_level(Int(lvl))
 set_log_level(lvl::Int) = fenics.set_log_level(lvl)
@@ -93,6 +90,5 @@ include("jmisc.jl") #this file contains various miscallaneous functions to assis
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 include_mshr && include("fmshr.jl") #this file contains various geometrical objects using the mshr package
-
 
 end #module
