@@ -1,4 +1,4 @@
-# FEniCS.jl
+# FEniCS.jl: Finite Element PDE Solving in Julia
 
 [![Join the chat at https://julialang.zulipchat.com #sciml-bridged](https://img.shields.io/static/v1?label=Zulip&message=chat&color=9558b2&labelColor=389826)](https://julialang.zulipchat.com/#narrow/stream/279055-sciml-bridged)
 [![Global Docs](https://img.shields.io/badge/docs-SciML-blue.svg)](https://docs.sciml.ai/dev/modules/FEniCS/)
@@ -22,10 +22,10 @@ To get the wrapper on your system,providing a FEniCS installation exists, follow
 
 1. Add PyCall with the correct python environment corresponding to FEniCS. Then simply add FEniCS.jl using Pkg.add("FEniCS")
 
-2. Alternatively, one can install [Docker](https://www.docker.com/) and then run the following command  
+2. Alternatively, one can install [Docker](https://www.docker.com/) and then run the following command
 
 ```sh
-docker run -ti ysimillides/fenics-julia-docker 
+docker run -ti ysimillides/fenics-julia-docker
 ```
 and once inside, 'julia' can be accessed by calling
 ```sh
@@ -38,10 +38,10 @@ This wrapper was originally started via the [Google Summer of Code program](http
 
 ## Tutorial
 
-Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://github.com/hplgit/fenics-tutorial/blob/master/pub/python/vol1/ft01_poisson.py)** FEniCS provides 
+Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://github.com/hplgit/fenics-tutorial/blob/master/pub/python/vol1/ft01_poisson.py)** FEniCS provides
 ```julia
 using FEniCS
-mesh = UnitSquareMesh(8,8) 
+mesh = UnitSquareMesh(8,8)
 V = FunctionSpace(mesh,"P",1)
 u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]", degree=2)
 u = TrialFunction(V)
@@ -69,7 +69,7 @@ FEniCS.Plot(mesh)
 ```
 
 ![alt text](https://user-images.githubusercontent.com/16087601/34915339-b77e8694-f91c-11e7-9ae1-db1e114a177a.png "Solution")
- 
+
 ![alt text](https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png "Square Mesh")
 
 See the examples directory for more examples.
