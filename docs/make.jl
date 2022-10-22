@@ -17,7 +17,7 @@ makedocs(sitename = "FEniCS.jl",
          ],
          format = Documenter.HTML(analytics = "UA-90474609-3",
                                   assets = ["assets/favicon.ico"],
-                                  canonical = "https://fenics.sciml.ai/stable/"),
+                                  canonical = "https://docs.sciml.ai/FEniCS/stable/"),
          pages = [
              "FEniCS.jl: Finite Element PDE Solving in Julia" => "index.md",
          ])
