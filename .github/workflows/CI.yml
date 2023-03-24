@@ -8,8 +8,10 @@ on:
       - master
 jobs:
   test:
-    using: 'docker'
-    image: 'Dockerfile'
+    runs-on: ubuntu-latest
+    container:
+      image: cmhyett:julia-fenics
+
     strategy:
       matrix:
         group:
