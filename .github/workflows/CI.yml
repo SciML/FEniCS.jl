@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: cmhyett:julia-fenics
+      image: cmhyett/julia-fenics:latest
 
     strategy:
       matrix:
