@@ -25,7 +25,7 @@ To get the wrapper on your system, providing a FEniCS installation exists, follo
 2. Alternatively, one can install [Docker](https://www.docker.com/) and then run the following command
 
 ```sh
-docker run -ti ysimillides/fenics-julia-docker
+docker run -ti cmhyett/julia-fenics
 ```
 and once inside, Julia can be accessed by calling
 ```sh
