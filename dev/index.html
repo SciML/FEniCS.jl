@@ -19,41 +19,46 @@ vtkfile &lt;&lt; U.pyobject #exports the solution to a vtkfile</code></pre><p>We
 FEniCS.Plot(U)
 FEniCS.Plot(mesh)
 </code></pre><p><img src="https://user-images.githubusercontent.com/16087601/34915339-b77e8694-f91c-11e7-9ae1-db1e114a177a.png &quot;Solution&quot;" alt="alt text"/></p><p><img src="https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png &quot;Square Mesh&quot;" alt="alt text"/></p><p>See the examples directory for more examples.</p><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><details><summary>The documentation of this SciML package was built using these direct dependencies,</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/FEniCS.jl/FEniCS.jl/docs/Project.toml`
-  [e30172f5] Documenter v1.0.1
-  [186dfeec] FEniCS v0.4.1 `~/work/FEniCS.jl/FEniCS.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.9.3
-Commit bed2cd540a1 (2023-08-24 14:43 UTC)
+  [e30172f5] Documenter v1.2.1
+  [186dfeec] FEniCS v0.4.1 `~/work/FEniCS.jl/FEniCS.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.10.1
+Commit 7790d6f0641 (2024-02-13 20:41 UTC)
 Build Info:
   Official https://julialang.org/ release
 Platform Info:
   OS: Linux (x86_64-linux-gnu)
-  CPU: 2 × Intel(R) Xeon(R) CPU E5-2673 v4 @ 2.30GHz
+  CPU: 4 × AMD EPYC 7763 64-Core Processor
   WORD_SIZE: 64
   LIBM: libopenlibm
-  LLVM: libLLVM-14.0.6 (ORCJIT, broadwell)
-  Threads: 1 on 2 virtual cores</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/FEniCS.jl/FEniCS.jl/docs/Manifest.toml`
+  LLVM: libLLVM-15.0.7 (ORCJIT, znver3)
+Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/FEniCS.jl/FEniCS.jl/docs/Manifest.toml`
   [a4c015fc] ANSIColoredPrinters v0.0.1
-  [1520ce14] AbstractTrees v0.4.4
-  [8f4d0f93] Conda v1.9.1
+  [1520ce14] AbstractTrees v0.4.5
+  [8f4d0f93] Conda v1.10.0
   [ffbed154] DocStringExtensions v0.9.3
-  [e30172f5] Documenter v1.0.1
+  [e30172f5] Documenter v1.2.1
   [186dfeec] FEniCS v0.4.1 `~/work/FEniCS.jl/FEniCS.jl`
-  [b5f81e59] IOCapture v0.2.3
+  [d7ba0133] Git v1.3.1
+  [b5f81e59] IOCapture v0.2.4
   [92d709cd] IrrationalConstants v0.2.2
   [692b3bcd] JLLWrappers v1.5.0
   [682c06a0] JSON v0.21.4
-  [0e77f7df] LazilyInitializedFields v1.2.1
-  [2ab3a3ac] LogExpFunctions v0.3.26
-  [1914dd2f] MacroTools v0.5.11
-  [d0879d2d] MarkdownAST v0.1.1
-  [69de0a69] Parsers v2.7.2
+  [0e77f7df] LazilyInitializedFields v1.2.2
+  [2ab3a3ac] LogExpFunctions v0.3.27
+  [1914dd2f] MacroTools v0.5.13
+  [d0879d2d] MarkdownAST v0.1.2
+  [69de0a69] Parsers v2.8.1
   [aea7be01] PrecompileTools v1.2.0
-  [21216c6a] Preferences v1.4.1
+  [21216c6a] Preferences v1.4.2
   [92933f4c] ProgressMeter v1.9.0
-  [438e738f] PyCall v1.96.1
+  [438e738f] PyCall v1.96.4
   [2792f1a3] RegistryInstances v0.1.0
   [ae029012] Requires v1.3.0
   [276daf66] SpecialFunctions v2.3.1
   [81def892] VersionParsing v1.3.0
+  [2e619515] Expat_jll v2.5.0+0
+  [f8c6e375] Git_jll v2.44.0+1
+  [94ce4f54] Libiconv_jll v1.17.0+0
+  [458c3c95] OpenSSL_jll v3.0.13+0
   [efe28fd5] OpenSpecFun_jll v0.5.5+0
   [0dad84c5] ArgTools v1.1.1
   [56f22d72] Artifacts
@@ -63,7 +68,7 @@ Platform Info:
   [f43a241f] Downloads v1.6.0
   [7b1f6079] FileWatching
   [b77e0a4c] InteractiveUtils
-  [b27032c2] LibCURL v0.6.3
+  [b27032c2] LibCURL v0.6.4
   [76f85450] LibGit2
   [8f399da3] Libdl
   [37e2e46d] LinearAlgebra
@@ -71,7 +76,7 @@ Platform Info:
   [d6f4376e] Markdown
   [a63ad114] Mmap
   [ca575930] NetworkOptions v1.2.0
-  [44cfe95a] Pkg v1.9.2
+  [44cfe95a] Pkg v1.10.0
   [de0858da] Printf
   [3fa0cd96] REPL
   [9a3f8284] Random
@@ -83,14 +88,16 @@ Platform Info:
   [8dfed614] Test
   [cf7118a7] UUIDs
   [4ec0a83e] Unicode
-  [e66e0078] CompilerSupportLibraries_jll v1.0.5+0
-  [deac9b47] LibCURL_jll v7.84.0+0
-  [29816b5a] LibSSH2_jll v1.10.2+0
-  [c8ffd9c3] MbedTLS_jll v2.28.2+0
-  [14a3606d] MozillaCACerts_jll v2022.10.11
-  [4536629a] OpenBLAS_jll v0.3.21+4
-  [05823500] OpenLibm_jll v0.8.1+0
-  [83775a58] Zlib_jll v1.2.13+0
-  [8e850b90] libblastrampoline_jll v5.8.0+0
-  [8e850ede] nghttp2_jll v1.48.0+0
-  [3f19e933] p7zip_jll v17.4.0+0</code></pre></details><p>You can also download the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.1/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.1/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.0.1 on <span class="colophon-date" title="Monday 25 September 2023 03:23">Monday 25 September 2023</span>. Using Julia version 1.9.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  [e66e0078] CompilerSupportLibraries_jll v1.1.0+0
+  [deac9b47] LibCURL_jll v8.4.0+0
+  [e37daf67] LibGit2_jll v1.6.4+0
+  [29816b5a] LibSSH2_jll v1.11.0+1
+  [c8ffd9c3] MbedTLS_jll v2.28.2+1
+  [14a3606d] MozillaCACerts_jll v2023.1.10
+  [4536629a] OpenBLAS_jll v0.3.23+4
+  [05823500] OpenLibm_jll v0.8.1+2
+  [efcefdf7] PCRE2_jll v10.42.0+1
+  [83775a58] Zlib_jll v1.2.13+1
+  [8e850b90] libblastrampoline_jll v5.8.0+1
+  [8e850ede] nghttp2_jll v1.52.0+1
+  [3f19e933] p7zip_jll v17.4.0+2</code></pre></details><p>You can also download the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.1/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.1/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Friday 1 March 2024 11:12">Friday 1 March 2024</span>. Using Julia version 1.10.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
