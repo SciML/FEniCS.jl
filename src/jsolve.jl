@@ -68,7 +68,7 @@ end
 
 export nlvsolve
 
-#anlvsolve corresponds to the adapative non-linear solver.
+#anlvsolve corresponds to the adaptive non-linear solver.
 function anlvsolve(F, a, u, bcs, tol, M)
     fenics.solve(F.pyobject == a.pyobject, u.pyobject, bcs = bcs.pyobject, tol = tol, M = M)
 end
