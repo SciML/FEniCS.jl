@@ -25,9 +25,10 @@ mutable struct feMesh
         n_internal_nodes = n_nodes - n_bc_nodes
         node_vals = zeros(n_nodes)
         #this applied the boundary values to node_vals, and also calculates the numbering for internal nodes
-        boundary_nodes, internal_nodes = find_node_number(n_nodes, n_bc_nodes,
-                                                          external_nodes, nodes,
-                                                          boundaryCondition, node_vals)
+        boundary_nodes,
+        internal_nodes = find_node_number(n_nodes, n_bc_nodes,
+            external_nodes, nodes,
+            boundaryCondition, node_vals)
         elements_temp = cells(mesh)
         #the following commands convert the element numbering to Int64 and handle the 0/1 difference between FEniCS(Python) and Julia
         elements_temp2 = convert.(Int, elements_temp)
@@ -42,7 +43,7 @@ export feMesh
 "finds node numbering for a specific FeMesh. Not currently exported as it is only
 used to create the FeMesh type."
 function find_node_number(n_nodes, n_bc_nodes, external_nodes, nodes,
-                          boundaryCondition::Core.Function, node_vals)
+        boundaryCondition::Core.Function, node_vals)
     j = 1
     k = 1
     count_int = 0
