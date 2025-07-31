@@ -14,7 +14,7 @@ bc = DirichletBC(V, Constant(0), "on_boundary")
 
 # Define initial value
 u_0 = Expression("exp(-a*pow(x[0], 2) - a*pow(x[1], 2))",
-                 degree = 2, a = 5)
+    degree = 2, a = 5)
 
 u_n = interpolate(u_0, V)
 

@@ -249,13 +249,13 @@ export lhs, rhs
 Matrix(a::T) where {T <: Real} = a
 
 function assemble(assembly_item::Union{Form, Expression}; tensor = nothing,
-                  form_compiler_parameters = nothing, add_values = false,
-                  finalize_tensor = true, keep_diagonal = false, backend = nothing)
+        form_compiler_parameters = nothing, add_values = false,
+        finalize_tensor = true, keep_diagonal = false, backend = nothing)
     Matrix(fenics.assemble(assembly_item.pyobject,
-                           tensor = tensor,
-                           form_compiler_parameters = form_compiler_parameters,
-                           add_values = add_values, finalize_tensor = finalize_tensor,
-                           keep_diagonal = keep_diagonal, backend = backend))
+        tensor = tensor,
+        form_compiler_parameters = form_compiler_parameters,
+        add_values = add_values, finalize_tensor = finalize_tensor,
+        keep_diagonal = keep_diagonal, backend = backend))
 end
 export assemble
 
@@ -352,25 +352,25 @@ open as issue, and I will attempt to add them.
 Deprecate this in a future version
 """
 function Plot(in_plot::Union{Mesh, FunctionSpace, FeFunction}; alpha = 1, animated = false,
-              antialiased = true, color = "grey", dash_capstyle = "butt",
-              dash_joinstyle = "miter", dashes = "", drawstyle = "default",
-              fillstyle = "full", label = "s", linestyle = "solid", linewidth = 1,
-              marker = "", markeredgecolor = "grey", markeredgewidth = "",
-              markerfacecolor = "grey", markerfacecoloralt = "grey", markersize = 1,
-              markevery = "none", visible = true, title = "")
+        antialiased = true, color = "grey", dash_capstyle = "butt",
+        dash_joinstyle = "miter", dashes = "", drawstyle = "default",
+        fillstyle = "full", label = "s", linestyle = "solid", linewidth = 1,
+        marker = "", markeredgecolor = "grey", markeredgewidth = "",
+        markerfacecolor = "grey", markerfacecoloralt = "grey", markersize = 1,
+        markevery = "none", visible = true, title = "")
     fenics.common.plotting.plot(in_plot.pyobject,
-                                alpha = alpha, animated = animated,
-                                antialiased = antialiased, color = color,
-                                dash_capstyle = dash_capstyle,
-                                dash_joinstyle = dash_joinstyle, dashes = dashes,
-                                drawstyle = drawstyle, fillstyle = fillstyle, label = label,
-                                linestyle = linestyle, linewidth = linewidth,
-                                marker = marker, markeredgecolor = markeredgecolor,
-                                markeredgewidth = markeredgewidth,
-                                markerfacecolor = markerfacecolor,
-                                markerfacecoloralt = markerfacecoloralt,
-                                markersize = markersize, markevery = markevery,
-                                visible = visible, title = title)#the first is the keyword argument, the second is the value
+        alpha = alpha, animated = animated,
+        antialiased = antialiased, color = color,
+        dash_capstyle = dash_capstyle,
+        dash_joinstyle = dash_joinstyle, dashes = dashes,
+        drawstyle = drawstyle, fillstyle = fillstyle, label = label,
+        linestyle = linestyle, linewidth = linewidth,
+        marker = marker, markeredgecolor = markeredgecolor,
+        markeredgewidth = markeredgewidth,
+        markerfacecolor = markerfacecolor,
+        markerfacecoloralt = markerfacecoloralt,
+        markersize = markersize, markevery = markevery,
+        visible = visible, title = title)#the first is the keyword argument, the second is the value
 end#the first is the keyword argument, the second is the value
 #export Plot
 
@@ -395,10 +395,10 @@ Arguments
 |             Hint for the local basis function variant (optional)
 """
 function FiniteElement(family::StringOrSymbol, cell = nothing, degree = nothing,
-                       form_degree = nothing, quad_scheme = nothing, variant = nothing)
+        form_degree = nothing, quad_scheme = nothing, variant = nothing)
     FiniteElement(fenics.FiniteElement(family = family, cell = cell, degree = degree,
-                                       form_degree = form_degree, quad_scheme = quad_scheme,
-                                       variant = variant))
+        form_degree = form_degree, quad_scheme = quad_scheme,
+        variant = variant))
 end
 export FiniteElement
 
@@ -436,7 +436,7 @@ degree(finiteelement::FiniteElement) = fenicspycall(finiteelement, :degree)
 variant(finiteelement::FiniteElement) = fenicspycall(finiteelement, :variant)
 
 function reconstruct(finiteelement::FiniteElement, ; family = nothing, cell = nothing,
-                     degree = nothing)
+        degree = nothing)
     FiniteElement(fenicspycall(finiteelement, :reconstruct, family, cell, degree))
 end
 

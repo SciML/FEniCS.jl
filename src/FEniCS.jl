@@ -21,7 +21,9 @@ const mshr = PyCall.PyNULL()
 
 function __init__()
     @require PyPlot="d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
-    @require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin using ProgressMeter end
+    @require ProgressMeter="92933f4c-e287-5a05-a399-4b506db050ca" begin
+        using ProgressMeter
+    end
     copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
     copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
     include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
@@ -57,12 +59,12 @@ export fenicspycall
 macro fenicsclass(name::Symbol, base1::Symbol = :fenicsobject)
     impl = Symbol(name, "Impl")
     esc(quote
-            abstract type $name <: $base1 end
-            struct $impl <: $name
-                pyobject::PyObject
-            end
-            $(name)(pyobject::PyObject) = $impl(pyobject)
-        end)
+        abstract type $name <: $base1 end
+        struct $impl <: $name
+            pyobject::PyObject
+        end
+        $(name)(pyobject::PyObject) = $impl(pyobject)
+    end)
 end
 export fenicsclass
 

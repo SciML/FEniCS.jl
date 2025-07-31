@@ -9,7 +9,7 @@ bc = DirichletBC(V, w_D, "on_boundary")
 beta = 8
 R0 = 0.6
 p = Expression("4*exp(-pow(beta, 2)*(pow(x[0], 2) + pow(x[1] - R0, 2)))",
-               degree = 1, beta = beta, R0 = R0)
+    degree = 1, beta = beta, R0 = R0)
 w = TrialFunction(V)
 v = TestFunction(V)
 a = dot(grad(w), grad(v)) * dx
