@@ -18,67 +18,69 @@ vtkfile = File(&quot;poisson/solution.pvd&quot;)
 vtkfile &lt;&lt; U.pyobject #exports the solution to a vtkfile</code></pre><p>We can also plot the solution (this relies on FEniCS backend for plotting) or import it from our file into Paraview:</p><pre><code class="language-julia hljs">import PyPlot # plotting won&#39;t work if PyPlot is not imported
 FEniCS.Plot(U)
 FEniCS.Plot(mesh)
-</code></pre><p><img src="https://user-images.githubusercontent.com/16087601/34915339-b77e8694-f91c-11e7-9ae1-db1e114a177a.png &quot;Solution&quot;" alt="alt text"/></p><p><img src="https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png &quot;Square Mesh&quot;" alt="alt text"/></p><p>See the examples directory for more examples.</p><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><details><summary>The documentation of this SciML package was built using these direct dependencies,</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/FEniCS.jl/FEniCS.jl/docs/Project.toml`
-  [e30172f5] Documenter v1.14.1
-  [186dfeec] FEniCS v0.4.2 `~/work/FEniCS.jl/FEniCS.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.11.6
-Commit 9615af0f269 (2025-07-09 12:58 UTC)
+</code></pre><p><img src="https://user-images.githubusercontent.com/16087601/34915339-b77e8694-f91c-11e7-9ae1-db1e114a177a.png &quot;Solution&quot;" alt="alt text"/></p><p><img src="https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png &quot;Square Mesh&quot;" alt="alt text"/></p><p>See the examples directory for more examples.</p><h2 id="Reproducibility"><a class="docs-heading-anchor" href="#Reproducibility">Reproducibility</a><a id="Reproducibility-1"></a><a class="docs-heading-anchor-permalink" href="#Reproducibility" title="Permalink"></a></h2><details><summary>The documentation of this SciML package was built using these direct dependencies,</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl/docs/Project.toml`
+  [e30172f5] Documenter v1.16.1
+  [186dfeec] FEniCS v0.4.2 `~/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl`</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.12.2
+Commit ca9b6662be4 (2025-11-20 16:25 UTC)
 Build Info:
-  Official https://julialang.org/ release
+  Official https://julialang.org release
 Platform Info:
   OS: Linux (x86_64-linux-gnu)
-  CPU: 4 × AMD EPYC 7763 64-Core Processor
+  CPU: 128 × AMD EPYC 7513 32-Core Processor
   WORD_SIZE: 64
-  LLVM: libLLVM-16.0.6 (ORCJIT, znver3)
-Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/FEniCS.jl/FEniCS.jl/docs/Manifest.toml`
+  LLVM: libLLVM-18.1.7 (ORCJIT, znver3)
+  GC: Built with stock GC
+Threads: 1 default, 1 interactive, 1 GC (on 128 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl/docs/Manifest.toml`
   [a4c015fc] ANSIColoredPrinters v0.0.1
   [1520ce14] AbstractTrees v0.4.5
   [944b1d66] CodecZlib v0.7.8
-  [8f4d0f93] Conda v1.10.2
+  [8f4d0f93] Conda v1.10.3
   [ffbed154] DocStringExtensions v0.9.5
-  [e30172f5] Documenter v1.14.1
-  [186dfeec] FEniCS v0.4.2 `~/work/FEniCS.jl/FEniCS.jl`
-  [d7ba0133] Git v1.4.0
-  [b5f81e59] IOCapture v0.2.5
-  [92d709cd] IrrationalConstants v0.2.4
+  [e30172f5] Documenter v1.16.1
+  [186dfeec] FEniCS v0.4.2 `~/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl`
+  [d7ba0133] Git v1.5.0
+  [b5f81e59] IOCapture v1.0.0
+  [92d709cd] IrrationalConstants v0.2.6
   [692b3bcd] JLLWrappers v1.7.1
-  [682c06a0] JSON v0.21.4
+  [682c06a0] JSON v1.3.0
   [0e77f7df] LazilyInitializedFields v1.3.0
   [2ab3a3ac] LogExpFunctions v0.3.29
   [1914dd2f] MacroTools v0.5.16
   [d0879d2d] MarkdownAST v0.1.2
   [69de0a69] Parsers v2.8.3
-⌅ [aea7be01] PrecompileTools v1.2.1
-  [21216c6a] Preferences v1.4.3
-  [92933f4c] ProgressMeter v1.10.4
+  [aea7be01] PrecompileTools v1.3.3
+  [21216c6a] Preferences v1.5.0
+  [92933f4c] ProgressMeter v1.11.0
   [438e738f] PyCall v1.96.4
   [2792f1a3] RegistryInstances v0.1.0
   [ae029012] Requires v1.3.1
-  [276daf66] SpecialFunctions v2.5.1
+  [276daf66] SpecialFunctions v2.6.1
+  [ec057cc2] StructUtils v2.6.0
   [3bb67fe8] TranscodingStreams v0.11.3
   [81def892] VersionParsing v1.3.0
-  [2e619515] Expat_jll v2.6.5+0
-  [f8c6e375] Git_jll v2.50.1+0
+  [2e619515] Expat_jll v2.7.3+0
+  [020c3dae] Git_LFS_jll v3.7.0+0
+  [f8c6e375] Git_jll v2.51.3+0
   [94ce4f54] Libiconv_jll v1.18.0+0
-  [9bd350c2] OpenSSH_jll v10.0.1+0
-  [458c3c95] OpenSSL_jll v3.5.1+0
+  [9bd350c2] OpenSSH_jll v10.2.1+0
   [efe28fd5] OpenSpecFun_jll v0.5.6+0
   [0dad84c5] ArgTools v1.1.2
   [56f22d72] Artifacts v1.11.0
   [2a0f44e3] Base64 v1.11.0
   [ade2ca70] Dates v1.11.0
   [8ba89e20] Distributed v1.11.0
-  [f43a241f] Downloads v1.6.0
+  [f43a241f] Downloads v1.7.0
   [7b1f6079] FileWatching v1.11.0
   [b77e0a4c] InteractiveUtils v1.11.0
+  [ac6e5ff7] JuliaSyntaxHighlighting v1.12.0
   [b27032c2] LibCURL v0.6.4
   [76f85450] LibGit2 v1.11.0
   [8f399da3] Libdl v1.11.0
-  [37e2e46d] LinearAlgebra v1.11.0
+  [37e2e46d] LinearAlgebra v1.12.0
   [56ddb016] Logging v1.11.0
   [d6f4376e] Markdown v1.11.0
-  [a63ad114] Mmap v1.11.0
-  [ca575930] NetworkOptions v1.2.0
-  [44cfe95a] Pkg v1.11.0
+  [ca575930] NetworkOptions v1.3.0
+  [44cfe95a] Pkg v1.12.0
   [de0858da] Printf v1.11.0
   [3fa0cd96] REPL v1.11.0
   [9a3f8284] Random v1.11.0
@@ -91,17 +93,16 @@ Threads: 1 default, 0 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [8dfed614] Test v1.11.0
   [cf7118a7] UUIDs v1.11.0
   [4ec0a83e] Unicode v1.11.0
-  [e66e0078] CompilerSupportLibraries_jll v1.1.1+0
-  [deac9b47] LibCURL_jll v8.6.0+0
-  [e37daf67] LibGit2_jll v1.7.2+0
-  [29816b5a] LibSSH2_jll v1.11.0+1
-  [c8ffd9c3] MbedTLS_jll v2.28.6+0
-  [14a3606d] MozillaCACerts_jll v2023.12.12
-  [4536629a] OpenBLAS_jll v0.3.27+1
-  [05823500] OpenLibm_jll v0.8.5+0
-  [efcefdf7] PCRE2_jll v10.42.0+1
-  [83775a58] Zlib_jll v1.2.13+1
-  [8e850b90] libblastrampoline_jll v5.11.0+0
-  [8e850ede] nghttp2_jll v1.59.0+0
-  [3f19e933] p7zip_jll v17.4.0+2
-Info Packages marked with ⌅ have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.2/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.2/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Friday 1 August 2025 10:21">Friday 1 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  [e66e0078] CompilerSupportLibraries_jll v1.3.0+1
+  [deac9b47] LibCURL_jll v8.15.0+0
+  [e37daf67] LibGit2_jll v1.9.0+0
+  [29816b5a] LibSSH2_jll v1.11.3+1
+  [14a3606d] MozillaCACerts_jll v2025.5.20
+  [4536629a] OpenBLAS_jll v0.3.29+0
+  [05823500] OpenLibm_jll v0.8.7+0
+  [458c3c95] OpenSSL_jll v3.5.4+0
+  [efcefdf7] PCRE2_jll v10.44.0+1
+  [83775a58] Zlib_jll v1.3.1+2
+  [8e850b90] libblastrampoline_jll v5.15.0+0
+  [8e850ede] nghttp2_jll v1.64.0+1
+  [3f19e933] p7zip_jll v17.7.0+0</code></pre></details><p>You can also download the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.2/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/FEniCS.jl/tree/gh-pages/v0.4.2/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 25 November 2025 14:43">Tuesday 25 November 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
