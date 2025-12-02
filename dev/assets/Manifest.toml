@@ -77,7 +77,7 @@ version = "2.7.3+0"
 
 [[deps.FEniCS]]
 deps = ["LinearAlgebra", "ProgressMeter", "PyCall", "Requires", "SpecialFunctions"]
-path = "/home/chrisrackauckas/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl"
+path = "/home/chrisrackauckas/github-runners/deepsea3-13/_work/FEniCS.jl/FEniCS.jl"
 uuid = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
 version = "0.4.2"
 
@@ -99,9 +99,9 @@ version = "3.7.0+0"
 
 [[deps.Git_jll]]
 deps = ["Artifacts", "Expat_jll", "JLLWrappers", "LibCURL_jll", "Libdl", "Libiconv_jll", "OpenSSL_jll", "PCRE2_jll", "Zlib_jll"]
-git-tree-sha1 = "b6a684587ebe896d9f68ae777f648205940f0f70"
+git-tree-sha1 = "46bd50c245fe49ed87377c014a928a549b9ef7ed"
 uuid = "f8c6e375-362e-5223-8a59-34ff63f689eb"
-version = "2.51.3+0"
+version = "2.52.0+0"
 
 [[deps.IOCapture]]
 deps = ["Logging", "Random"]

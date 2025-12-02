@@ -3,7 +3,7 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FEniCS = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
 
 [sources]
-FEniCS = {path = "/home/chrisrackauckas/github-runners/deepsea4-16/_work/FEniCS.jl/FEniCS.jl"}
+FEniCS = {path = "/home/chrisrackauckas/github-runners/deepsea3-13/_work/FEniCS.jl/FEniCS.jl"}
 
 [compat]
 Documenter = "1"
