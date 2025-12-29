@@ -1,7 +1,6 @@
 #this file contains function related to plotting the mesh objects.
 #we will use matplotlib.pyplot to achieve this
 #
-using FEniCS
 
 import PyPlot: triplot, plot_trisurf, tripcolor, tricontourf
 

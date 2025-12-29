@@ -3,6 +3,10 @@ using Test
 
 FEniCS.set_log_level(FEniCS.WARNING)
 
+@testset "Explicit Imports" begin
+    include("explicit_imports.jl")
+end
+
 examples_dir = joinpath(@__DIR__, "..", "examples")
 @assert ispath(examples_dir)
 example_filenames = readdir(examples_dir)
