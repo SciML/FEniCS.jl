@@ -3,8 +3,6 @@
 #http://fenics.readthedocs.io/projects/UFL/en/latest/api-doc/Expression.html
 #Tests for these can be found in the test_jfem.jl file.
 
-using FEniCS
-
 @fenicsclass FunctionSpace
 
 #Use Functionspace for scalar fields

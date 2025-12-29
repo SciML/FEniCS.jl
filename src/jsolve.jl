@@ -1,6 +1,5 @@
 #this file contains functions/wrappers related to the solve function in FEniCS
 #https://fenicsproject.org/olddocs/dolfin/1.3.0/python/programmers-reference/fem/solving/solve.html
-using FEniCS
 
 function solve(A::Matrix, x, b::Matrix, solvers...)
     fenics.solve(A.pyobject, x, b.pyobject, solvers...)
