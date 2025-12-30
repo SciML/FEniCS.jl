@@ -1,6 +1,6 @@
 
 #this file includes the creation of the various julian meshes, returning true if all of
-#them are creates succesfully with no errors
+#them are created successfully with no errors
 
 using FEniCS
 using PyCall
