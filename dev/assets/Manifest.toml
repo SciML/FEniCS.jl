@@ -2,7 +2,7 @@
 
 julia_version = "1.12.3"
 manifest_format = "2.0"
-project_hash = "c14bfb6bb4cc91b75b419d2f7a3401f2fdb1ac7d"
+project_hash = "e35c45281d7d6be2fcec981501ad2b972538718e"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -79,7 +79,7 @@ version = "2.7.3+0"
 deps = ["LinearAlgebra", "ProgressMeter", "PyCall", "Requires", "SpecialFunctions"]
 path = "/home/runner/work/FEniCS.jl/FEniCS.jl"
 uuid = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
-version = "0.4.2"
+version = "1.0.0"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
