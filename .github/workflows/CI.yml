@@ -17,11 +17,14 @@ jobs:
       image: cmhyett/julia-fenics:latest
 
     strategy:
+      fail-fast: false
       matrix:
         group:
           - Core
         version:
-          - '1.8'
+          - 'lts'
+          - '1'
+          - 'pre'
     steps:
       - uses: actions/checkout@v6
 
@@ -31,7 +34,3 @@ jobs:
 
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
-
-      
-      
-      

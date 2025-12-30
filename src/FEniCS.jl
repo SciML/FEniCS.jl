@@ -1,7 +1,7 @@
 module FEniCS
 
-using PyCall
-using Requires
+using PyCall: PyCall, PyObject, pyimport_conda, pycall, @pyimport
+using Requires: @require
 
 # determine if we can include mshr
 include_mshr = false
