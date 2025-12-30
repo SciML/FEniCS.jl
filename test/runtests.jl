@@ -17,7 +17,7 @@ example_filenames = readdir(examples_dir)
     @test (include(path); true)
     # Test that PyCall is not used in the example.
     # Use of PyCall indicates, that we did not wrap enough
-    # funcionality
+    # functionality
     s = read(path, String)
     @test !occursin("PyCall", s)
 end
