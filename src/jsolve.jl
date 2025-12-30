@@ -7,19 +7,18 @@ end
 export solve
 
 #lvsolve is the linear variational solver
-function lvsolve(a, L, u; solver_parameters::Dict = Dict("linear_solver" => "default"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
-    fenics.solve(a.pyobject == L.pyobject, u.pyobject,
-        solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
-end
-
 function lvsolve(a, L, u, bcs = nothing;
         solver_parameters::Dict = Dict("linear_solver" => "default"),
         form_compiler_parameters::Dict = Dict("optimize" => true))
-    fenics.solve(a.pyobject == L.pyobject, u.pyobject, bcs = bcs.pyobject,
-        solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
+    if bcs === nothing
+        fenics.solve(a.pyobject == L.pyobject, u.pyobject,
+            solver_parameters = solver_parameters,
+            form_compiler_parameters = form_compiler_parameters)
+    else
+        fenics.solve(a.pyobject == L.pyobject, u.pyobject, bcs = bcs.pyobject,
+            solver_parameters = solver_parameters,
+            form_compiler_parameters = form_compiler_parameters)
+    end
 end
 #allows BoundaryCondition to be provided in an AbstractArray (of type BoundaryCondition)
 function lvsolve(a, L, u, bcs::AbstractArray;
@@ -35,17 +34,17 @@ export lvsolve
 #Dict("linear_solver"=>"default")
 #Dict("optimize"=>true)
 #nlvsolve is the non-linear variational solver
-function nlvsolve(F, u; J = nothing,
-        solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
-    fenics.solve(F.pyobject == 0, u.pyobject, J = J, solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
-end
 function nlvsolve(F, u, bcs = nothing; J = nothing,
         solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
         form_compiler_parameters::Dict = Dict("optimize" => true))
-    fenics.solve(F.pyobject == 0, u.pyobject, J = J, solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
+    if bcs === nothing
+        fenics.solve(F.pyobject == 0, u.pyobject, J = J, solver_parameters = solver_parameters,
+            form_compiler_parameters = form_compiler_parameters)
+    else
+        fenics.solve(F.pyobject == 0, u.pyobject, bcs = bcs.pyobject, J = J,
+            solver_parameters = solver_parameters,
+            form_compiler_parameters = form_compiler_parameters)
+    end
 end
 
 function nlvsolve(F, u, bcs::BoundaryCondition; J = nothing,
