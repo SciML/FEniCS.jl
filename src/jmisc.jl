@@ -23,18 +23,18 @@ list_linear_solver_methods() = fenics.list_linear_solver_methods()
 Lists information for NonlinearVariationalSolver
 """
 function info_NonLinearVariationalSolver()
-    fenics.info(fenics.NonlinearVariationalSolver.default_parameters(), true)
+    return fenics.info(fenics.NonlinearVariationalSolver.default_parameters(), true)
 end
 """
 Lists information for LinearVariationalSolver
 """
 function info_LinearVariatonalSolver()
-    fenics.info(fenics.LinearVariationalSolver.default_parameters(), true)
+    return fenics.info(fenics.LinearVariationalSolver.default_parameters(), true)
 end
 
 export list_lu_solver_methods, list_krylov_solver_methods,
-       list_krylov_solver_preconditioners, list_linear_solver_methods,
-       info_NonLinearVariationalSolver, info_LinearVariatonalSolver
+    list_krylov_solver_preconditioners, list_linear_solver_methods,
+    info_NonLinearVariationalSolver, info_LinearVariatonalSolver
 
 """
 Provide values for some of the constants

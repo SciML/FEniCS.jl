@@ -59,9 +59,9 @@ CellNormal(mesh::Mesh) = Expression(fenics.CellNormal(mesh.pyobject))
 CellVolume(mesh::Mesh) = Expression(fenics.CellVolume(mesh.pyobject))
 
 export cell_orientations, cells, hmin, hmax, init, init_global, coordinates, data,
-       domains, geometry, topology, num_cells, num_edges, num_entities, num_faces,
-       num_facets, num_vertices, bounding_box_tree,
-       rmax, rmin, size, ufl_cell, ufl_domain, ufl_id, CellDiameter, CellNormal, CellVolume
+    domains, geometry, topology, num_cells, num_edges, num_entities, num_faces,
+    num_facets, num_vertices, bounding_box_tree,
+    rmax, rmin, size, ufl_cell, ufl_domain, ufl_id, CellDiameter, CellNormal, CellVolume
 
 # This constant is initialized in __init__
 export CellType
@@ -101,14 +101,14 @@ will be 2*nx*ny and the total number of vertices will be (nx + 1)*(ny + 1) \n
 diagonal ("left", "right", "right//left", "left//right", or "crossed") indicates the direction of the diagonals.
 """
 function UnitSquareMesh(nx::Int, ny::Int, diagonal::StringOrSymbol = "right")
-    Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
+    return Mesh(fenics.UnitSquareMesh(nx, ny, diagonal))
 end
 function UnitSquareMesh(nx::Int, ny::Int, cellType::PyObject)
-    Mesh(fenics.UnitSquareMesh.create(nx, ny, cellType))
+    return Mesh(fenics.UnitSquareMesh.create(nx, ny, cellType))
 end
 
 function UnitQuadMesh(nx::Int, ny::Int)
-    println("Deprecated in FEniCS v.2018, remove in .7 Julia")
+    return println("Deprecated in FEniCS v.2018, remove in .7 Julia")
 end
 
 """
@@ -129,7 +129,7 @@ tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*
 """
 UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx, ny, nz))
 function UnitCubeMesh(nx::Int, ny::Int, nz::Int, cellType::PyObject)
-    Mesh(fenics.UnitCubeMesh.create(nx, ny, nz, cellType))
+    return Mesh(fenics.UnitCubeMesh.create(nx, ny, nz, cellType))
 end
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) \n
@@ -140,7 +140,7 @@ tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) = Mesh(fenics.BoxMesh(p0, p1, nx, ny, nz))
 function BoxMesh(p::NTuple{2, PyObject}, n::NTuple{3, Int}, cellType::PyObject)
-    Mesh(fenics.BoxMesh.create(p, n, cellType))
+    return Mesh(fenics.BoxMesh.create(p, n, cellType))
 end
 
 """
@@ -151,10 +151,10 @@ of triangles will be 2*nx*ny and the total number of vertices will be (nx + 1)*(
 diagdir ("left", "right", "right/left", "left/right", or "crossed") indicates the direction of the diagonals.
 """
 function RectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
-    Mesh(fenics.RectangleMesh(p0, p1, nx, ny, diagdir))
+    return Mesh(fenics.RectangleMesh(p0, p1, nx, ny, diagdir))
 end
 function RectangleMesh(p::NTuple{2, PyObject}, n::NTuple{2, Int}, cellType::PyObject)
-    Mesh(fenics.RectangleMesh.create(p, n, cellType))
+    return Mesh(fenics.RectangleMesh.create(p, n, cellType))
 end
 
 """
@@ -172,30 +172,30 @@ If set to false, the boundary mesh will be ordered with right-oriented facets \n
 (outward-pointing unit normals). The default value is true.
 """
 function BoundaryMesh(mesh::Mesh, type_boundary::StringOrSymbol = "exterior", order = true)
-    Mesh(fenics.BoundaryMesh(mesh.pyobject, type_boundary, order))
+    return Mesh(fenics.BoundaryMesh(mesh.pyobject, type_boundary, order))
 end
 
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
-       UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh, BoundaryMesh
+    UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh, BoundaryMesh
 
 function pyUnitTriangleMesh()
-    fenics.cpp.generation.UnitTriangleMesh.create()
+    return fenics.cpp.generation.UnitTriangleMesh.create()
 end
 
 function pyUnitTetrahedronMesh()
-    fenics.cpp.generation.UnitTetrahedronMesh.create()
+    return fenics.cpp.generation.UnitTetrahedronMesh.create()
 end
 
 function pyUnitCubeMesh(nx::Int, ny::Int, nz::Int)
-    pycall(fenics.UnitCubeMesh::PyObject, PyObject::Type, nx, ny, nz)
+    return pycall(fenics.UnitCubeMesh::PyObject, PyObject::Type, nx, ny, nz)
 end
 
 function pyBoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) # look at array types to declare p0,p1
-    pycall(fenics.BoxMesh::PyObject, PyObject::Type, p0, p1, nx, ny, nz)
+    return pycall(fenics.BoxMesh::PyObject, PyObject::Type, p0, p1, nx, ny, nz)
 end
 
 function pyRectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
-    pycall(fenics.RectangleMesh::PyObject, PyObject::Type, p0, p1, nx, ny, diagdir)
+    return pycall(fenics.RectangleMesh::PyObject, PyObject::Type, p0, p1, nx, ny, diagdir)
 end
 
 """
@@ -203,29 +203,29 @@ For the diagdir, the possible options can be found below (these indicate the dir
   (“left”, “right”, “right/left”, “left/right”, or “crossed”).
 """
 function pyUnitSquareMesh(nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
-    pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny, diagdir)
+    return pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny, diagdir)
 end
 
 function pyUnitQuadMesh(nx::Int, ny::Int)
-    pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny)
+    return pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny)
 end #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/cpp/mesh/UnitQuadMesh.html
 #states that the UnitQuadMesh code is experimental. Nevertheless I plan to add it , and maybe remove it at the final
 #iteration
 
 function pyUnitIntervalMesh(nx::Int)
-    pycall(fenics.UnitIntervalMesh::PyObject, PyObject::Type, nx)
+    return pycall(fenics.UnitIntervalMesh::PyObject, PyObject::Type, nx)
 end
 
 function pyMesh(path::StringOrSymbol)
-    pycall(fenics.Mesh::PyObject, PyObject::Type, path)
+    return pycall(fenics.Mesh::PyObject, PyObject::Type, path)
 end
 
 function Point(point::Union{Vector, Tuple})
-    pycall(fenics.Point::PyObject, PyObject::Type, point)
+    return pycall(fenics.Point::PyObject, PyObject::Type, point)
 end
 
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
-       pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh, pyMesh, Point
+    pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh, pyMesh, Point
 
 @fenicsclass Cell #https://fenicsproject.org/docs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Cell.html
 Cell(mesh::MeshImpl, i::Int) = Cell(fenics.Cell(mesh.pyobject, i))

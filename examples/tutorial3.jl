@@ -9,8 +9,10 @@ beta = 1.2
 nx = ny = 8
 mesh = UnitSquareMesh(nx, ny)
 V = FunctionSpace(mesh, "P", 1)
-u_D = Expression("1 + x[0]*x[0] + alpha*x[1]*x[1] + beta*t",
-    degree = 2, alpha = alpha, beta = beta, t = 0)
+u_D = Expression(
+    "1 + x[0]*x[0] + alpha*x[1]*x[1] + beta*t",
+    degree = 2, alpha = alpha, beta = beta, t = 0
+)
 
 bc = DirichletBC(V, u_D, "on_boundary")
 u_n = interpolate(u_D, V)
@@ -36,4 +38,4 @@ for n in 0:(num_steps - 1)
     assign(u_n, u)
 end
 #colorbar()
-end#module
+end #module

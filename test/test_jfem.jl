@@ -1,4 +1,3 @@
-
 using FEniCS
 
 mesh = UnitSquareMesh(8, 8)

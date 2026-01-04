@@ -16,19 +16,19 @@ mesh = BoxMesh(Point([0, 0, 0]), Point([L, W, W]), 10, 3, 3)
 V = VectorFunctionSpace(mesh, "P", 1)
 c = Constant((0, 0, 0))
 bc = DirichletBC(V, c, "on_boundary && x[1]<1E-14")
-tol = 1E-14
+tol = 1.0e-14
 
 #bc1 = fenics.DirichletBC(V.pyobject, c.pyobject, "on_boundary and x[1]<tol",tol=1E-14)
 function epsilon(u)
-    0.5 * (nabla_grad(u) + Transpose(nabla_grad(u)))
+    return 0.5 * (nabla_grad(u) + Transpose(nabla_grad(u)))
 end
 
 function sigma(u)
-    lambda_ * nabla_div(u) * Identity(d) + 2 * mu * epsilon(u)
+    return lambda_ * nabla_div(u) * Identity(d) + 2 * mu * epsilon(u)
 end
 
 u = TrialFunction(V)
-d = geometric_dimension(u)# space dimension
+d = geometric_dimension(u) # space dimension
 v = TestFunction(V)
 f = Constant((0, 0, -rho * g))
 T = Constant((0, 0, 0))
@@ -44,4 +44,4 @@ V = FunctionSpace(mesh, "P", 1)
 von_Mises = project(von_Mises, V)
 u_magnitude = sqrt(dot(u, u))
 u_magnitude = project(u_magnitude, V)
-end#module
+end #module

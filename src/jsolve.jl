@@ -2,73 +2,97 @@
 #https://fenicsproject.org/olddocs/dolfin/1.3.0/python/programmers-reference/fem/solving/solve.html
 
 function solve(A::Matrix, x, b::Matrix, solvers...)
-    fenics.solve(A.pyobject, x, b.pyobject, solvers...)
+    return fenics.solve(A.pyobject, x, b.pyobject, solvers...)
 end
 export solve
 
 #lvsolve is the linear variational solver
-function lvsolve(a, L, u, bcs = nothing;
+function lvsolve(
+        a, L, u, bcs = nothing;
         solver_parameters::Dict = Dict("linear_solver" => "default"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
-    if bcs === nothing
-        fenics.solve(a.pyobject == L.pyobject, u.pyobject,
+        form_compiler_parameters::Dict = Dict("optimize" => true)
+    )
+    return if bcs === nothing
+        fenics.solve(
+            a.pyobject == L.pyobject, u.pyobject,
             solver_parameters = solver_parameters,
-            form_compiler_parameters = form_compiler_parameters)
+            form_compiler_parameters = form_compiler_parameters
+        )
     else
-        fenics.solve(a.pyobject == L.pyobject, u.pyobject, bcs = bcs.pyobject,
+        fenics.solve(
+            a.pyobject == L.pyobject, u.pyobject, bcs = bcs.pyobject,
             solver_parameters = solver_parameters,
-            form_compiler_parameters = form_compiler_parameters)
+            form_compiler_parameters = form_compiler_parameters
+        )
     end
 end
 #allows BoundaryCondition to be provided in an AbstractArray (of type BoundaryCondition)
-function lvsolve(a, L, u, bcs::AbstractArray;
+function lvsolve(
+        a, L, u, bcs::AbstractArray;
         solver_parameters::Dict = Dict("linear_solver" => "default"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
+        form_compiler_parameters::Dict = Dict("optimize" => true)
+    )
     bcs_py = [bc.pyobject for bc in bcs]
-    fenics.solve(a.pyobject == L.pyobject, u.pyobject, bcs = bcs_py,
+    return fenics.solve(
+        a.pyobject == L.pyobject, u.pyobject, bcs = bcs_py,
         solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
+        form_compiler_parameters = form_compiler_parameters
+    )
 end
 
 export lvsolve
 #Dict("linear_solver"=>"default")
 #Dict("optimize"=>true)
 #nlvsolve is the non-linear variational solver
-function nlvsolve(F, u, bcs = nothing; J = nothing,
+function nlvsolve(
+        F, u, bcs = nothing; J = nothing,
         solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
-    if bcs === nothing
-        fenics.solve(F.pyobject == 0, u.pyobject, J = J, solver_parameters = solver_parameters,
-            form_compiler_parameters = form_compiler_parameters)
+        form_compiler_parameters::Dict = Dict("optimize" => true)
+    )
+    return if bcs === nothing
+        fenics.solve(
+            F.pyobject == 0, u.pyobject, J = J, solver_parameters = solver_parameters,
+            form_compiler_parameters = form_compiler_parameters
+        )
     else
-        fenics.solve(F.pyobject == 0, u.pyobject, bcs = bcs.pyobject, J = J,
+        fenics.solve(
+            F.pyobject == 0, u.pyobject, bcs = bcs.pyobject, J = J,
             solver_parameters = solver_parameters,
-            form_compiler_parameters = form_compiler_parameters)
+            form_compiler_parameters = form_compiler_parameters
+        )
     end
 end
 
-function nlvsolve(F, u, bcs::BoundaryCondition; J = nothing,
+function nlvsolve(
+        F, u, bcs::BoundaryCondition; J = nothing,
         solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
-    fenics.solve(F.pyobject == 0, u.pyobject, bcs = bcs.pyobject, J = J,
+        form_compiler_parameters::Dict = Dict("optimize" => true)
+    )
+    return fenics.solve(
+        F.pyobject == 0, u.pyobject, bcs = bcs.pyobject, J = J,
         solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
+        form_compiler_parameters = form_compiler_parameters
+    )
 end
 #allows BoundaryCondition to be provided in an AbstractArray (of type BoundaryCondition)
-function nlvsolve(F, u, bcs::AbstractArray; J = nothing,
+function nlvsolve(
+        F, u, bcs::AbstractArray; J = nothing,
         solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
-        form_compiler_parameters::Dict = Dict("optimize" => true))
+        form_compiler_parameters::Dict = Dict("optimize" => true)
+    )
     bcs_py = [bc.pyobject for bc in bcs]
-    fenics.solve(F.pyobject == 0, u.pyobject, bcs = bcs, J = J,
+    return fenics.solve(
+        F.pyobject == 0, u.pyobject, bcs = bcs, J = J,
         solver_parameters = solver_parameters,
-        form_compiler_parameters = form_compiler_parameters)
+        form_compiler_parameters = form_compiler_parameters
+    )
 end
 
 export nlvsolve
 
 #anlvsolve corresponds to the adaptive non-linear solver.
 function anlvsolve(F, a, u, bcs, tol, M)
-    fenics.solve(F.pyobject == a.pyobject, u.pyobject, bcs = bcs.pyobject, tol = tol, M = M)
+    return fenics.solve(F.pyobject == a.pyobject, u.pyobject, bcs = bcs.pyobject, tol = tol, M = M)
 end
 #this function hasnt been tested yet, so isnt exported
 
@@ -91,22 +115,22 @@ File(path::StringOrSymbol) = fenics.File(path) #used to store the solution in va
 
 function File(path::StringOrSymbol, object::FeFunction)
     vtkfile = File(path)
-    vtkfile << object.pyobject
+    return vtkfile << object.pyobject
 end
 
 function File(path::StringOrSymbol, object::FeFunction, time::Number)
     vtkfile = File(path)
-    vtkfile << (object.pyobject, time)
+    return vtkfile << (object.pyobject, time)
 end
 
 function File(path::StringOrSymbol, object::Mesh)
     vtkfile = File(path)
-    vtkfile << object.pyobject
+    return vtkfile << object.pyobject
 end
 
 function File(path::StringOrSymbol, object::Mesh, time::Number)
     vtkfile = File(path)
-    vtkfile << (object.pyobject, time)
+    return vtkfile << (object.pyobject, time)
 end
 
 export File
@@ -160,6 +184,6 @@ Return projection of given expression *v* onto the finite element space *V*
           Pv = project(v, V)
 """
 function project(v::Union{FeFunction, Expression}, V::FunctionSpace)
-    FeFunction(fenics.project(v.pyobject, V.pyobject))
+    return FeFunction(fenics.project(v.pyobject, V.pyobject))
 end
 export project

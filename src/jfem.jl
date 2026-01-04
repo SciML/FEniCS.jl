@@ -7,18 +7,18 @@
 
 #Use Functionspace for scalar fields
 function FunctionSpace(mesh::Mesh, family::StringOrSymbol, degree::Int)
-    FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
+    return FunctionSpace(fenics.FunctionSpace(mesh.pyobject, family, degree))
 end
 #Use VectorFunctionSpace for vector fields
 function VectorFunctionSpace(mesh::Mesh, family::StringOrSymbol, degree::Int)
-    FunctionSpace(fenics.VectorFunctionSpace(mesh.pyobject, family, degree))
+    return FunctionSpace(fenics.VectorFunctionSpace(mesh.pyobject, family, degree))
 end
 
 export FunctionSpace, VectorFunctionSpace
 
 @fenicsclass Expression
 function Argument(V, number, part::StringOrSymbol = nothing)
-    Expression(fenics.Argument(V.pyobject, number, part = part))
+    return Expression(fenics.Argument(V.pyobject, number, part = part))
 end
 TrialFunction(V::FunctionSpace) = Expression(fenics.TrialFunction(V.pyobject))
 
@@ -53,15 +53,15 @@ function FeFunction(V::FunctionSpace; name::String = "")
     end
 end
 function assign(solution1::FeFunction, solution2)
-    fenicspycall(solution1, :assign, solution2.pyobject)
+    return fenicspycall(solution1, :assign, solution2.pyobject)
 end
 
 function assign(solution::FeFunction, data::AbstractArray)
-    solution.pyobject.vector().set_local(data)
+    return solution.pyobject.vector().set_local(data)
 end
 
 function geometric_dimension(expr::Union{FeFunction, Expression})
-    fenicspycall(expr, :geometric_dimension)
+    return fenicspycall(expr, :geometric_dimension)
 end
 export geometric_dimension
 
@@ -80,17 +80,17 @@ end
 export FeFunction, assign, split, py_split
 
 function Expression(cppcode; kw...)
-    Expression(fenics.Expression(cppcode; kw...))
+    return Expression(fenics.Expression(cppcode; kw...))
 end
 Identity(dim::Int) = Expression(fenics.Identity(dim))
 function inner(u::Union{Expression, FeFunction}, v::Union{Expression, FeFunction})
-    Expression(fenics.inner(u.pyobject, v.pyobject))
+    return Expression(fenics.inner(u.pyobject, v.pyobject))
 end
 function outer(u::Union{Expression, FeFunction}, v::Union{Expression, FeFunction})
-    Expression(fenics.outer(u.pyobject, v.pyobject))
+    return Expression(fenics.outer(u.pyobject, v.pyobject))
 end
 function dot(u::Union{Expression, FeFunction}, v::Union{Expression, FeFunction})
-    Expression(fenics.dot(u.pyobject, v.pyobject))
+    return Expression(fenics.dot(u.pyobject, v.pyobject))
 end
 grad(u::Union{Expression, FeFunction}) = Expression(fenics.grad(u.pyobject))
 ∇(u::Union{Expression, FeFunction}) = Expression(fenics.grad(u.pyobject))
@@ -98,7 +98,7 @@ nabla_grad(u::Union{Expression, FeFunction}) = Expression(ufl.nabla_grad(u.pyobj
 nabla_div(u::Union{Expression, FeFunction}) = Expression(ufl.nabla_div(u.pyobject))
 div(u::Union{Expression, FeFunction}) = Expression(fenics.div(u.pyobject))
 function cross(u::Union{Expression, FeFunction}, v::Union{Expression, FeFunction})
-    Expression(fenics.cross(u.pyobject, v.pyobject))
+    return Expression(fenics.cross(u.pyobject, v.pyobject))
 end
 tr(u::Union{Expression, FeFunction}) = Expression(fenics.tr(u.pyobject))
 sqrt(u::Union{Expression, FeFunction}) = Expression(fenics.sqrt(u.pyobject))
@@ -115,41 +115,41 @@ exp(u::Union{Expression, FeFunction}) = Expression(fenics.exp(u.pyobject))
 log(u::Union{Expression, FeFunction}) = Expression(fenics.ln(u.pyobject))
 
 function besseli(nu::Int, u::Union{Expression, FeFunction})
-    Expression(fenics.bessel_I(nu, u.pyobject))
+    return Expression(fenics.bessel_I(nu, u.pyobject))
 end
 function besselj(nu::Int, u::Union{Expression, FeFunction})
-    Expression(fenics.bessel_J(nu, u.pyobject))
+    return Expression(fenics.bessel_J(nu, u.pyobject))
 end
 function besselk(nu::Int, u::Union{Expression, FeFunction})
-    Expression(fenics.bessel_K(nu, u.pyobject))
+    return Expression(fenics.bessel_K(nu, u.pyobject))
 end
 function bessely(nu::Int, u::Union{Expression, FeFunction})
-    Expression(fenics.bessel_Y(nu, u.pyobject))
+    return Expression(fenics.bessel_Y(nu, u.pyobject))
 end
 
 function interpolate(solution1::FeFunction, solution2::Expression)
-    FeFunction(fenicspycall(solution1, :interpolate, solution2.pyobject))
+    return FeFunction(fenicspycall(solution1, :interpolate, solution2.pyobject))
 end
 
 Expression(x::FEniCS.Expression) = convert(Expression, x)
 export Expression, Identity, inner, grad, nabla_grad, nabla_div, div, outer, dot, cross, tr,
-       sqrt, sym, len, interpolate
+    sqrt, sym, len, interpolate
 export ∇
 
 #Below are attributes for the Expression and FeFunction types
 #Computes values at vertex of a mesh for a given Expression / FeFunction, and returns an array
 function compute_vertex_values(expr::Expression, mesh::Mesh)
-    fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
+    return fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
 end
 function compute_vertex_values(expr::FeFunction, mesh::Mesh)
-    fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
+    return fenicspycall(expr, :compute_vertex_values, mesh.pyobject)
 end
 
 export compute_vertex_values
 
 @fenicsclass Measure
 function directional_derivative(solution1::FeFunction, direction)
-    FeFunction(fenicspycall(solution1, :dx, direction))
+    return FeFunction(fenicspycall(solution1, :dx, direction))
 end
 
 # some of these constant are initialized in __init__
@@ -159,44 +159,44 @@ export dx, ds, dS, dP, directional_derivative
 @fenicsclass Form
 
 function *(expr::Union{Expression, FeFunction}, measure::Measure)
-    Expression(measure.pyobject.__rmul__(expr.pyobject))
+    return Expression(measure.pyobject.__rmul__(expr.pyobject))
 end
 
 function *(expr::Union{Expression, FeFunction}, expr2::Union{Expression, FeFunction})
-    Expression(expr.pyobject.__mul__(expr2.pyobject))
+    return Expression(expr.pyobject.__mul__(expr2.pyobject))
 end
 function *(expr::Real, expr2::Union{Expression, FeFunction})
-    Expression(expr2.pyobject.__mul__(expr))
+    return Expression(expr2.pyobject.__mul__(expr))
 end
 function *(expr::Union{Expression, FeFunction}, expr2::Real)
-    Expression(expr.pyobject.__mul__(expr2))
+    return Expression(expr.pyobject.__mul__(expr2))
 end
 
 function +(expr::Union{Expression, FeFunction}, expr2::Real)
-    Expression(expr.pyobject.__add__(expr2))
+    return Expression(expr.pyobject.__add__(expr2))
 end
 function +(expr::Real, expr2::Union{Expression, FeFunction})
-    Expression(expr2.pyobject.__add__(expr))
+    return Expression(expr2.pyobject.__add__(expr))
 end
 function +(expr::Union{Expression, FeFunction}, expr2::Union{Expression, FeFunction})
-    Expression(expr.pyobject.__add__(expr2.pyobject))
+    return Expression(expr.pyobject.__add__(expr2.pyobject))
 end
 
 function -(expr::Union{Expression, FeFunction}, expr2::Real)
-    Expression(expr.pyobject.__sub__(expr2))
+    return Expression(expr.pyobject.__sub__(expr2))
 end
 function -(expr::Real, expr2::Union{Expression, FeFunction})
-    -1 * (Expression(expr2.pyobject.__sub__(expr)))
+    return -1 * (Expression(expr2.pyobject.__sub__(expr)))
 end
 function -(expr::Union{Expression, FeFunction}, expr2::Union{Expression, FeFunction})
-    Expression(expr.pyobject.__sub__(expr2.pyobject))
+    return Expression(expr.pyobject.__sub__(expr2.pyobject))
 end
 
 function /(expr::Union{Expression, FeFunction}, expr2::Real)
-    Expression(expr.pyobject.__div__(expr2))
+    return Expression(expr.pyobject.__div__(expr2))
 end
 function /(expr::Union{Expression, FeFunction}, expr2::Union{Expression, FeFunction})
-    Expression(expr.pyobject.__div__(expr2.pyobject))
+    return Expression(expr.pyobject.__div__(expr2.pyobject))
 end
 
 function /(expr::Real, expr2::Union{Expression, FeFunction})
@@ -207,10 +207,10 @@ function /(expr::Real, expr2::Union{Expression, FeFunction})
 end
 
 function ^(expr::Union{Expression, FeFunction}, expr2::Real)
-    Expression(expr.pyobject.__pow__(expr2))
+    return Expression(expr.pyobject.__pow__(expr2))
 end
 function ^(expr::Union{Expression, FeFunction}, expr2::Union{Expression, FeFunction})
-    Expression(expr.pyobject.__pow__(expr2.pyobject))
+    return Expression(expr.pyobject.__pow__(expr2.pyobject))
 end
 
 function Transpose(object::Expression)
@@ -246,19 +246,25 @@ export lhs, rhs
 # This handles the cases where a fenics form reduces to a number
 Matrix(a::T) where {T <: Real} = a
 
-function assemble(assembly_item::Union{Form, Expression}; tensor = nothing,
+function assemble(
+        assembly_item::Union{Form, Expression}; tensor = nothing,
         form_compiler_parameters = nothing, add_values = false,
-        finalize_tensor = true, keep_diagonal = false, backend = nothing)
-    Matrix(fenics.assemble(assembly_item.pyobject,
-        tensor = tensor,
-        form_compiler_parameters = form_compiler_parameters,
-        add_values = add_values, finalize_tensor = finalize_tensor,
-        keep_diagonal = keep_diagonal, backend = backend))
+        finalize_tensor = true, keep_diagonal = false, backend = nothing
+    )
+    return Matrix(
+        fenics.assemble(
+            assembly_item.pyobject,
+            tensor = tensor,
+            form_compiler_parameters = form_compiler_parameters,
+            add_values = add_values, finalize_tensor = finalize_tensor,
+            keep_diagonal = keep_diagonal, backend = backend
+        )
+    )
 end
 export assemble
 
 function assemble_local(assembly_item::Union{Form, Expression}, cell::Cell)
-    fenics.assemble_local(assembly_item.pyobject, cell.pyobject)
+    return fenics.assemble_local(assembly_item.pyobject, cell.pyobject)
 end
 export assemble_local
 
@@ -276,14 +282,14 @@ ie instead of function(x)
 we simple write "x"
 """
 function DirichletBC(V::FunctionSpace, g, sub_domain)
-    BoundaryCondition(fenics.DirichletBC(V.pyobject, g.pyobject, sub_domain))
-end#look this up with example also removed type from g(Should be expression)
+    return BoundaryCondition(fenics.DirichletBC(V.pyobject, g.pyobject, sub_domain))
+end #look this up with example also removed type from g(Should be expression)
 function DirichletBC(V::FunctionSpace, g::Number, sub_domain)
-    BoundaryCondition(fenics.DirichletBC(V.pyobject, g, sub_domain))
-end#look this up with example also removed type from g(Should be expression)
+    return BoundaryCondition(fenics.DirichletBC(V.pyobject, g, sub_domain))
+end #look this up with example also removed type from g(Should be expression)
 function DirichletBC(V::FunctionSpace, g::Tuple, sub_domain)
-    BoundaryCondition(fenics.DirichletBC(V.pyobject, g, sub_domain))
-end#look this up with example also removed type from g(Should be expression)
+    return BoundaryCondition(fenics.DirichletBC(V.pyobject, g, sub_domain))
+end #look this up with example also removed type from g(Should be expression)
 
 export DirichletBC
 #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/compilemodules/subdomains/CompiledSubDomain.html
@@ -349,14 +355,17 @@ not all kwargs have been imported. Should you require any that are not imported
 open as issue, and I will attempt to add them.
 Deprecate this in a future version
 """
-function Plot(in_plot::Union{Mesh, FunctionSpace, FeFunction}; alpha = 1, animated = false,
+function Plot(
+        in_plot::Union{Mesh, FunctionSpace, FeFunction}; alpha = 1, animated = false,
         antialiased = true, color = "grey", dash_capstyle = "butt",
         dash_joinstyle = "miter", dashes = "", drawstyle = "default",
         fillstyle = "full", label = "s", linestyle = "solid", linewidth = 1,
         marker = "", markeredgecolor = "grey", markeredgewidth = "",
         markerfacecolor = "grey", markerfacecoloralt = "grey", markersize = 1,
-        markevery = "none", visible = true, title = "")
-    fenics.common.plotting.plot(in_plot.pyobject,
+        markevery = "none", visible = true, title = ""
+    )
+    return fenics.common.plotting.plot(
+        in_plot.pyobject,
         alpha = alpha, animated = animated,
         antialiased = antialiased, color = color,
         dash_capstyle = dash_capstyle,
@@ -368,8 +377,9 @@ function Plot(in_plot::Union{Mesh, FunctionSpace, FeFunction}; alpha = 1, animat
         markerfacecolor = markerfacecolor,
         markerfacecoloralt = markerfacecoloralt,
         markersize = markersize, markevery = markevery,
-        visible = visible, title = title)#the first is the keyword argument, the second is the value
-end#the first is the keyword argument, the second is the value
+        visible = visible, title = title
+    ) #the first is the keyword argument, the second is the value
+end #the first is the keyword argument, the second is the value
 #export Plot
 
 @fenicsclass FiniteElement
@@ -392,11 +402,17 @@ Arguments
 |          variant
 |             Hint for the local basis function variant (optional)
 """
-function FiniteElement(family::StringOrSymbol, cell = nothing, degree = nothing,
-        form_degree = nothing, quad_scheme = nothing, variant = nothing)
-    FiniteElement(fenics.FiniteElement(family = family, cell = cell, degree = degree,
-        form_degree = form_degree, quad_scheme = quad_scheme,
-        variant = variant))
+function FiniteElement(
+        family::StringOrSymbol, cell = nothing, degree = nothing,
+        form_degree = nothing, quad_scheme = nothing, variant = nothing
+    )
+    return FiniteElement(
+        fenics.FiniteElement(
+            family = family, cell = cell, degree = degree,
+            form_degree = form_degree, quad_scheme = quad_scheme,
+            variant = variant
+        )
+    )
 end
 export FiniteElement
 
@@ -433,9 +449,11 @@ degree(finiteelement::FiniteElement) = fenicspycall(finiteelement, :degree)
 
 variant(finiteelement::FiniteElement) = fenicspycall(finiteelement, :variant)
 
-function reconstruct(finiteelement::FiniteElement, ; family = nothing, cell = nothing,
-        degree = nothing)
-    FiniteElement(fenicspycall(finiteelement, :reconstruct, family, cell, degree))
+function reconstruct(
+        finiteelement::FiniteElement, ; family = nothing, cell = nothing,
+        degree = nothing
+    )
+    return FiniteElement(fenicspycall(finiteelement, :reconstruct, family, cell, degree))
 end
 
 sobolev_space(finiteelement::FiniteElement) = fenicspycall(finiteelement, :sobolev_space)
@@ -449,13 +467,13 @@ export FacetNormal
 
 function MixedElement(vec::Array{FEniCS.FiniteElementImpl, 1})
     pyvec = [elem.pyobject for elem in vec]
-    me = MixedElement(fenics.MixedElement(pyvec))
+    return me = MixedElement(fenics.MixedElement(pyvec))
 end
 
 export MixedElement
 
 function FunctionSpace(mesh::Mesh, element::Union{FiniteElement, MixedElement})
-    FunctionSpace(fenics.FunctionSpace(mesh.pyobject, element.pyobject))
+    return FunctionSpace(fenics.FunctionSpace(mesh.pyobject, element.pyobject))
 end
 
 export FunctionSpace
