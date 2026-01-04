@@ -31,7 +31,7 @@ p = (u = u, Dudt = Dudt, bc = bc, a = a, L = L)
 function f!(dudt_vec, u_vec, p, t)
     assign(p.u, u_vec)
     lvsolve(p.a, p.L, p.Dudt, p.bc)
-    copy!(dudt_vec, get_array(p.Dudt))
+    return copy!(dudt_vec, get_array(p.Dudt))
 end
 
 u0_vec = get_array(u)
@@ -45,10 +45,10 @@ u_true = interpolate(Expression(u_str, degree = 2, pi = Float64(pi), t = tspan[2
 # alg = Rodas5(autodiff=false)
 
 alg = KenCarp4(autodiff = false)
-sol = OrdinaryDiffEq.solve(prob, alg, reltol = 1e-6, abstol = 1e-6)
+sol = OrdinaryDiffEq.solve(prob, alg, reltol = 1.0e-6, abstol = 1.0e-6)
 
 vec_sol = get_array(p.u)
 vec_true = get_array(u_true)
-@test vec_sol≈vec_true rtol=1e-2
+@test vec_sol ≈ vec_true rtol = 1.0e-2
 
-end#module
+end #module

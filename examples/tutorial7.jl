@@ -48,8 +48,8 @@ function sigma(u, p)
 end
 
 F1 = rho * dot((u - u_n) / k, v) * dx + rho * dot(dot(u_n, nabla_grad(u_n)), v) * dx +
-     inner(sigma(U, p_n), epsilon(v)) * dx + dot(p_n * n, v) * ds -
-     dot(mu * nabla_grad(U) * n, v) * ds - dot(f, v) * dx
+    inner(sigma(U, p_n), epsilon(v)) * dx + dot(p_n * n, v) * ds -
+    dot(mu * nabla_grad(U) * n, v) * ds - dot(f, v) * dx
 a1 = lhs(F1)
 L1 = rhs(F1)
 
@@ -102,4 +102,4 @@ for n in 0:(num_steps - 1)
     # Hold plot
 end
 
-end#module
+end #module

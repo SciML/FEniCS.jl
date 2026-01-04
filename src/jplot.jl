@@ -27,7 +27,7 @@ function plot(object::Mesh; kws...)
     topol = topology(object)
     tdim = topol[:dim]()
     #plot 2D shapes
-    if gdim == 2 && tdim == 2
+    return if gdim == 2 && tdim == 2
         xy = coordinates(object)
         triangles = mesh2triangle(object)
         triplot(triangles; kws...)
@@ -49,7 +49,7 @@ function plot(object::Union{Expression, FeFunction}; kws...)
     gdim = geometry[:dim]()
     tdim = topology[:dim]()
     fvec = vector(object)
-    if fvec[:size]() == mesh[:num_cells]()
+    return if fvec[:size]() == mesh[:num_cells]()
         C = fvec[:array]()
         if gdim == 2 && tdim == 2
             tripcolor(mesh2triangle(mesh), C; kws...)
@@ -71,7 +71,7 @@ function surf_plot(object::Union{Expression, FeFunction}; kws...)
     gdim = geometry[:dim]()
     tdim = topology[:dim]()
     fvec = vector(object)
-    if object.pyobject[:value_rank]() == 0
+    return if object.pyobject[:value_rank]() == 0
         C = object.pyobject[:compute_vertex_values](mesh)
         xy = coordinates(Mesh(mesh))
         PyPlot.surf(xy[:, 1], xy[:, 2], C)
@@ -82,12 +82,12 @@ end
 
 #plotting for solution computed via jinterface.jl, directly with the Mesh
 function plot(mesh::Mesh, solution::AbstractArray, levels::Int = 40; kws...)
-    tricontourf(mesh2triangle(mesh), solution, levels; kws...)
+    return tricontourf(mesh2triangle(mesh), solution, levels; kws...)
 end
 
 #plotting for solution computed via jinterface.jl
 function plot(space::feMesh, solution::AbstractArray, levels::Int = 40; kws...)
-    tricontourf(mesh2triangle(space), solution, levels; kws...)
+    return tricontourf(mesh2triangle(space), solution, levels; kws...)
 end
 
 export plot, surf_plot

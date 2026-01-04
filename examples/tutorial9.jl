@@ -41,10 +41,14 @@ u_1, u_2, u_3 = split(u)
 u_n1, u_n2, u_n3 = split(u_n)
 
 # Define source terms
-f_1 = Expression("pow(x[0]-0.1,2)+pow(x[1]-0.1,2)<0.05*0.05 ? 0.1 : 0",
-    degree = 1)
-f_2 = Expression("pow(x[0]-0.1,2)+pow(x[1]-0.3,2)<0.05*0.05 ? 0.1 : 0",
-    degree = 1)
+f_1 = Expression(
+    "pow(x[0]-0.1,2)+pow(x[1]-0.1,2)<0.05*0.05 ? 0.1 : 0",
+    degree = 1
+)
+f_2 = Expression(
+    "pow(x[0]-0.1,2)+pow(x[1]-0.3,2)<0.05*0.05 ? 0.1 : 0",
+    degree = 1
+)
 f_3 = Constant(0)
 
 # Define expressions used in variational forms
@@ -90,4 +94,4 @@ for n in 0:num_steps
     # Update previous solution
     assign(u_n, u)
 end
-end#module
+end #module
