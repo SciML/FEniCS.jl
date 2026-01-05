@@ -77,7 +77,7 @@ version = "2.7.3+0"
 
 [[deps.FEniCS]]
 deps = ["LinearAlgebra", "ProgressMeter", "PyCall", "Requires", "SpecialFunctions"]
-path = "/home/chrisrackauckas/github-runners/demeter4-7/_work/FEniCS.jl/FEniCS.jl"
+path = "/home/chrisrackauckas/github-runners/deepsea4-19/_work/FEniCS.jl/FEniCS.jl"
 uuid = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
 version = "1.0.0"
 
