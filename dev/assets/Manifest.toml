@@ -1,6 +1,6 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.12.3"
+julia_version = "1.12.4"
 manifest_format = "2.0"
 project_hash = "e35c45281d7d6be2fcec981501ad2b972538718e"
 
@@ -77,9 +77,9 @@ version = "2.7.3+0"
 
 [[deps.FEniCS]]
 deps = ["LinearAlgebra", "ProgressMeter", "PyCall", "Requires", "SpecialFunctions"]
-path = "/home/chrisrackauckas/github-runners/deepsea4-19/_work/FEniCS.jl/FEniCS.jl"
+path = "/home/runner/work/FEniCS.jl/FEniCS.jl"
 uuid = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
-version = "1.0.0"
+version = "1.1.0"
 
 [[deps.FileWatching]]
 uuid = "7b1f6079-737a-58dc-b8bc-7a2ca5c1b5ee"
@@ -225,7 +225,7 @@ version = "0.1.2"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2025.5.20"
+version = "2025.11.4"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -355,9 +355,9 @@ version = "2.6.1"
 
 [[deps.StructUtils]]
 deps = ["Dates", "UUIDs"]
-git-tree-sha1 = "79529b493a44927dd5b13dde1c7ce957c2d049e4"
+git-tree-sha1 = "b0290a55d9e047841d7f5c472edbdc39c72cd0ce"
 uuid = "ec057cc2-7a8d-4b58-b3b3-92acb9f63b42"
-version = "2.6.0"
+version = "2.6.1"
 
     [deps.StructUtils.extensions]
     StructUtilsMeasurementsExt = ["Measurements"]
