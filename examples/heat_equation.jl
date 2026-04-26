@@ -10,6 +10,7 @@ module HeatEquationExample
 
 using Test
 using OrdinaryDiffEq
+using ADTypes: AutoFiniteDiff
 using FEniCS
 
 mesh = UnitIntervalMesh(50)
@@ -40,11 +41,11 @@ prob = ODEProblem(f!, u0_vec, tspan, p)
 u_true = interpolate(Expression(u_str, degree = 2, pi = Float64(pi), t = tspan[2]), V)
 
 # some algorithms to try:
-# alg = ImplicitEuler(autodiff=false)
-# alg = Rosenbrock23(autodiff=false)
-# alg = Rodas5(autodiff=false)
+# alg = ImplicitEuler(autodiff=AutoFiniteDiff())
+# alg = Rosenbrock23(autodiff=AutoFiniteDiff())
+# alg = Rodas5(autodiff=AutoFiniteDiff())
 
-alg = KenCarp4(autodiff = false)
+alg = KenCarp4(autodiff = AutoFiniteDiff())
 sol = OrdinaryDiffEq.solve(prob, alg, reltol = 1.0e-6, abstol = 1.0e-6)
 
 vec_sol = get_array(p.u)
