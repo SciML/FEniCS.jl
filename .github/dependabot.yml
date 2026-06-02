@@ -5,11 +5,16 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    ignore:
-      - dependency-name: "crate-ci/typos"
-        update-types: ["version-update:semver-patch", "version-update:semver-minor"]
   - package-ecosystem: "julia"
     directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      all-julia-packages:
+        patterns:
+          - "*"
+  - package-ecosystem: "julia"
+    directory: "/docs"
     schedule:
       interval: "daily"
     groups:
