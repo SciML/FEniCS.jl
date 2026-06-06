@@ -10,6 +10,7 @@ module HeatEquationExample
 
 using Test
 using OrdinaryDiffEq
+using OrdinaryDiffEqSDIRK: KenCarp4
 using ADTypes: AutoFiniteDiff
 using FEniCS
 
