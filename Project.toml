@@ -13,6 +13,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 ADTypes = "1"
 ExplicitImports = "1"
 OrdinaryDiffEq = "6, 7"
+OrdinaryDiffEqSDIRK = "1, 2"
 ProgressMeter = "1.2"
 PyCall = "1.90"
 Requires = "0.5, 1.0"
@@ -23,7 +24,8 @@ julia = "1.6"
 ADTypes = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
 ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
 OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
+OrdinaryDiffEqSDIRK = "2d112036-d095-4a1e-ab9a-08536f3ecdbf"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["ADTypes", "ExplicitImports", "Test", "OrdinaryDiffEq"]
+test = ["ADTypes", "ExplicitImports", "Test", "OrdinaryDiffEq", "OrdinaryDiffEqSDIRK"]
