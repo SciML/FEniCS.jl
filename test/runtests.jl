@@ -1,5 +1,15 @@
-using FEniCS
 using Test
+
+const GROUP = get(ENV, "GROUP", "All")
+
+if GROUP == "QA"
+    @testset "Quality Assurance" begin
+        include(joinpath(@__DIR__, "qa", "qa.jl"))
+    end
+    exit()
+end
+
+using FEniCS
 
 FEniCS.set_log_level(FEniCS.WARNING)
 
