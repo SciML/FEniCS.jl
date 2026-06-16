@@ -38,7 +38,7 @@ function __init__()
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
 import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log,
-    repr, div, sqrt, split
+    repr, div, sqrt, split, write
 
 import SpecialFunctions: besseli, besselj, besselk, bessely
 export besseli, besselj, besselk, bessely
