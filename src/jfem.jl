@@ -17,7 +17,7 @@ end
 export FunctionSpace, VectorFunctionSpace
 
 @fenicsclass Expression
-function Argument(V, number, part::StringOrSymbol = nothing)
+function Argument(V, number, part::Union{StringOrSymbol, Nothing} = nothing)
     return Expression(fenics.Argument(V.pyobject, number, part = part))
 end
 TrialFunction(V::FunctionSpace) = Expression(fenics.TrialFunction(V.pyobject))
