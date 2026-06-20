@@ -21,9 +21,6 @@ const mshr = PyCall.PyNULL()
 
 function __init__()
     @require PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
-    @require ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca" begin
-        using ProgressMeter
-    end
     copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
     copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
     include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
@@ -68,7 +65,7 @@ macro fenicsclass(name::Symbol, base1::Symbol = :fenicsobject)
         end
     )
 end
-export fenicsclass
+export @fenicsclass
 
 @enum LOGLEVEL begin
     CRITICAL = 50

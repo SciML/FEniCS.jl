@@ -142,11 +142,16 @@ TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
 retrieve(timeseries, placeholder, time) = timeseries.retrieve(placeholder, time)
 export TimeSeries, retrieve
 
-write(path, solution, time::Number) = path.write(solution.pyobject, time)
-write(path, solution::PyObject, time::Number) = path.write(solution, time)
+# `write` extends `Base.write`. Typing `solution::fenicsobject` keeps this from
+# being type piracy (a FEniCS-owned argument), and typing `path::PyObject` (the
+# value returned by `XDMFFile`/`TimeSeries`) keeps it from being ambiguous with
+# `Base.write(::IO, ...)` / `write(::AbstractString, ...)`. A raw-`PyObject`
+# solution is unused; use `store` (a FEniCS-owned function) for raw vectors such
+# as `vector(u)`.
+write(path::PyObject, solution::fenicsobject, time::Number) = path.write(solution.pyobject, time)
 
-store(path, solution, time::Number) = path.store(solution.pyobject, time)
-store(path, solution::PyObject, time::Number) = path.store(solution, time)
+store(path::PyObject, solution, time::Number) = path.store(solution.pyobject, time)
+store(path::PyObject, solution::PyObject, time::Number) = path.store(solution, time)
 
 export write, store
 
