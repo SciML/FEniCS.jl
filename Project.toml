@@ -10,7 +10,6 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 ADTypes = "1"
-ExplicitImports = "1"
 LinearAlgebra = "1"
 OrdinaryDiffEq = "6, 7"
 OrdinaryDiffEqSDIRK = "1, 2"
@@ -24,7 +23,6 @@ julia = "1.10"
 
 [extras]
 ADTypes = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
-ExplicitImports = "7d51a73a-1435-4ff3-83d9-f097790105c7"
 OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
 OrdinaryDiffEqSDIRK = "2d112036-d095-4a1e-ab9a-08536f3ecdbf"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
@@ -32,4 +30,4 @@ SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["ADTypes", "ExplicitImports", "Test", "OrdinaryDiffEq", "OrdinaryDiffEqSDIRK", "SafeTestsets", "SciMLTesting"]
+test = ["ADTypes", "Test", "OrdinaryDiffEq", "OrdinaryDiffEqSDIRK", "SafeTestsets", "SciMLTesting"]
