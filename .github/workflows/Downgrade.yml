@@ -1,0 +1,19 @@
+name: Downgrade
+on:
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+jobs:
+  downgrade:
+    uses: "SciML/.github/.github/workflows/downgrade.yml@v1"
+    with:
+      group: "Core"
+      container: "cmhyett/julia-fenics:latest"
+    secrets: "inherit"
