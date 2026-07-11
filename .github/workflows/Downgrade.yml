@@ -12,8 +12,77 @@ on:
       - 'docs/**'
 jobs:
   downgrade:
-    uses: "SciML/.github/.github/workflows/downgrade.yml@v1"
-    with:
-      group: "Core"
-      container: "cmhyett/julia-fenics:latest"
-    secrets: "inherit"
+    name: Downgrade Tests - Core
+    runs-on: ubuntu-24.04
+    container: cmhyett/julia-fenics:latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: lts
+
+      - name: Compute effective downgrade skip list
+        run: |
+          stdlibs="$(julia --startup-file=no -e '
+            using Pkg
+            ns = String[]
+            for v in values(Pkg.Types.stdlibs())
+                push!(ns, v isa AbstractString ? v : first(v))
+            end
+            println(join(sort(unique(ns)), ","))
+          ')"
+          echo "Julia stdlibs: $stdlibs"
+          effective="$stdlibs"
+          projects="."
+          old_ifs="$IFS"
+          IFS=","
+          for dir in $projects; do
+              IFS="$old_ifs"
+              dir="$(echo "$dir" | xargs)"
+              IFS=","
+              [ -n "$dir" ] || continue
+              f="$dir/Project.toml"
+              if [ ! -f "$f" ]; then
+                  echo "No Project.toml in '$dir', skipping [sources] scan"
+                  continue
+              fi
+              names="$(julia --startup-file=no -e '
+                using TOML
+                src = get(TOML.parsefile(ARGS[1]), "sources", Dict())
+                println(join(collect(keys(src)), ","))
+              ' "$f")"
+              if [ -n "$names" ]; then
+                  echo "[sources] deps in $dir: $names"
+                  effective="$effective,$names"
+              fi
+          done
+          IFS="$old_ifs"
+          echo "Effective downgrade skip: $effective"
+          echo "EFFECTIVE_SKIP=$effective" >> "$GITHUB_ENV"
+
+      - name: Align action path inside container
+        run: |
+          mkdir -p /home/runner/work
+          if [ ! -e /home/runner/work/_actions ]; then
+              ln -s /__w/_actions /home/runner/work/_actions
+          fi
+
+      - uses: julia-actions/julia-downgrade-compat@v2
+        with:
+          skip: "${{ env.EFFECTIVE_SKIP }}"
+          projects: "."
+          mode: "deps"
+          no_promote: "Mooncake"
+
+      - uses: julia-actions/julia-buildpkg@v1
+        with:
+          project: "@."
+
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          project: "@."
+          allow_reresolve: false
+          force_latest_compatible_version: false
+        env:
+          GROUP: Core

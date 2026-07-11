@@ -1,3 +1,9 @@
+"""
+    FEniCS
+
+Julia wrappers around FEniCS/DOLFIN finite element meshes, function spaces,
+forms, solvers, and related helper utilities.
+"""
 module FEniCS
 
 using PyCall: PyCall, PyObject, pyimport_conda, pycall, @pyimport
@@ -34,7 +40,7 @@ function __init__()
     global hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
     global triangle = fenics.triangle
     global quadrilateral = fenics.quadrilateral
-    return global CellType = fenics.CellType
+    return copy!(CellType.pyobject, fenics.CellType)
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
 import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log,
@@ -48,11 +54,32 @@ export norm
 
 abstract type fenicsobject end #creates placeholder for the fenicsobject type
 
+struct PyNamespace <: fenicsobject
+    pyobject::PyObject
+end
+
+function Base.getproperty(obj::PyNamespace, name::Symbol)
+    name === :pyobject && return getfield(obj, :pyobject)
+    return getproperty(getfield(obj, :pyobject), name)
+end
+
+"""
+    CellType
+
+FEniCS/DOLFIN cell-type namespace used to select mesh cell shapes.
+"""
+const CellType = PyNamespace(PyCall.PyNULL())
+
 function fenicspycall(object::fenicsobject, func::Union{Symbol, String}, args...)
     return getproperty(object.pyobject, func)(args...)
 end
 export fenicspycall
 
+"""
+    @fenicsclass name [base]
+
+Define a Julia wrapper type hierarchy for a FEniCS Python object.
+"""
 macro fenicsclass(name::Symbol, base1::Symbol = :fenicsobject)
     impl = Symbol(name, "Impl")
     return esc(
@@ -82,6 +109,7 @@ set_log_level(lvl::Int) = fenics.set_log_level(lvl)
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, repr(obj))
+Docs.getdoc(::PyNamespace) = "FEniCS/DOLFIN cell-type namespace used to select mesh cell shapes."
 Docs.getdoc(obj::fenicsobject) = obj.pyobject.__doc__
 export str, repr
 
@@ -91,5 +119,6 @@ include("jmisc.jl") #this file contains various miscallaneous functions to assis
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 include_mshr && include("fmshr.jl") #this file contains various geometrical objects using the mshr package
+include("public_api_docs.jl")
 
 end #module
