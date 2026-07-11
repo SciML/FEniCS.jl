@@ -61,6 +61,13 @@ jobs:
           echo "Effective downgrade skip: $effective"
           echo "EFFECTIVE_SKIP=$effective" >> "$GITHUB_ENV"
 
+      - name: Align action path inside container
+        run: |
+          mkdir -p /home/runner/work
+          if [ ! -e /home/runner/work/_actions ]; then
+              ln -s /__w/_actions /home/runner/work/_actions
+          fi
+
       - uses: julia-actions/julia-downgrade-compat@v2
         with:
           skip: "${{ env.EFFECTIVE_SKIP }}"
