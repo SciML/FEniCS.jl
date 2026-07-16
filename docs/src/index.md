@@ -30,7 +30,7 @@ This wrapper was originally started via the [Google Summer of Code program](http
 
 ## Tutorial
 
-Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://github.com/hplgit/fenics-tutorial/blob/master/pub/python/vol1/ft01_poisson.py)** FEniCS provides
+Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://hplgit.github.io/INF5620/doc/pub/fenics_tutorial1.1/index.html)** FEniCS provides
 ```julia
 using FEniCS
 mesh = UnitSquareMesh(8,8)
@@ -65,6 +65,12 @@ FEniCS.Plot(mesh)
 ![alt text](https://user-images.githubusercontent.com/16087601/34915337-b2c0aede-f91c-11e7-986a-5658d23c262e.png "Square Mesh")
 
 See the examples directory for more examples.
+
+## API Reference
+
+```@autodocs
+Modules = [FEniCS]
+```
 
 ## Reproducibility
 ```@raw html

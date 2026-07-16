@@ -74,3 +74,25 @@ function CSGTranslation(geom_object1::Geometry, translation_point)
 end
 
 export CSGUnion, CSGIntersection, CSGDifference, CSGScaling, CSGRotation, CSGTranslation
+
+const _FMSHR_API_DOCS = Pair{Symbol, String}[
+    :Box => "Create a three-dimensional mshr box geometry from two opposite corners.",
+    :CSGDifference => "Construct the difference of two mshr constructive-solid-geometry objects.",
+    :CSGIntersection => "Construct the intersection of two mshr constructive-solid-geometry objects.",
+    :CSGRotation => "Construct a rotated mshr constructive-solid-geometry object.",
+    :CSGScaling => "Construct a scaled mshr constructive-solid-geometry object.",
+    :CSGTranslation => "Construct a translated mshr constructive-solid-geometry object.",
+    :CSGUnion => "Construct the union of two mshr constructive-solid-geometry objects.",
+    :Circle => "Create a two-dimensional mshr circle geometry.",
+    :Cone => "Create a three-dimensional mshr cone geometry.",
+    :Ellipse => "Create a two-dimensional mshr ellipse geometry.",
+    :Extrude2D => "Extrude a two-dimensional mshr geometry into three dimensions.",
+    :Rectangle => "Create a two-dimensional mshr rectangle geometry.",
+    :Sphere => "Create a three-dimensional mshr sphere geometry.",
+    :generate_mesh => "Generate a FEniCS mesh from an mshr geometry object.",
+    :set_subdomain => "Set a subdomain on an mshr geometry object.",
+]
+
+for (name, doc) in _FMSHR_API_DOCS
+    @eval @doc $doc $name
+end
