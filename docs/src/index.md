@@ -33,18 +33,18 @@ This wrapper was originally started via the [Google Summer of Code program](http
 Below is a small demonstration of how a user would use our code to solve the Poisson equation with Dirichlet conditions. This directly mirrors one of the **[tutorials](https://hplgit.github.io/INF5620/doc/pub/fenics_tutorial1.1/index.html)** FEniCS provides
 ```julia
 using FEniCS
-mesh = UnitSquareMesh(8,8)
-V = FunctionSpace(mesh,"P",1)
-u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]", degree=2)
+mesh = UnitSquareMesh(8, 8)
+V = FunctionSpace(mesh, "P", 1)
+u_D = Expression("1+x[0]*x[0]+2*x[1]*x[1]", degree = 2)
 u = TrialFunction(V)
-bc1 = DirichletBC(V,u_D, "on_boundary")
+bc1 = DirichletBC(V, u_D, "on_boundary")
 v = TestFunction(V)
 f = Constant(-6.0)
-a = dot(grad(u),grad(v))*dx
-L = f*v*dx
+a = dot(grad(u), grad(v)) * dx
+L = f * v * dx
 U = FeFunction(V)
-lvsolve(a,L,U,bc1) #linear variational solver
-errornorm(u_D, U, norm="L2")
+lvsolve(a, L, U, bc1) #linear variational solver
+errornorm(u_D, U, norm = "L2")
 get_array(L) #this returns an array for the stiffness matrix
 get_array(U) #this returns an array for the solution values
 vtkfile = File("poisson/solution.pvd")
