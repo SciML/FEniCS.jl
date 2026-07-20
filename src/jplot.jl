@@ -91,3 +91,12 @@ function plot(space::feMesh, solution::AbstractArray, levels::Int = 40; kws...)
 end
 
 export plot, surf_plot
+
+const _JPLOT_API_DOCS = Pair{Symbol, String}[
+    :plot => "Plot a FEniCS mesh, expression, function, or finite-element solution.",
+    :surf_plot => "Create a surface plot for a scalar FEniCS expression or function.",
+]
+
+for (name, doc) in _JPLOT_API_DOCS
+    @eval @doc $doc $name
+end
