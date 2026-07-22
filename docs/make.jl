@@ -7,9 +7,28 @@ catch err
 
     @eval module FEniCS
     """
-        @fenicsclass name [base]
+        @fenicsclass name [base = FEniCS.fenicsobject]
 
-    Define a Julia wrapper type hierarchy for a FEniCS Python object.
+    Define a Julia wrapper hierarchy for a FEniCS Python object.
+
+    # Arguments
+    - `name`: Name of the abstract wrapper type to define.
+    - `base`: Optional abstract supertype. It defaults to FEniCS's wrapper base type.
+
+    # Extension rules
+    The macro defines `name <: base`, a concrete `nameImpl <: name` with one
+    `PyCall.PyObject` field named `pyobject`, and a constructor from that field.
+    Use it from a module that imports `FEniCS`; importing `PyCall` is not required
+    to expand the macro. Extend wrapper behavior on `name`, not on `nameImpl`, so
+    all implementations of the abstract wrapper share the extension.
+
+    # Example
+    ```julia
+    module MyFEniCSExtension
+    using FEniCS
+    FEniCS.@fenicsclass MyObject
+    end
+    ```
     """
     macro fenicsclass(args...)
         return nothing
