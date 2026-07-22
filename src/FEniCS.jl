@@ -52,7 +52,7 @@ export besseli, besselj, besselk, bessely
 import LinearAlgebra: norm
 export norm
 
-abstract type fenicsobject end #creates placeholder for the fenicsobject type
+abstract type fenicsobject end
 
 struct PyNamespace <: fenicsobject
     pyobject::PyObject
@@ -76,21 +76,40 @@ end
 export fenicspycall
 
 """
-    @fenicsclass name [base]
+    @fenicsclass name [base = FEniCS.fenicsobject]
 
-Define a Julia wrapper type hierarchy for a FEniCS Python object.
+Define a Julia wrapper hierarchy for a FEniCS Python object.
+
+# Arguments
+- `name`: Name of the abstract wrapper type to define.
+- `base`: Optional abstract supertype. It defaults to FEniCS's wrapper base type.
+
+# Extension rules
+The macro defines `name <: base`, a concrete `nameImpl <: name` with one
+`PyCall.PyObject` field named `pyobject`, and a constructor from that field.
+Use it from a module that imports `FEniCS`; importing `PyCall` is not required
+to expand the macro. Extend wrapper behavior on `name`, not on `nameImpl`, so
+all implementations of the abstract wrapper share the extension.
+
+# Example
+```julia
+module MyFEniCSExtension
+using FEniCS
+FEniCS.@fenicsclass MyObject
+end
+```
 """
-macro fenicsclass(name::Symbol, base1::Symbol = :fenicsobject)
+macro fenicsclass(name::Symbol, base1 = nothing)
     impl = Symbol(name, "Impl")
-    return esc(
-        quote
-            abstract type $name <: $base1 end
-            struct $impl <: $name
-                pyobject::PyObject
-            end
-            $(name)(pyobject::PyObject) = $impl(pyobject)
+    base = base1 === nothing ? GlobalRef(@__MODULE__, :fenicsobject) : esc(base1)
+    pyobject = GlobalRef(PyCall, :PyObject)
+    return quote
+        abstract type $(esc(name)) <: $base end
+        struct $(esc(impl)) <: $(esc(name))
+            pyobject::$pyobject
         end
-    )
+        $(esc(name))(pyobject::$pyobject) = $(esc(impl))(pyobject)
+    end
 end
 export @fenicsclass
 
@@ -110,7 +129,10 @@ str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, repr(obj))
 Docs.getdoc(::PyNamespace) = "FEniCS/DOLFIN cell-type namespace used to select mesh cell shapes."
-Docs.getdoc(obj::fenicsobject) = obj.pyobject.__doc__
+function Docs.getdoc(obj::fenicsobject)
+    doc = convert(PyCall.PyAny, obj.pyobject.__doc__)
+    return doc isa AbstractString ? doc : "FEniCS/DOLFIN wrapped object."
+end
 export str, repr
 
 include("jmesh.jl") #this file contains the mesh functions

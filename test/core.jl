@@ -1,7 +1,20 @@
 using FEniCS
+using PyCall
 using Test
 
 FEniCS.set_log_level(FEniCS.WARNING)
+
+module FEniCSMacroInterfaceTest
+    using FEniCS
+
+    FEniCS.@fenicsclass ExternalFEniCSObject
+end
+
+@testset "@fenicsclass interface" begin
+    object = FEniCSMacroInterfaceTest.ExternalFEniCSObject(PyCall.PyNULL())
+    @test object isa FEniCSMacroInterfaceTest.ExternalFEniCSObject
+    @test object.pyobject == PyCall.PyNULL()
+end
 
 examples_dir = joinpath(@__DIR__, "..", "examples")
 @assert ispath(examples_dir)
