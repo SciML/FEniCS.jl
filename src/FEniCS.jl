@@ -27,20 +27,29 @@ const mshr = PyCall.PyNULL()
 
 function __init__()
     @require PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee" include("jplot.jl")
-    copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
-    copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
-    include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
+    try
+        copy!(fenics, pyimport_conda("fenics", "fenics=2019.1.0", "conda-forge"))
+        copy!(ufl, pyimport_conda("ufl", "ufl=2019.1.0", "conda-forge"))
+        include_mshr && copy!(mshr, pyimport_conda("mshr", "mshr=2019.1.0", "conda-forge"))
 
-    # initialize constants at loadtime
-    global dx = Measure(fenics.dx)
-    global ds = Measure(fenics.ds)
-    global dS = Measure(fenics.dS)
-    global dP = Measure(fenics.dP)
-    global tetrahedron = fenics.tetrahedron
-    global hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
-    global triangle = fenics.triangle
-    global quadrilateral = fenics.quadrilateral
-    return copy!(CellType.pyobject, fenics.CellType)
+        # initialize constants at loadtime
+        global dx = Measure(fenics.dx)
+        global ds = Measure(fenics.ds)
+        global dS = Measure(fenics.dS)
+        global dP = Measure(fenics.dP)
+        global tetrahedron = fenics.tetrahedron
+        global hexahedron = fenics.hexahedron #matplotlib cannot handle hexahedron elements
+        global triangle = fenics.triangle
+        global quadrilateral = fenics.quadrilateral
+        copy!(CellType.pyobject, fenics.CellType)
+    catch err
+        @warn """
+        FEniCS.jl loaded but could not import the Python FEniCS/DOLFIN installation, so \
+        it is not usable. Calls into FEniCS will error until the `fenics` and `ufl` \
+        Python packages (FEniCS 2019.1.0) are installed and importable through PyCall.jl.
+        """ exception = (err, catch_backtrace())
+    end
+    return nothing
 end
 #the below code is an adaptation of aleadev.FEniCS.jl
 import Base: size, length, show, *, +, -, /, ^, sin, cos, tan, asin, acos, atan, exp, log,
