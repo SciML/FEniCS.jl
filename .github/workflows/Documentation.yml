@@ -15,4 +15,6 @@ concurrency:
 jobs:
   documentation:
     uses: "SciML/.github/.github/workflows/documentation.yml@v1"
+    with:
+      runner: '"ubuntu-24.04"'
     secrets: "inherit"

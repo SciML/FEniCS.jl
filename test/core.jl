@@ -5,9 +5,9 @@ using Test
 FEniCS.set_log_level(FEniCS.WARNING)
 
 module FEniCSMacroInterfaceTest
-using FEniCS
+    using FEniCS
 
-FEniCS.@fenicsclass ExternalFEniCSObject
+    FEniCS.@fenicsclass ExternalFEniCSObject
 end
 
 @testset "@fenicsclass interface" begin
