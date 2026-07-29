@@ -86,6 +86,7 @@ SpecialFunctions.bessely
 
 ```@autodocs
 Modules = [FEniCS]
+Public = true
 ```
 
 ## Reproducibility

@@ -58,16 +58,17 @@ catch err
         :surf_plot => "Create a surface plot for a scalar FEniCS expression or function.",
     ]
 
+    for (name, _) in Iterators.flatten((_PUBLIC_API_DOCS, _DOCS_BUILD_API_DOCS))
+        isdefined(@__MODULE__, name) ||
+            Core.eval(@__MODULE__, Expr(:const, Expr(:(=), name, nothing)))
+    end
+
     end
 
     for (name, doc) in FEniCS._DOCS_BUILD_API_DOCS
         Core.eval(FEniCS, :(@doc $doc $name))
     end
 
-    for (name, _) in Iterators.flatten((FEniCS._PUBLIC_API_DOCS, FEniCS._DOCS_BUILD_API_DOCS))
-        isdefined(FEniCS, name) ||
-            Core.eval(FEniCS, Expr(:const, Expr(:(=), name, nothing)))
-    end
 end
 
 cp("./docs/Manifest.toml", "./docs/src/assets/Manifest.toml", force = true)
