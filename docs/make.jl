@@ -1,6 +1,4 @@
 using Documenter
-using LinearAlgebra
-using SpecialFunctions
 
 const _DOCS_BUILD_API_DOCS = Pair{Symbol, String}[
     :Box => "Create a three-dimensional mshr box geometry from two opposite corners.",

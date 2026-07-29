@@ -42,7 +42,21 @@ bounding_box_tree(mesh::Mesh) = fenicspycall(mesh, :bounding_box_tree) #this obj
 rmax(mesh::Mesh) = fenicspycall(mesh, :rmax)
 #Compute minimum cell inradius.
 rmin(mesh::Mesh) = fenicspycall(mesh, :rmin)
-#Get number of local entities of given topological dimension.
+"""
+    size(mesh::Mesh, dim::Int)
+
+Return the number of local mesh entities in topological dimension `dim`.
+
+# Arguments
+- `mesh`: FEniCS mesh to query.
+- `dim`: Topological dimension of the requested entities.
+
+# Examples
+```julia
+julia> size(mesh, 0) # vertices
+4
+```
+"""
 size(mesh::Mesh, dim::Int) = fenicspycall(mesh, :size, dim) # version with dims
 #Returns the ufl cell of the mesh.
 ufl_cell(mesh::Mesh) = fenicspycall(mesh, :ufl_cell)

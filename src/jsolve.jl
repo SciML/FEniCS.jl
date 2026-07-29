@@ -96,6 +96,24 @@ function anlvsolve(F, a, u, bcs, tol, M)
 end
 #this function hasnt been tested yet, so isnt exported
 
+"""
+    norm(u::FeFunction; normType = "L2", mesh = nothing)
+
+Compute a FEniCS norm of a finite-element function.
+
+# Arguments
+- `u`: Finite-element function whose norm is computed.
+
+# Keyword Arguments
+- `normType = "L2"`: FEniCS norm identifier.
+- `mesh = nothing`: Optional mesh used by FEniCS for the norm computation.
+
+# Examples
+```julia
+julia> norm(u; normType = "H1")
+1.0
+```
+"""
 function norm(u::FeFunction; normType = "L2", mesh::Union{Nothing, Mesh} = nothing)
     if isa(mesh, Nothing)
         return fenics.norm(u.pyobject, normType)
@@ -142,12 +160,21 @@ TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
 retrieve(timeseries, placeholder, time) = timeseries.retrieve(placeholder, time)
 export TimeSeries, retrieve
 
-# `write` extends `Base.write`. Typing `solution::fenicsobject` keeps this from
-# being type piracy (a FEniCS-owned argument), and typing `path::PyObject` (the
-# value returned by `XDMFFile`/`TimeSeries`) keeps it from being ambiguous with
-# `Base.write(::IO, ...)` / `write(::AbstractString, ...)`. A raw-`PyObject`
-# solution is unused; use `store` (a FEniCS-owned function) for raw vectors such
-# as `vector(u)`.
+"""
+    write(path::PyObject, solution::fenicsobject, time::Number)
+
+Write a FEniCS mesh or function to an FEniCS `XDMFFile` or `TimeSeries` at `time`.
+
+# Arguments
+- `path`: Python-backed FEniCS output object returned by `XDMFFile` or `TimeSeries`.
+- `solution`: FEniCS mesh or function to write.
+- `time`: Time associated with the output sample.
+
+# Examples
+```julia
+julia> write(XDMFFile("solution.xdmf"), u, 0.0)
+```
+"""
 write(path::PyObject, solution::fenicsobject, time::Number) = path.write(solution.pyobject, time)
 
 store(path::PyObject, solution, time::Number) = path.store(solution.pyobject, time)
