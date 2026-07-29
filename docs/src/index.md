@@ -68,6 +68,22 @@ See the examples directory for more examples.
 
 ## API Reference
 
+### Reexported Julia API
+
+```@docs
+Base.div
+LinearAlgebra.norm
+Base.repr
+Base.size
+Base.split
+Base.sqrt
+Base.write
+SpecialFunctions.besseli
+SpecialFunctions.besselj
+SpecialFunctions.besselk
+SpecialFunctions.bessely
+```
+
 ```@autodocs
 Modules = [FEniCS]
 ```
