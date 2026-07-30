@@ -135,6 +135,20 @@ set_log_level(lvl::LOGLEVEL) = set_log_level(Int(lvl))
 set_log_level(lvl::Int) = fenics.set_log_level(lvl)
 
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
+"""
+    repr(obj::fenicsobject)
+
+Return the Python/FEniCS representation of `obj` as a Julia string.
+
+# Arguments
+- `obj`: Wrapped FEniCS object to represent.
+
+# Examples
+```julia
+julia> repr(mesh)
+"<dolfin.cpp.mesh.Mesh object ...>"
+```
+"""
 repr(obj::fenicsobject) = fenicspycall(obj, :__repr__)
 show(io::IO, obj::fenicsobject) = show(io, repr(obj))
 Docs.getdoc(::PyNamespace) = "FEniCS/DOLFIN cell-type namespace used to select mesh cell shapes."

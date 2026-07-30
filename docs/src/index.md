@@ -70,6 +70,7 @@ See the examples directory for more examples.
 
 ```@autodocs
 Modules = [FEniCS]
+Public = true
 ```
 
 ## Reproducibility

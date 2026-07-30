@@ -18,7 +18,6 @@ const _DEPENDENCY_REEXPORTS = (
 run_qa(
     FEniCS;
     reexports_allow = _DEPENDENCY_REEXPORTS,
-    api_docs_kwargs = (; rendered_ignore = _DEPENDENCY_REEXPORTS),
     ei_kwargs = (;
         # `getdoc` is not public in `Base.Docs`, but FEniCS extends
         # `Base.Docs.getdoc(::fenicsobject)` (src/FEniCS.jl) to surface the wrapped

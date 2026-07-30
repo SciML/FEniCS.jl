@@ -65,6 +65,19 @@ function geometric_dimension(expr::Union{FeFunction, Expression})
 end
 export geometric_dimension
 
+"""
+    split(fun::FeFunction)
+
+Split a mixed FEniCS finite-element function into its component functions.
+
+# Arguments
+- `fun`: Mixed finite-element function to split.
+
+# Examples
+```julia
+julia> components = split(mixed_solution);
+```
+"""
 function split(fun::FeFunction)
     vec = fenics.split(fun.pyobject)
     expr_vec = [FeFunction(spl) for spl in vec]
@@ -96,11 +109,37 @@ grad(u::Union{Expression, FeFunction}) = Expression(fenics.grad(u.pyobject))
 ∇(u::Union{Expression, FeFunction}) = Expression(fenics.grad(u.pyobject))
 nabla_grad(u::Union{Expression, FeFunction}) = Expression(ufl.nabla_grad(u.pyobject))
 nabla_div(u::Union{Expression, FeFunction}) = Expression(ufl.nabla_div(u.pyobject))
+"""
+    div(u::Union{Expression, FeFunction})
+
+Construct the FEniCS symbolic divergence of `u`.
+
+# Arguments
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> divergence = div(vector_expression);
+```
+"""
 div(u::Union{Expression, FeFunction}) = Expression(fenics.div(u.pyobject))
 function cross(u::Union{Expression, FeFunction}, v::Union{Expression, FeFunction})
     return Expression(fenics.cross(u.pyobject, v.pyobject))
 end
 tr(u::Union{Expression, FeFunction}) = Expression(fenics.tr(u.pyobject))
+"""
+    sqrt(u::Union{Expression, FeFunction})
+
+Construct the symbolic square root of a FEniCS expression or function.
+
+# Arguments
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> magnitude = sqrt(inner(gradient, gradient));
+```
+"""
 sqrt(u::Union{Expression, FeFunction}) = Expression(fenics.sqrt(u.pyobject))
 sym(u::Union{Expression, FeFunction}) = Expression(fenics.sym(u.pyobject))
 len(U::Union{Expression, FeFunction}) = length(U.pyobject)
@@ -114,15 +153,71 @@ atan(u::Union{Expression, FeFunction}) = Expression(fenics.atan(u.pyobject))
 exp(u::Union{Expression, FeFunction}) = Expression(fenics.exp(u.pyobject))
 log(u::Union{Expression, FeFunction}) = Expression(fenics.ln(u.pyobject))
 
+"""
+    besseli(nu::Int, u::Union{Expression, FeFunction})
+
+Construct the modified Bessel function of the first kind for a FEniCS value.
+
+# Arguments
+- `nu`: Integer Bessel order.
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> radial_mode = besseli(0, radius);
+```
+"""
 function besseli(nu::Int, u::Union{Expression, FeFunction})
     return Expression(fenics.bessel_I(nu, u.pyobject))
 end
+"""
+    besselj(nu::Int, u::Union{Expression, FeFunction})
+
+Construct the Bessel function of the first kind for a FEniCS value.
+
+# Arguments
+- `nu`: Integer Bessel order.
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> radial_mode = besselj(0, radius);
+```
+"""
 function besselj(nu::Int, u::Union{Expression, FeFunction})
     return Expression(fenics.bessel_J(nu, u.pyobject))
 end
+"""
+    besselk(nu::Int, u::Union{Expression, FeFunction})
+
+Construct the modified Bessel function of the second kind for a FEniCS value.
+
+# Arguments
+- `nu`: Integer Bessel order.
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> radial_mode = besselk(0, radius);
+```
+"""
 function besselk(nu::Int, u::Union{Expression, FeFunction})
     return Expression(fenics.bessel_K(nu, u.pyobject))
 end
+"""
+    bessely(nu::Int, u::Union{Expression, FeFunction})
+
+Construct the Bessel function of the second kind for a FEniCS value.
+
+# Arguments
+- `nu`: Integer Bessel order.
+- `u`: FEniCS symbolic expression or finite-element function.
+
+# Examples
+```julia
+julia> radial_mode = bessely(0, radius);
+```
+"""
 function bessely(nu::Int, u::Union{Expression, FeFunction})
     return Expression(fenics.bessel_Y(nu, u.pyobject))
 end
