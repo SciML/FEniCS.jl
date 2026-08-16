@@ -247,7 +247,46 @@ function directional_derivative(solution1::FeFunction, direction)
     return FeFunction(fenicspycall(solution1, :dx, direction))
 end
 
-# some of these constant are initialized in __init__
+"""
+    dx
+
+FEniCS cell integration measure used to construct a variational form.
+
+Use `dx` to integrate over the cells of a mesh, for example
+`inner(grad(u), grad(v)) * dx`.
+"""
+dx = nothing
+
+"""
+    ds
+
+FEniCS exterior-facet integration measure used to construct a variational
+form.
+
+Use `ds` to integrate over the exterior boundary of a mesh.
+"""
+ds = nothing
+
+"""
+    dS
+
+FEniCS interior-facet integration measure used to construct a variational
+form.
+
+Use `dS` to integrate over interior facets in a discontinuous Galerkin form.
+"""
+dS = nothing
+
+"""
+    dP
+
+FEniCS point integration measure used to construct a variational form.
+
+Use `dP` when the form integrates over point entities supported by the
+underlying FEniCS installation.
+"""
+dP = nothing
+
 export dx, ds, dS, dP, directional_derivative
 
 #https://github.com/FEniCS/Expression/blob/master/Expression/measure.py
@@ -529,7 +568,46 @@ mapping(self)
  |
 """
 
-# some of these constant are initialized in __init__
+"""
+    hexahedron
+
+FEniCS cell object describing a hexahedral finite-element cell.
+
+Use it as the `cell` argument to [`FiniteElement`](@ref) when constructing a
+hexahedral element.
+"""
+hexahedron = nothing
+
+"""
+    tetrahedron
+
+FEniCS cell object describing a tetrahedral finite-element cell.
+
+Use it as the `cell` argument to [`FiniteElement`](@ref) when constructing a
+tetrahedral element.
+"""
+tetrahedron = nothing
+
+"""
+    quadrilateral
+
+FEniCS cell object describing a quadrilateral finite-element cell.
+
+Use it as the `cell` argument to [`FiniteElement`](@ref) when constructing a
+quadrilateral element.
+"""
+quadrilateral = nothing
+
+"""
+    triangle
+
+FEniCS cell object describing a triangular finite-element cell.
+
+Use it as the `cell` argument to [`FiniteElement`](@ref) when constructing a
+triangular element.
+"""
+triangle = nothing
+
 export hexahedron, tetrahedron, quadrilateral, triangle
 
 family(finiteelement::FiniteElement) = fenicspycall(finiteelement, :family)
