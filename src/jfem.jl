@@ -459,6 +459,7 @@ Interpolate an expression into a finite-element function or function space.
 function interpolate(solution1::FeFunction, solution2::Expression)
     return FeFunction(fenicspycall(solution1, :interpolate, solution2.pyobject))
 end
+interpolate(ex, V::FunctionSpace) = FeFunction(fenics.interpolate(ex.pyobject, V.pyobject))
 
 Expression(x::FEniCS.Expression) = convert(Expression, x)
 export Expression, Identity, inner, grad, nabla_grad, nabla_div, div, outer, dot, cross, tr,
