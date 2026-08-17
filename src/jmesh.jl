@@ -1,46 +1,271 @@
 #type alias for string or symbol
 StringOrSymbol = Union{String, Symbol}
-@fenicsclass Mesh  #https://fenicsproject.org/olddocs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Mesh.html
+"""
+    Mesh
+
+Abstract wrapper for a FEniCS/DOLFIN mesh.
+
+Concrete values contain a `PyCall.PyObject` in the internal `pyobject` field.
+Use the constructors below to load or generate meshes; extend mesh behavior on
+`Mesh` rather than on its implementation type.
+"""
+abstract type Mesh <: fenicsobject end
+
+struct MeshImpl <: Mesh
+    pyobject::PyObject
+end
+
+Mesh(pyobject::PyObject) = MeshImpl(pyobject)
 #are converted automatically by PyCall
 
-# Get the cell orientations set.
+"""
+    cell_orientations(mesh::Mesh)
+
+Return the orientation associated with each cell in `mesh`.
+
+The result is supplied by the wrapped FEniCS mesh and is useful when a
+finite-element computation needs the orientation data explicitly.
+
+# Arguments
+
+- `mesh`: Mesh whose cell orientations are requested.
+
+# Returns
+
+The FEniCS cell-orientation array.
+"""
 cell_orientations(mesh::Mesh) = fenicspycall(mesh, :cell_orientations)
-#returns cell connectivity
+
+"""
+    cells(mesh::Mesh)
+
+Return the cell-to-vertex connectivity of `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose connectivity is requested.
+
+# Returns
+
+The FEniCS cell-connectivity array.
+"""
 cells(mesh::Mesh) = fenicspycall(mesh, :cells)
-#Compute minimum cell diameter.
+
+"""
+    hmin(mesh::Mesh)
+
+Return the minimum cell diameter in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+
+# Returns
+
+The minimum cell diameter as reported by FEniCS.
+"""
 hmin(mesh::Mesh) = fenicspycall(mesh, :hmin)
-#Compute maximum cell diameter.
+
+"""
+    hmax(mesh::Mesh)
+
+Return the maximum cell diameter in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+
+# Returns
+
+The maximum cell diameter as reported by FEniCS.
+"""
 hmax(mesh::Mesh) = fenicspycall(mesh, :hmax)
+
+"""
+    init(mesh::Mesh)
+    init(mesh::Mesh, dim::Int)
+
+Initialize mesh connectivity data.
+
+The one-argument form initializes all connectivity data. The two-argument
+form initializes connectivity involving topological dimension `dim`.
+
+# Arguments
+
+- `mesh`: Mesh whose connectivity should be initialized.
+- `dim`: Optional topological dimension used to restrict initialization.
+"""
 init(mesh::Mesh) = fenicspycall(mesh, :init)
 init(mesh::Mesh, dim::Int) = fenicspycall(mesh, :init, dim) # version with dims
+
+"""
+    init_global(mesh::Mesh)
+
+Initialize global mesh connectivity data for `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose global connectivity should be initialized.
+"""
 init_global(mesh::Mesh) = fenicspycall(mesh, :init_global)
-#returns coordinates of all vertices
+
+"""
+    coordinates(mesh::Mesh)
+
+Return the coordinates of all vertices in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose vertex coordinates are requested.
+
+# Returns
+
+An array containing one coordinate vector per mesh vertex.
+"""
 coordinates(mesh::Mesh) = fenicspycall(mesh, :coordinates)
 
+"""
+    data(mesh::Mesh)
+
+Return the auxiliary data object associated with `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose auxiliary data is requested.
+"""
 data(mesh::Mesh) = fenicspycall(mesh, :data)
-#Get  mesh (sub)domains
+
+"""
+    domains(mesh::Mesh)
+
+Return the domain markers associated with `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose domain markers are requested.
+"""
 domains(mesh::Mesh) = fenicspycall(mesh, :domains)
+
+"""
+    topology(mesh::Mesh)
+
+Return the topological structure of `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose topology object is requested.
+"""
 topology(mesh::Mesh) = fenicspycall(mesh, :topology)
 
-#get mesh geometry
+"""
+    geometry(mesh::Mesh)
+
+Return the geometric structure of `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose geometry object is requested.
+"""
 geometry(mesh::Mesh) = fenicspycall(mesh, :geometry)
-#returns number of cells
+
+"""
+    num_cells(mesh::Mesh)
+
+Return the number of cells in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 num_cells(mesh::Mesh) = fenicspycall(mesh, :num_cells)
-#returns number of edges
+
+"""
+    num_edges(mesh::Mesh)
+
+Return the number of edges in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 num_edges(mesh::Mesh) = fenicspycall(mesh, :num_edges)
-#Get number of entities of given topological dimension.
+
+"""
+    num_entities(mesh::Mesh, dim::Int)
+
+Return the number of mesh entities of topological dimension `dim`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+- `dim`: Topological dimension of the entities to count.
+"""
 num_entities(mesh::Mesh, dim::Int) = fenicspycall(mesh, :num_entities, dim)
-#Get number of faces in mesh.
+
+"""
+    num_faces(mesh::Mesh)
+
+Return the number of faces in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 num_faces(mesh::Mesh) = fenicspycall(mesh, :num_faces)
-#Get number of facets in mesh.
+
+"""
+    num_facets(mesh::Mesh)
+
+Return the number of facets in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 num_facets(mesh::Mesh) = fenicspycall(mesh, :num_facets)
-#Get number of vertices in mesh.
+
+"""
+    num_vertices(mesh::Mesh)
+
+Return the number of vertices in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 num_vertices(mesh::Mesh) = fenicspycall(mesh, :num_vertices)
-#hash(mesh::Mesh) = fenicspycall(Mesh, :hash)
+
+"""
+    bounding_box_tree(mesh::Mesh)
+
+Return the bounding-box tree associated with `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh whose spatial index is requested.
+"""
 bounding_box_tree(mesh::Mesh) = fenicspycall(mesh, :bounding_box_tree) #this object is a pyobject
-#Compute maximum cell inradius.
+
+"""
+    rmax(mesh::Mesh)
+
+Return the maximum cell inradius in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 rmax(mesh::Mesh) = fenicspycall(mesh, :rmax)
-#Compute minimum cell inradius.
+
+"""
+    rmin(mesh::Mesh)
+
+Return the minimum cell inradius in `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh to inspect.
+"""
 rmin(mesh::Mesh) = fenicspycall(mesh, :rmin)
 """
     size(mesh::Mesh, dim::Int)
@@ -58,18 +283,70 @@ julia> size(mesh, 0) # vertices
 ```
 """
 size(mesh::Mesh, dim::Int) = fenicspycall(mesh, :size, dim) # version with dims
-#Returns the ufl cell of the mesh.
+"""
+    ufl_cell(mesh::Mesh)
+
+Return the UFL cell associated with `mesh`.
+"""
 ufl_cell(mesh::Mesh) = fenicspycall(mesh, :ufl_cell)
-#Returns the ufl Domain corresponding to the mesh.
+
+"""
+    ufl_domain(mesh::Mesh)
+
+Return the UFL domain associated with `mesh`.
+"""
 ufl_domain(mesh::Mesh) = fenicspycall(mesh, :ufl_domain)
-#Returns an id that UFL can use to decide if two objects are the same.
+
+"""
+    ufl_id(mesh::Mesh)
+
+Return the UFL identifier associated with `mesh`.
+"""
 ufl_id(mesh::Mesh) = fenicspycall(mesh, :ufl_id)
 
-# Return symbolic cell diameter
+"""
+    CellDiameter(mesh::Mesh)
+
+Construct the symbolic cell-diameter expression for `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh used to determine the cell diameter.
+
+# Returns
+
+A symbolic [`Expression`](@ref) suitable for use in a variational form.
+"""
 CellDiameter(mesh::Mesh) = Expression(fenics.CellDiameter(mesh.pyobject))
-# Return symbolic cell normal
+
+"""
+    CellNormal(mesh::Mesh)
+
+Construct the symbolic cell-normal expression for `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh used to determine the cell normal.
+
+# Returns
+
+A symbolic [`Expression`](@ref) suitable for use in a variational form.
+"""
 CellNormal(mesh::Mesh) = Expression(fenics.CellNormal(mesh.pyobject))
-# Return symbolic cell volume
+
+"""
+    CellVolume(mesh::Mesh)
+
+Construct the symbolic cell-volume expression for `mesh`.
+
+# Arguments
+
+- `mesh`: Mesh used to determine the cell volume.
+
+# Returns
+
+A symbolic [`Expression`](@ref) suitable for use in a variational form.
+"""
 CellVolume(mesh::Mesh) = Expression(fenics.CellVolume(mesh.pyobject))
 
 export cell_orientations, cells, hmin, hmax, init, init_global, coordinates, data,
@@ -81,8 +358,13 @@ export cell_orientations, cells, hmin, hmax, init, init_global, coordinates, dat
 export CellType
 
 """
-Mesh(path::StringOrSymbol) \n
-Creates a Mesh based on a specified filename(path)
+    Mesh(path::StringOrSymbol)
+
+Load a FEniCS mesh from `path`.
+
+# Arguments
+
+- `path`: Filename or path understood by FEniCS.
 """
 Mesh(path::StringOrSymbol) = Mesh(fenics.Mesh(path))
 
@@ -121,36 +403,55 @@ function UnitSquareMesh(nx::Int, ny::Int, cellType::PyObject)
     return Mesh(fenics.UnitSquareMesh.create(nx, ny, cellType))
 end
 
+"""
+    UnitQuadMesh(nx::Int, ny::Int)
+
+Deprecated compatibility helper for constructing a unit quadrilateral mesh.
+
+Use a current FEniCS quadrilateral mesh constructor instead.
+"""
 function UnitQuadMesh(nx::Int, ny::Int)
     return println("Deprecated in FEniCS v.2018, remove in .7 Julia")
 end
 
 """
-UnitIntervalMesh(nx::Int) \n
+    UnitIntervalMesh(nx::Int)
 
-A mesh of the unit interval (0, 1) with a given number of cells (nx) in the axial direction. \n
-The total number of intervals will be nx and the total number of vertices will be (nx + 1).
+Construct a mesh of the unit interval `(0, 1)` with `nx` cells and `nx + 1`
+vertices.
+
+# Arguments
+
+- `nx`: Number of cells in the interval.
 """
 UnitIntervalMesh(nx::Int) = Mesh(fenics.UnitIntervalMesh(nx))
 
 """
-UnitCubeMesh(nx::Int, ny::Int, nz::Int) \n
+    UnitCubeMesh(nx::Int, ny::Int, nz::Int)
 
-Tetrahedral/hexahedral mesh of the 3D unit cube [0,1] x [0,1] x [0,1]. \n
-Given the number of cells (nx, ny, nz) in each direction, the total number of \n
-tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*(ny + 1)*(nz + 1).
+Construct a tetrahedral mesh of the three-dimensional unit cube.
 
+The mesh has `6 * nx * ny * nz` tetrahedra and
+`(nx + 1) * (ny + 1) * (nz + 1)` vertices.
+
+# Arguments
+
+- `nx`, `ny`, `nz`: Number of cells in each coordinate direction.
 """
 UnitCubeMesh(nx::Int, ny::Int, nz::Int) = Mesh(fenics.UnitCubeMesh(nx, ny, nz))
 function UnitCubeMesh(nx::Int, ny::Int, nz::Int, cellType::PyObject)
     return Mesh(fenics.UnitCubeMesh.create(nx, ny, nz, cellType))
 end
 """
-BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) \n
+    BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)
 
-Tetrahedral mesh of the 3D rectangular prism spanned by two points p0 and p1. \n
-Given the number of cells (nx, ny, nz) in each direction, the total number of \n
-tetrahedra will be 6*nx*ny*nz and the total number of vertices will be (nx + 1)*(ny + 1)*(nz + 1).
+Construct a tetrahedral mesh of the rectangular prism between `p0` and
+`p1`.
+
+# Arguments
+
+- `p0`, `p1`: Opposite prism corners.
+- `nx`, `ny`, `nz`: Number of cells in each coordinate direction.
 """
 BoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) = Mesh(fenics.BoxMesh(p0, p1, nx, ny, nz))
 function BoxMesh(p::NTuple{2, PyObject}, n::NTuple{3, Int}, cellType::PyObject)
@@ -158,11 +459,16 @@ function BoxMesh(p::NTuple{2, PyObject}, n::NTuple{3, Int}, cellType::PyObject)
 end
 
 """
-RectangleMesh(p0,p1,nx::Int,ny::Int,diagdir::StringOrSymbol="right") \n
-Triangular mesh of the 2D rectangle spanned by two points p0 and p1. \n
-Given the number of cells (nx, ny) in each direction, the total number \n
-of triangles will be 2*nx*ny and the total number of vertices will be (nx + 1)*(ny + 1) \n
-diagdir ("left", "right", "right/left", "left/right", or "crossed") indicates the direction of the diagonals.
+    RectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
+
+Construct a triangular mesh of the rectangle between `p0` and `p1`.
+
+# Arguments
+
+- `p0`, `p1`: Opposite rectangle corners.
+- `nx`, `ny`: Number of cells in each coordinate direction.
+- `diagdir`: Diagonal orientation: `"left"`, `"right"`, `"right/left"`,
+  `"left/right"`, or `"crossed"`.
 """
 function RectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
     return Mesh(fenics.RectangleMesh(p0, p1, nx, ny, diagdir))
@@ -192,48 +498,118 @@ end
 export UnitTriangleMesh, UnitTetrahedronMesh, UnitSquareMesh, UnitQuadMesh,
     UnitIntervalMesh, UnitCubeMesh, BoxMesh, RectangleMesh, Mesh, BoundaryMesh
 
+"""
+    pyUnitTriangleMesh()
+
+Return the underlying Python reference triangle mesh object.
+"""
 function pyUnitTriangleMesh()
     return fenics.cpp.generation.UnitTriangleMesh.create()
 end
 
+"""
+    pyUnitTetrahedronMesh()
+
+Return the underlying Python reference tetrahedron mesh object.
+"""
 function pyUnitTetrahedronMesh()
     return fenics.cpp.generation.UnitTetrahedronMesh.create()
 end
 
+"""
+    pyUnitCubeMesh(nx::Int, ny::Int, nz::Int)
+
+Construct the underlying Python unit-cube mesh object.
+
+# Arguments
+
+- `nx`, `ny`, `nz`: Number of cells in each coordinate direction.
+"""
 function pyUnitCubeMesh(nx::Int, ny::Int, nz::Int)
     return pycall(fenics.UnitCubeMesh::PyObject, PyObject::Type, nx, ny, nz)
 end
 
+"""
+    pyBoxMesh(p0, p1, nx::Int, ny::Int, nz::Int)
+
+Construct the underlying Python box mesh object.
+
+# Arguments
+
+- `p0`, `p1`: Opposite box corners.
+- `nx`, `ny`, `nz`: Number of cells in each coordinate direction.
+"""
 function pyBoxMesh(p0, p1, nx::Int, ny::Int, nz::Int) # look at array types to declare p0,p1
     return pycall(fenics.BoxMesh::PyObject, PyObject::Type, p0, p1, nx, ny, nz)
 end
 
+"""
+    pyRectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
+
+Construct the underlying Python rectangle mesh object.
+
+# Arguments
+
+- `p0`, `p1`: Opposite rectangle corners.
+- `nx`, `ny`: Number of cells in each coordinate direction.
+- `diagdir`: Diagonal orientation passed to FEniCS.
+"""
 function pyRectangleMesh(p0, p1, nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
     return pycall(fenics.RectangleMesh::PyObject, PyObject::Type, p0, p1, nx, ny, diagdir)
 end
 
 """
-For the diagdir, the possible options can be found below (these indicate the direction of the diagonals)
-  (“left”, “right”, “right/left”, “left/right”, or “crossed”).
+    pyUnitSquareMesh(nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
+
+Construct the underlying Python unit-square mesh object. `diagdir` may be
+`"left"`, `"right"`, `"right/left"`, `"left/right"`, or `"crossed"`.
 """
 function pyUnitSquareMesh(nx::Int, ny::Int, diagdir::StringOrSymbol = "right")
     return pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny, diagdir)
 end
 
+"""
+    pyUnitQuadMesh(nx::Int, ny::Int)
+
+Construct the underlying Python quadrilateral mesh object.
+"""
 function pyUnitQuadMesh(nx::Int, ny::Int)
     return pycall(fenics.UnitSquareMesh::PyObject, PyObject::Type, nx, ny)
 end #https://fenicsproject.org/olddocs/dolfin/2016.2.0/python/programmers-reference/cpp/mesh/UnitQuadMesh.html
 #states that the UnitQuadMesh code is experimental. Nevertheless I plan to add it , and maybe remove it at the final
 #iteration
 
+"""
+    pyUnitIntervalMesh(nx::Int)
+
+Construct the underlying Python unit-interval mesh object.
+
+# Arguments
+
+- `nx`: Number of cells in the interval.
+"""
 function pyUnitIntervalMesh(nx::Int)
     return pycall(fenics.UnitIntervalMesh::PyObject, PyObject::Type, nx)
 end
 
+"""
+    pyMesh(path::StringOrSymbol)
+
+Load the underlying Python FEniCS mesh object from `path`.
+"""
 function pyMesh(path::StringOrSymbol)
     return pycall(fenics.Mesh::PyObject, PyObject::Type, path)
 end
 
+"""
+    Point(point::Union{Vector, Tuple})
+
+Construct an underlying Python FEniCS point from a Julia vector or tuple.
+
+# Arguments
+
+- `point`: Coordinate vector or tuple.
+"""
 function Point(point::Union{Vector, Tuple})
     return pycall(fenics.Point::PyObject, PyObject::Type, point)
 end
@@ -241,16 +617,56 @@ end
 export pyUnitTriangleMesh, pyUnitTetrahedronMesh, pyUnitSquareMesh, pyUnitQuadMesh,
     pyUnitIntervalMesh, pyUnitCubeMesh, pyBoxMesh, pyRectangleMesh, pyMesh, Point
 
-@fenicsclass Cell #https://fenicsproject.org/docs/dolfin/1.5.0/python/programmers-reference/cpp/mesh/Cell.html
+"""
+    Cell
+
+Abstract wrapper for a FEniCS mesh cell.
+"""
+abstract type Cell <: fenicsobject end
+
+struct CellImpl <: Cell
+    pyobject::PyObject
+end
+
+Cell(pyobject::PyObject) = CellImpl(pyobject)
+"""
+    Cell(mesh::MeshImpl, i::Int)
+
+Wrap cell `i` from a FEniCS mesh.
+
+# Arguments
+
+- `mesh`: Underlying mesh implementation.
+- `i`: Cell index understood by FEniCS.
+"""
 Cell(mesh::MeshImpl, i::Int) = Cell(fenics.Cell(mesh.pyobject, i))
 
-# Get coordinates of cell vertices
+"""
+    get_vertex_coordinates(cell::Cell)
+
+Return the coordinates of the vertices of `cell`.
+"""
 get_vertex_coordinates(cell::Cell) = fenicspycall(cell, :get_vertex_coordinates)
-# Compute greatest distance between between two vertices of a cell
+
+"""
+    h(cell::Cell)
+
+Return the greatest distance between two vertices of `cell`.
+"""
 h(cell::Cell) = fenicspycall(cell, :h)
-# Compute midpoint of a cell
+
+"""
+    midpoint(cell::Cell)
+
+Return the midpoint of `cell`.
+"""
 midpoint(cell::Cell) = fenicspycall(cell, :midpoint)
-# Compute volume of cell
+
+"""
+    volume(cell::Cell)
+
+Return the volume of `cell`.
+"""
 volume(cell::Cell) = fenicspycall(cell, :volume)
 
 export Cell, get_vertex_coordinates, h, midpoint, volume

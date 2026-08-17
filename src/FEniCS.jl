@@ -79,6 +79,20 @@ FEniCS/DOLFIN cell-type namespace used to select mesh cell shapes.
 """
 const CellType = PyNamespace(PyCall.PyNULL())
 
+"""
+    fenicspycall(object::fenicsobject, func::Union{Symbol, String}, args...)
+
+Call a named method on the wrapped FEniCS Python object.
+
+This is a low-level developer interface for operations that do not yet have
+a dedicated Julia wrapper. Prefer a dedicated wrapper when one is available.
+
+# Arguments
+
+- `object`: Wrapped FEniCS object on which the method is called.
+- `func`: Python method name as a symbol or string.
+- `args...`: Positional arguments forwarded to the Python method.
+"""
 function fenicspycall(object::fenicsobject, func::Union{Symbol, String}, args...)
     return getproperty(object.pyobject, func)(args...)
 end
@@ -134,6 +148,11 @@ end
 set_log_level(lvl::LOGLEVEL) = set_log_level(Int(lvl))
 set_log_level(lvl::Int) = fenics.set_log_level(lvl)
 
+"""
+    str(obj::fenicsobject)
+
+Return the Python string representation of `obj`.
+"""
 str(obj::fenicsobject) = fenicspycall(obj, :__str__)
 """
     repr(obj::fenicsobject)
@@ -164,6 +183,4 @@ include("jmisc.jl") #this file contains various miscallaneous functions to assis
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 include_mshr && include("fmshr.jl") #this file contains various geometrical objects using the mshr package
-include("public_api_docs.jl")
-
 end #module

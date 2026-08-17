@@ -1,12 +1,43 @@
 #this file contains functions/wrappers related to the solve function in FEniCS
 #https://fenicsproject.org/olddocs/dolfin/1.3.0/python/programmers-reference/fem/solving/solve.html
 
+"""
+    solve(A::Matrix, x, b::Matrix, solvers...)
+
+Solve the linear algebraic system represented by `A`, `x`, and `b` using
+the wrapped FEniCS solver.
+
+# Arguments
+
+- `A`: Assembled system matrix.
+- `x`: Solution vector or FEniCS solution object.
+- `b`: Right-hand-side matrix or vector.
+- `solvers...`: Additional solver arguments forwarded to FEniCS.
+"""
 function solve(A::Matrix, x, b::Matrix, solvers...)
     return fenics.solve(A.pyobject, x, b.pyobject, solvers...)
 end
 export solve
 
-#lvsolve is the linear variational solver
+"""
+    lvsolve(a, L, u, bcs = nothing;
+        solver_parameters = Dict("linear_solver" => "default"),
+        form_compiler_parameters = Dict("optimize" => true))
+
+Solve a linear variational problem.
+
+# Arguments
+
+- `a`: Bilinear form.
+- `L`: Linear form.
+- `u`: Unknown finite-element function.
+- `bcs`: Optional boundary condition or collection of boundary conditions.
+
+# Keyword Arguments
+
+- `solver_parameters`: FEniCS linear-solver parameters.
+- `form_compiler_parameters`: FEniCS form-compiler parameters.
+"""
 function lvsolve(
         a, L, u, bcs = nothing;
         solver_parameters::Dict = Dict("linear_solver" => "default"),
@@ -43,7 +74,25 @@ end
 export lvsolve
 #Dict("linear_solver"=>"default")
 #Dict("optimize"=>true)
-#nlvsolve is the non-linear variational solver
+"""
+    nlvsolve(F, u, bcs = nothing; J = nothing,
+        solver_parameters = Dict("nonlinear_solver" => "newton"),
+        form_compiler_parameters = Dict("optimize" => true))
+
+Solve a nonlinear variational problem.
+
+# Arguments
+
+- `F`: Nonlinear residual form.
+- `u`: Unknown finite-element function.
+- `bcs`: Optional boundary condition or collection of boundary conditions.
+- `J`: Optional Jacobian form.
+
+# Keyword Arguments
+
+- `solver_parameters`: FEniCS nonlinear-solver parameters.
+- `form_compiler_parameters`: FEniCS form-compiler parameters.
+"""
 function nlvsolve(
         F, u, bcs = nothing; J = nothing,
         solver_parameters::Dict = Dict("nonlinear_solver" => "newton"),
@@ -90,7 +139,14 @@ end
 
 export nlvsolve
 
-#anlvsolve corresponds to the adaptive non-linear solver.
+"""
+    anlvsolve(F, a, u, bcs, tol, M)
+
+Solve an adaptive nonlinear variational problem through the wrapped FEniCS
+solver.
+
+This lower-level helper is kept for compatibility and is not exported.
+"""
 function anlvsolve(F, a, u, bcs, tol, M)
     return fenics.solve(F.pyobject == a.pyobject, u.pyobject, bcs = bcs.pyobject, tol = tol, M = M)
 end
@@ -123,12 +179,23 @@ function norm(u::FeFunction; normType = "L2", mesh::Union{Nothing, Mesh} = nothi
 end
 
 """
-errornorm is the function to calculate the error between our exact and calculated
-solution. The norm kwarg defines the norm measure used (by default it is the L2 norm)
+    errornorm(ans, sol; norm = "L2")
+
+Compute the FEniCS error norm between an exact solution `ans` and a computed
+solution `sol`.
+
+# Keyword Arguments
+
+- `norm`: FEniCS norm identifier. The default is `"L2"`.
 """
 errornorm(ans, sol; norm = "L2") = fenics.errornorm(ans.pyobject, sol.pyobject, norm)
 export errornorm
 
+"""
+    File(path::StringOrSymbol)
+
+Create a FEniCS output file at `path`.
+"""
 File(path::StringOrSymbol) = fenics.File(path) #used to store the solution in various formats
 
 function File(path::StringOrSymbol, object::FeFunction)
@@ -153,10 +220,27 @@ end
 
 export File
 
+"""
+    XDMFFile(path::StringOrSymbol)
+
+Create a FEniCS XDMF output object at `path`.
+"""
 XDMFFile(path::StringOrSymbol) = fenics.XDMFFile(path)
 export XDMFFile
 
+"""
+    TimeSeries(path::StringOrSymbol)
+
+Create a FEniCS time-series storage object at `path`.
+"""
 TimeSeries(path::StringOrSymbol) = fenics.TimeSeries(path)
+
+"""
+    retrieve(timeseries, placeholder, time)
+
+Retrieve the value associated with `placeholder` at `time` from a FEniCS
+time series.
+"""
 retrieve(timeseries, placeholder, time) = timeseries.retrieve(placeholder, time)
 export TimeSeries, retrieve
 
@@ -177,18 +261,40 @@ julia> write(XDMFFile("solution.xdmf"), u, 0.0)
 """
 write(path::PyObject, solution::fenicsobject, time::Number) = path.write(solution.pyobject, time)
 
+"""
+    store(path::PyObject, solution, time::Number)
+
+Store `solution` at `time` in a FEniCS time-series object.
+"""
 store(path::PyObject, solution, time::Number) = path.store(solution.pyobject, time)
 store(path::PyObject, solution::PyObject, time::Number) = path.store(solution, time)
 
 export write, store
 
+"""
+    array(matrix)
+
+Gather a FEniCS matrix or vector-like object into a Julia array on rank zero.
+"""
 array(matrix) = fenicspycall(matrix, :gather_on_zero)
+
+"""
+    vector(solution::FeFunction)
+
+Return the vector backing `solution`.
+"""
 vector(solution::FeFunction) = fenicspycall(solution, :vector) #
-interpolate(ex, V::FunctionSpace) = FeFunction(fenics.interpolate(ex.pyobject, V.pyobject))
 
 export vector, interpolate, array
 
-"the following function is used to extract the array from a solution/form"
+"""
+    get_array(form::Expression)
+    get_array(solution::FeFunction)
+    get_array(assembled_form::Matrix)
+
+Extract a Julia array from a FEniCS expression, finite-element function, or
+assembled matrix.
+"""
 function get_array(form::Expression)
     assembled_form = assemble(form)
     return array(assembled_form)
@@ -199,9 +305,6 @@ function get_array(solution::FeFunction)
     instantiated_vector = fenics.Vector(generic_vector)
     return instantiated_vector.gather_on_zero()
 end
-"""
-we return the array from an assembled form
-"""
 function get_array(assembled_form::Matrix)
     return array(assembled_form)
 end
@@ -209,11 +312,17 @@ end
 export get_array
 
 """
-Return projection of given expression *v* onto the finite element space *V*
-*Example of usage*
-          v = Expression("sin(pi*x[0])")
-          V = FunctionSpace(mesh, "Lagrange", 1)
-          Pv = project(v, V)
+    project(v::Union{FeFunction, Expression}, V::FunctionSpace)
+
+Project `v` onto the finite-element space `V`.
+
+# Example
+
+```julia
+v = Expression("sin(pi*x[0])", degree = 2)
+V = FunctionSpace(mesh, "Lagrange", 1)
+Pv = project(v, V)
+```
 """
 function project(v::Union{FeFunction, Expression}, V::FunctionSpace)
     return FeFunction(fenics.project(v.pyobject, V.pyobject))
