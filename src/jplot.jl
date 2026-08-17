@@ -21,6 +21,35 @@ function mesh2triangle(space::feMesh)
     return tri.Triangulation(xy[:, 1], xy[:, 2], cells)
 end
 
+"""
+    plot(object::Mesh; kws...)
+    plot(object::Expression, kws...)
+    plot(object::FeFunction; kws...)
+    plot(mesh::Mesh, solution::AbstractArray, levels::Int = 40; kws...)
+    plot(space::feMesh, solution::AbstractArray, levels::Int = 40; kws...)
+
+Plot a FEniCS mesh, symbolic expression, finite-element function, or sampled
+finite-element solution using PyPlot.
+
+The plotting methods dispatch on the object being plotted. Keyword arguments
+are forwarded to the selected PyPlot routine. The mesh and function methods
+currently support the two-dimensional triangulated cases and the three-
+dimensional cases handled by the corresponding PyPlot surface routines.
+
+# Arguments
+
+- `object`, `mesh`, `space`: FEniCS object to plot.
+- `solution`: Values associated with `mesh` or `space`.
+- `levels`: Number of contour levels for sampled solutions.
+- `kws...`: Keyword arguments forwarded to PyPlot.
+
+# Examples
+
+```julia
+mesh = UnitSquareMesh(8, 8)
+plot(mesh)
+```
+"""
 function plot(object::Mesh; kws...)
     geom = geometry(object)
     gdim = geom[:dim]()
@@ -63,6 +92,25 @@ function plot(object::Union{Expression, FeFunction}; kws...)
     end
 end
 
+"""
+    surf_plot(object::Union{Expression, FeFunction}; kws...)
+
+Create a surface plot for a scalar FEniCS expression or finite-element
+function.
+
+# Arguments
+
+- `object`: Scalar expression or finite-element function to plot.
+- `kws...`: Keyword arguments forwarded to the PyPlot surface routine.
+
+# Examples
+
+```julia
+mesh = UnitSquareMesh(8, 8)
+u = Expression("x[0] + x[1]", degree = 1)
+surf_plot(u)
+```
+"""
 function surf_plot(object::Union{Expression, FeFunction}; kws...)
     f_space = object.pyobject[:function_space]()
     mesh = f_space[:mesh]()
@@ -91,12 +139,3 @@ function plot(space::feMesh, solution::AbstractArray, levels::Int = 40; kws...)
 end
 
 export plot, surf_plot
-
-const _JPLOT_API_DOCS = Pair{Symbol, String}[
-    :plot => "Plot a FEniCS mesh, expression, function, or finite-element solution.",
-    :surf_plot => "Create a surface plot for a scalar FEniCS expression or function.",
-]
-
-for (name, doc) in _JPLOT_API_DOCS
-    @eval @doc $doc $name
-end
