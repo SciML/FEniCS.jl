@@ -71,7 +71,7 @@ uuid = "2e619515-83b5-522b-bb60-26c02a35a201"
 version = "2.8.3+0"
 
 [[deps.FEniCS]]
-deps = ["LinearAlgebra", "PyCall", "Requires", "SpecialFunctions"]
+deps = ["LinearAlgebra", "PrecompileTools", "PyCall", "Requires", "SpecialFunctions"]
 path = "/home/runner/work/FEniCS.jl/FEniCS.jl"
 uuid = "186dfeec-b415-5c13-8e76-5fbf19f56f9b"
 version = "1.4.0"
@@ -332,9 +332,9 @@ version = "1.11.0"
 
 [[deps.SpecialFunctions]]
 deps = ["IrrationalConstants", "LogExpFunctions", "OpenLibm_jll", "OpenSpecFun_jll"]
-git-tree-sha1 = "c3ac026e735264e9bdc6a9bcbd1b1e781b36e3bc"
+git-tree-sha1 = "429071b23f4c9a13fb6582f807cc2ef454082408"
 uuid = "276daf66-3868-5448-9aa4-cd146d93841b"
-version = "2.8.3"
+version = "2.9.0"
 
     [deps.SpecialFunctions.extensions]
     SpecialFunctionsChainRulesCoreExt = "ChainRulesCore"
