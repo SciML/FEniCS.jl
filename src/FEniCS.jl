@@ -7,6 +7,7 @@ forms, solvers, and related helper utilities.
 module FEniCS
 
 using PyCall: PyCall, PyObject, pyimport_conda, pycall, @pyimport
+using PrecompileTools: @compile_workload, @setup_workload
 using Requires: @require
 
 # determine if we can include mshr
@@ -183,4 +184,5 @@ include("jmisc.jl") #this file contains various miscallaneous functions to assis
 include("jsolve.jl") #this file contains the solver functions/routines
 include("jinterface.jl")
 include_mshr && include("fmshr.jl") #this file contains various geometrical objects using the mshr package
+include("precompile.jl")
 end #module
