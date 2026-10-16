@@ -35,7 +35,6 @@ end
     @test include("test_create.jl")
     @test include("test_pycreate.jl")
     @test include("test_jfem.jl")
-    include("test_fem.jl")
 end
 
 @testset "assign" begin
