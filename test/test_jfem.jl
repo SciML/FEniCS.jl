@@ -1,4 +1,6 @@
 using FEniCS
+using PyCall
+using Test
 
 mesh = UnitSquareMesh(8, 8)
 element = FiniteElement("Lagrange", ufl_cell(mesh))
@@ -10,6 +12,13 @@ variant_element = variant(element)
 reconstructed_element = reconstruct(element)
 sobolev_space_element = sobolev_space(element)
 facet_element = FacetNormal(mesh)
+
+triangle_element = FiniteElement("Lagrange", triangle, 1)
+@test family(triangle_element) == "Lagrange"
+@test degree(triangle_element) == 1
+@test variant(triangle_element) === nothing
+@test cell(triangle_element) == triangle
+@test pystr(sobolev_space(triangle_element)) == "H1"
 
 V = FunctionSpace(mesh, "P", 1)
 u = TrialFunction(V)
